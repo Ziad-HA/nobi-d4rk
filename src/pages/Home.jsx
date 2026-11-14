@@ -31,7 +31,7 @@ const perks = [
     ar: "جودة مضمونة",
   },
   {
-    icon: RefreshCw,ALEXALEXALEXALEX
+    icon: RefreshCw,
     title: "Easy exchange",
     text: `${RETURN_DAYS} days, no stress`,
     ar: "استبدال سهل",
@@ -65,12 +65,6 @@ export default function Home() {
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-neutral-300">
               Clean cuts, heavy cotton, no noise. Designed and made in ALEX.
             </p>
-            <p
-              className="font-ar mt-2 max-w-sm text-sm text-neutral-400"
-              lang="ar"
-            >
-              {brand.taglineAr}
-            </p>
             <Link
               to="/shop"
               className="mt-8 inline-flex bg-white px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-neutral-200"
@@ -89,11 +83,8 @@ export default function Home() {
               <p className="font-display text-5xl tracking-[0.24em]">
                 {brand.name}
               </p>
-              <p className="font-ar mt-1 text-lg text-neutral-200" lang="ar">
-                {brand.arabic}
-              </p>
               <p className="mt-1 text-[10px] uppercase tracking-[0.28em] text-neutral-400">
-                ALEXst. {brand.est}
+                ALEX · Est. {brand.est}
               </p>
             </div>
           </div>

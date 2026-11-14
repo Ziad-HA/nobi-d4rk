@@ -54,9 +54,6 @@ export default function Header() {
 
         <Link to="/" className="flex items-baseline gap-2 text-black" aria-label={`${brand.name} home`}>
           <span className="font-display text-3xl tracking-[0.16em]">{brand.name}</span>
-          <span className="font-ar hidden text-sm text-neutral-500 sm:inline" lang="ar">
-            {brand.arabic}
-          </span>
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">

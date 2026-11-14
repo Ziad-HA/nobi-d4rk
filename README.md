@@ -1,6 +1,6 @@
 # COMMON
 
-Calm streetwear storefront made in ALEX Built with React, Vite, Tailwind CSS and React Router.
+Calm streetwear storefront made in Alexandria. Built with React, Vite, Tailwind CSS and React Router.
 
 ## Run locally
 

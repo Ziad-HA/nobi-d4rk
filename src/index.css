@@ -3,7 +3,7 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Bebas Neue", "Inter", sans-serif;
-  --font-arabic: "IBM Plex Sans Arabic", "ALEXem-ui, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", system-ui, sans-serif;
   --color-sand: #efebe4;
   --color-ink: #0a0a0a;
 }

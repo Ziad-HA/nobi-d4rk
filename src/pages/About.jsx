@@ -8,15 +8,12 @@ export default function About() {
         <div className="mx-auto max-w-3xl px-4 text-center">
           <p className="text-xs uppercase tracking-[0.28em] text-neutral-400">About us</p>
           <h1 className="mt-4 font-display text-6xl tracking-[0.16em]">{brand.name}</h1>
-          <p className="font-ar mt-2 text-xl text-neutral-300" lang="ar">
-            {brand.arabic}
-          </p>
           <p className="mt-5 text-sm leading-relaxed text-neutral-300">{brand.tagline}</p>
         </div>
       </section>
       <div className="mx-auto max-w-3xl px-4 py-16 text-sm leading-relaxed text-neutral-700">
         <p>
-          {brand.name} (Common) is the quiet hour when the city slows down. We make calm, clean streetwear in {brand.city}:
+          {brand.name} is streetwear for everyday life. We make calm, clean pieces in {brand.city}:
           heavy cotton, simple cuts, and small details instead of loud logos. Every hoodie, tee, cargo and cap is
           checked by hand before it leaves the studio.
         </p>

@@ -6,7 +6,7 @@ export const brand = {
   email: "zh.nobii@gmail.com",
   // International format, digits only (01276390301 -> 201276390301)
   whatsapp: "201276390301",
-  city: "ALEXgypt",
+  city: "Alexandria, Egypt",
   est: 2026,
 };
 

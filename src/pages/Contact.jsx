@@ -23,7 +23,7 @@ export default function Contact() {
   };
 
   return (
-    <div classALEXuto grid max-w-5xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
+    <div className="mx-auto grid max-w-5xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
       <div>
         <p className="text-xs uppercase tracking-[0.24em] text-neutral-500">
           Contact

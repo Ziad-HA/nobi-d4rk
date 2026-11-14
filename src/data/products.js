@@ -138,7 +138,7 @@ export const products = [
   },
   {
     id: "common-oversized-tee",
-    name: "common Oversized Tee",
+    name: "Common Oversized Tee",
     price: 750,
     category: "t-shirts",
     collection: "new-drops",
@@ -168,7 +168,7 @@ export const products = [
   },
   {
     id: "common-back-print-tee",
-    name: "common Back Print Tee",
+    name: "Common Back Print Tee",
     price: 850,
     category: "t-shirts",
     collection: "essentials",
@@ -179,7 +179,7 @@ export const products = [
       "https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=900&q=80",
     sizes: ["S", "M", "L", "XL"],
     description:
-      "Black boxy tee with the common print across the back. The house staple.",
+      "Black boxy tee with the Common print across the back. The house staple.",
   },
   {
     id: "night-bomber",
@@ -196,7 +196,7 @@ export const products = [
       "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=900&q=80",
     sizes: ["S", "M", "L", "XL"],
     description:
-      "Black bomber jacket, fully lined, with ribbed cuffs and a clean zip. Light enough for ALEXters.",
+      "Black bomber jacket, fully lined, with ribbed cuffs and a clean zip. Light enough for ALEX winters.",
   },
   {
     id: "night-cap",

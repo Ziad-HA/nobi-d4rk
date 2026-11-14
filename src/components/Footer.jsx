@@ -46,8 +46,6 @@ function InstagramIcon() {
       className="h-4 w-4"
       fill="none"
       stroke="currentColor"
-      ALEX
-      Cairo
       strokeWidth="1.8"
       aria-hidden="true"
     >
@@ -70,19 +68,10 @@ export default function Footer() {
             <span className="font-display text-3xl tracking-[0.16em]">
               {brand.name}
             </span>
-            <span className="font-ar text-sm text-neutral-500" lang="ar">
-              {brand.arabic}
-            </span>
           </p>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-600">
             Calm streetwear, designed and made in ALEX. Heavy cotton, clean
             cuts, built to be worn every day.
-          </p>
-          <p
-            className="font-ar mt-1 max-w-xs text-sm text-neutral-500"
-            lang="ar"
-          >
-            {brand.taglineAr}
           </p>
           <div className="mt-5 flex gap-3">
             <a
