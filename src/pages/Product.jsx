@@ -29,7 +29,7 @@ export default function Product() {
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4)
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="wrap py-12">
       <nav className="text-xs uppercase tracking-wide text-neutral-500">
         <Link to="/shop">Shop</Link> / {product.name}
       </nav>

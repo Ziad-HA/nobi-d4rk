@@ -51,48 +51,50 @@ export default function Home() {
 
   return (
     <div>
-      <section className="relative overflow-hidden bg-black text-white">
-        <div className="mx-auto grid min-h-[72vh] max-w-7xl items-center gap-8 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-0">
-          <div className="relative z-10 max-w-xl">
-            <p className="text-xs font-medium uppercase tracking-[0.28em] text-neutral-300">
-              New collection · {brand.est}
-            </p>
-            <h1 className="mt-5 font-display text-6xl leading-[0.9] tracking-wide sm:text-7xl lg:text-8xl">
-              MADE QUIET.
-              <br />
-              MADE IN EGYPT.
-            </h1>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-neutral-300">
-              Clean cuts, heavy cotton, no noise. Designed and made in ALEX.
-            </p>
+      <section className="relative isolate overflow-hidden bg-black text-white">
+        <img
+          src="https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=1800&q=80"
+          alt={`Model wearing ${brand.name} streetwear`}
+          className="absolute inset-0 -z-20 h-full w-full object-cover object-[70%_25%] grayscale contrast-110"
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-black via-black/70 to-black/10 max-md:from-black/85 max-md:via-black/70 max-md:to-black/60"
+          aria-hidden="true"
+        />
+        <div className="wrap relative flex min-h-[78vh] flex-col justify-center py-20">
+          <p className="text-xs font-medium uppercase tracking-[0.28em] text-neutral-300">
+            New collection · {brand.est}
+          </p>
+          <h1 className="mt-5 max-w-2xl font-display text-6xl leading-[0.92] tracking-wide sm:text-7xl lg:text-8xl">
+            MADE QUIET.
+            <br />
+            MADE IN EGYPT.
+          </h1>
+          <p className="mt-5 max-w-sm text-sm leading-relaxed text-neutral-300">
+            Clean cuts, heavy cotton, no noise. Designed and made in {brand.city.split(",")[0]}.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link
               to="/shop"
-              className="mt-8 inline-flex bg-white px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-neutral-200"
+              className="inline-flex bg-white px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-neutral-200"
             >
               Shop now
             </Link>
+            <Link
+              to="/collections"
+              className="inline-flex border border-white/60 px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-black"
+            >
+              Collections
+            </Link>
           </div>
-          <div className="relative hidden min-h-[72vh] lg:block">
-            <img
-              src="https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=1400&q=80"
-              alt={`Model wearing a ${brand.name} black oversized tee`}
-              className="absolute inset-0 h-full w-full object-cover object-[center_20%]"
-            />
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent" />
-            <div className="absolute bottom-24 right-16 text-right">
-              <p className="font-display text-5xl tracking-[0.24em]">
-                {brand.name}
-              </p>
-              <p className="mt-1 text-[10px] uppercase tracking-[0.28em] text-neutral-400">
-                ALEX · Est. {brand.est}
-              </p>
-            </div>
-          </div>
+          <p className="absolute bottom-6 right-4 text-[10px] uppercase tracking-[0.28em] text-neutral-400 sm:right-6 lg:right-8">
+            {brand.city.split(",")[0]} · Est. {brand.est}
+          </p>
         </div>
       </section>
 
       <section className="border-b border-neutral-200 bg-sand/60">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
+        <div className="wrap grid gap-8 py-8 sm:grid-cols-2 lg:grid-cols-4">
           {perks.map(({ icon: Icon, title, text, ar }) => (
             <div key={title} className="flex items-start gap-3">
               <Icon size={22} className="mt-0.5 shrink-0" aria-hidden="true" />
@@ -113,7 +115,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <section className="wrap py-16">
         <h2 className="mb-8 text-center text-xl font-semibold uppercase tracking-[0.18em]">
           Shop by category
         </h2>
@@ -147,7 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <section className="wrap pb-16">
         <h2 className="mb-8 text-center text-xl font-semibold uppercase tracking-[0.18em]">
           Trending now
         </h2>
@@ -172,7 +174,7 @@ export default function Home() {
         )}
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-3 px-4 pb-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <section className="wrap grid gap-3 pb-16 md:grid-cols-3">
         {collections.map((c) => (
           <Link
             key={c.slug}
@@ -197,7 +199,7 @@ export default function Home() {
       </section>
 
       <section className="bg-black text-white">
-        <div className="mx-auto flex max-w-7xl items-end justify-between px-4 pb-4 pt-10 sm:px-6 lg:px-8">
+        <div className="wrap flex items-end justify-between pb-4 pt-10">
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em]">
               Follow us on Instagram

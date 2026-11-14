@@ -26,14 +26,14 @@ export default function Collections() {
       <div>
         <section className="relative min-h-[40vh] bg-black text-white">
           <img src={current.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" />
-          <div className="relative mx-auto flex min-h-[40vh] max-w-7xl items-end px-4 py-12 sm:px-6 lg:px-8">
+          <div className="wrap relative flex min-h-[40vh] items-end py-12">
             <div>
               <p className="text-xs uppercase tracking-[0.24em]">{current.tagline}</p>
               <h1 className="mt-2 font-display text-6xl tracking-wide">{current.name}</h1>
             </div>
           </div>
         </section>
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="wrap py-12">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {shown.map((p) => (
               <ProductCard key={p.id} product={p} />
@@ -45,7 +45,7 @@ export default function Collections() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="wrap py-12">
       <h1 className="font-display text-5xl tracking-wide">Collections</h1>
       <p className="mt-3 max-w-xl text-sm text-neutral-600">
         Monthly drops, everyday essentials, and limited-time offers — all made in small runs and checked before they ship.

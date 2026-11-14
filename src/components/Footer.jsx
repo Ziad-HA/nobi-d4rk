@@ -62,7 +62,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-neutral-200 bg-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-5 lg:px-8">
+      <div className="wrap grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-1">
           <p className="flex items-baseline gap-2">
             <span className="font-display text-3xl tracking-[0.16em]">

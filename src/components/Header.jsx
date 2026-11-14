@@ -42,7 +42,7 @@ export default function Header() {
           الدفع عند الاستلام متاح
         </span>
       </p>
-      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <div className="relative wrap flex items-center justify-between gap-4 py-4">
         <button
           type="button"
           className="flex h-11 w-11 items-center justify-center lg:hidden"

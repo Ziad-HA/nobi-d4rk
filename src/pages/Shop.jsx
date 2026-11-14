@@ -30,7 +30,7 @@ export default function Shop() {
         : 'All products'
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="wrap py-12">
       <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Shop</p>
       <h1 className="mt-2 font-display text-5xl tracking-wide">{title}</h1>
       <p className="mt-3 text-sm text-neutral-500">{list.length} {list.length === 1 ? 'product' : 'products'}</p>

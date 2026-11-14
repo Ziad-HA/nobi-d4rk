@@ -18,7 +18,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-12 px-4 py-12 lg:grid-cols-[1fr_360px]">
+    <div className="wrap grid gap-12 py-12 lg:grid-cols-[1fr_360px]">
       <div>
         <h1 className="font-display text-5xl tracking-wide">Your bag</h1>
         <ul className="mt-8 divide-y divide-neutral-200 border-y border-neutral-200">
