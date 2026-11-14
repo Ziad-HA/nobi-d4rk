@@ -1,6 +1,16 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
+import { brand } from '../data/brand'
+
+function WhatsAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M3 21l1.6-4.6A8.5 8.5 0 1 1 8 19.6L3 21Z" strokeLinejoin="round" />
+      <path d="M9 8.5c0 3.3 3.2 6.5 6.5 6.5l1-1.6-2-1-1 .8c-.9-.4-1.9-1.4-2.3-2.3l.8-1-1-2L9 8.5Z" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
 
 function TikTokIcon() {
   return (
@@ -28,16 +38,27 @@ export default function Footer() {
     <footer className="border-t border-neutral-200 bg-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-5 lg:px-8">
         <div className="lg:col-span-1">
-          <p className="font-display text-3xl tracking-[0.12em]">NOBI2</p>
+          <p className="flex items-baseline gap-2">
+            <span className="font-display text-3xl tracking-[0.16em]">{brand.name}</span>
+            <span className="font-ar text-sm text-neutral-500" lang="ar">
+              {brand.arabic}
+            </span>
+          </p>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-600">
-            Thrifted culture. Curated style. Pieces with a past, made for the present.
+            Calm streetwear, designed and made in Cairo. Heavy cotton, clean cuts, built to be worn every day.
+          </p>
+          <p className="font-ar mt-1 max-w-xs text-sm text-neutral-500" lang="ar">
+            {brand.taglineAr}
           </p>
           <div className="mt-5 flex gap-3">
             <a href="https://tiktok.com" className="flex h-10 w-10 items-center justify-center border border-neutral-300" aria-label="TikTok">
               <TikTokIcon />
             </a>
-            <a href="https://instagram.com" className="flex h-10 w-10 items-center justify-center border border-neutral-300" aria-label="Instagram">
+            <a href={`https://instagram.com/${brand.instagram}`} className="flex h-10 w-10 items-center justify-center border border-neutral-300" aria-label="Instagram">
               <InstagramIcon />
+            </a>
+            <a href={`https://wa.me/${brand.whatsapp}`} className="flex h-10 w-10 items-center justify-center border border-neutral-300" aria-label="WhatsApp">
+              <WhatsAppIcon />
             </a>
           </div>
         </div>
@@ -69,6 +90,7 @@ export default function Footer() {
           <ul className="mt-4 space-y-2 text-sm text-neutral-600">
             <li><Link to="/contact" className="hover:text-black">FAQs</Link></li>
             <li><Link to="/contact" className="hover:text-black">Track Your Order</Link></li>
+            <li><Link to="/about" className="hover:text-black">Payment Methods</Link></li>
             <li><Link to="/about" className="hover:text-black">Size Guide</Link></li>
             <li><Link to="/about" className="hover:text-black">Terms & Conditions</Link></li>
           </ul>
@@ -80,7 +102,7 @@ export default function Footer() {
             Get exclusive updates on new drops and special offers.
           </p>
           {done ? (
-            <p className="mt-4 text-sm">You’re on the list.</p>
+            <p className="mt-4 text-sm">You’re on the list. <span className="font-ar" lang="ar">أهلاً بيك في سكة.</span></p>
           ) : (
             <form
               className="mt-4 flex border border-neutral-300"
@@ -113,9 +135,12 @@ export default function Footer() {
           )}
         </div>
       </div>
-      <p className="border-t border-neutral-200 py-5 text-center text-xs text-neutral-500">
-        © {new Date().getFullYear()} Nobi2. All rights reserved.
-      </p>
+      <div className="border-t border-neutral-200 px-4 py-5 text-center text-xs text-neutral-500">
+        <p>Cash on delivery · InstaPay · Vodafone Cash · Delivery across Egypt</p>
+        <p className="mt-1">
+          © {new Date().getFullYear()} {brand.name}. All rights reserved.
+        </p>
+      </div>
     </footer>
   )
 }

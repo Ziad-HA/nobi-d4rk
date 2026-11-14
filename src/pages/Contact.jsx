@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { brand } from '../data/brand'
 
 export default function Contact() {
   const [sent, setSent] = useState(false)
@@ -21,16 +22,36 @@ export default function Contact() {
         <p className="text-xs uppercase tracking-[0.24em] text-neutral-500">Contact</p>
         <h1 className="mt-2 font-display text-5xl tracking-wide">We’re here to help</h1>
         <p className="mt-4 text-sm leading-relaxed text-neutral-600">
-          Questions about sizing, a drop, or an order? Write us — 24/7 support, human replies during studio hours.
+          Questions about sizing, a drop, or an order? Message us on WhatsApp or by email. We reply daily from 11am to
+          9pm Cairo time.
+        </p>
+        <p className="font-ar mt-1 text-sm text-neutral-500" lang="ar">
+          كلمنا على واتساب في أي وقت، وبنرد عليك في نفس اليوم.
         </p>
         <dl className="mt-8 space-y-3 text-sm">
           <div>
+            <dt className="font-medium">WhatsApp</dt>
+            <dd>
+              <a className="text-neutral-600 underline" href={`https://wa.me/${brand.whatsapp}`}>
+                Chat with us
+              </a>
+            </dd>
+          </div>
+          <div>
             <dt className="font-medium">Email</dt>
-            <dd className="text-neutral-600">hello@nobi2.brand</dd>
+            <dd className="text-neutral-600">{brand.email}</dd>
+          </div>
+          <div>
+            <dt className="font-medium">Instagram</dt>
+            <dd>
+              <a className="text-neutral-600 underline" href={`https://instagram.com/${brand.instagram}`}>
+                @{brand.instagram}
+              </a>
+            </dd>
           </div>
           <div>
             <dt className="font-medium">Studio</dt>
-            <dd className="text-neutral-600">Mumbai, India</dd>
+            <dd className="text-neutral-600">{brand.city}</dd>
           </div>
           <div>
             <dt className="font-medium">Track an order</dt>
@@ -40,7 +61,9 @@ export default function Contact() {
       </div>
 
       {sent ? (
-        <p className="self-center text-sm">Thanks — we’ll get back within a day.</p>
+        <p className="self-center text-sm">
+          Thanks — we’ll get back within a day. <span className="font-ar" lang="ar">شكراً ليك!</span>
+        </p>
       ) : (
         <form onSubmit={onSubmit} className="space-y-5" noValidate>
           {error && (

@@ -48,7 +48,7 @@ export default function Collections() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="font-display text-5xl tracking-wide">Collections</h1>
       <p className="mt-3 max-w-xl text-sm text-neutral-600">
-        Weekly drops, premium thrift, and limited-time cuts — all quality-checked before they hit the rack.
+        Monthly drops, everyday essentials, and limited-time offers — all made in small runs and checked before they ship.
       </p>
       <div className="mt-10 grid gap-4 md:grid-cols-3">
         {collections.map((c) => (

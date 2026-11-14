@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { FREE_SHIPPING_FROM, SHIPPING_FEE } from '../data/brand'
 
 const CartContext = createContext(null)
-const STORAGE_KEY = 'nobi2-cart'
+const STORAGE_KEY = 'sekka-cart'
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {
@@ -16,7 +17,11 @@ export function CartProvider({ children }) {
   const [toast, setToast] = useState('')
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+    } catch {
+      // storage unavailable (private mode) — cart still works in memory
+    }
   }, [items])
 
   useEffect(() => {
@@ -65,7 +70,7 @@ export function CartProvider({ children }) {
 
   const count = items.reduce((n, x) => n + x.qty, 0)
   const subtotal = items.reduce((n, x) => n + x.price * x.qty, 0)
-  const shipping = subtotal >= 1499 || subtotal === 0 ? 0 : 99
+  const shipping = subtotal >= FREE_SHIPPING_FROM || subtotal === 0 ? 0 : SHIPPING_FEE
   const total = subtotal + shipping
 
   const value = useMemo(

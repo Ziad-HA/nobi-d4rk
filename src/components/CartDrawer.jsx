@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Minus, Plus, X } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { formatPrice } from '../data/products'
+import { FREE_SHIPPING_FROM } from '../data/brand'
 
 export default function CartDrawer() {
   const { items, isOpen, setIsOpen, updateQty, removeItem, subtotal, shipping, count } = useCart()
@@ -93,7 +94,7 @@ export default function CartDrawer() {
           <p className="mb-4 text-xs text-neutral-500">
             {shipping === 0
               ? 'Free shipping unlocked.'
-              : `Add ${formatPrice(1499 - subtotal)} for free shipping.`}
+              : `Add ${formatPrice(FREE_SHIPPING_FROM - subtotal)} for free shipping.`}
           </p>
           <Link
             to="/cart"

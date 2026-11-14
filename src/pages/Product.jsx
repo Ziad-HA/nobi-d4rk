@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getProduct, formatPrice, products } from '../data/products'
 import { useCart } from '../context/CartContext'
+import { FREE_SHIPPING_FROM, RETURN_DAYS } from '../data/brand'
 import ProductCard from '../components/ProductCard'
 
 export default function Product() {
@@ -17,7 +18,7 @@ export default function Product() {
   if (!product) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <h1 className="font-display text-5xl">Piece not found</h1>
+        <h1 className="font-display text-5xl">Product not found</h1>
         <Link to="/shop" className="mt-6 inline-block underline">
           Back to shop
         </Link>
@@ -33,7 +34,7 @@ export default function Product() {
         <Link to="/shop">Shop</Link> / {product.name}
       </nav>
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
-        <img src={product.image} alt={product.name} className="w-full bg-neutral-100 object-cover" />
+        <img src={product.image} alt={product.name} className="w-full bg-sand object-cover" />
         <div>
           <h1 className="font-display text-5xl tracking-wide">{product.name}</h1>
           <p className="mt-3 text-lg tabular-nums">
@@ -67,7 +68,9 @@ export default function Product() {
           >
             Add to cart
           </button>
-          <p className="mt-4 text-xs text-neutral-500">Free shipping on orders above ₹1499. Easy 7-day returns.</p>
+          <p className="mt-4 text-xs text-neutral-500">
+            Free shipping on orders above {formatPrice(FREE_SHIPPING_FROM)}. Cash on delivery. Easy {RETURN_DAYS}-day exchange.
+          </p>
         </div>
       </div>
 

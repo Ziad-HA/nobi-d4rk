@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Menu, Search, ShoppingBag, User, X } from 'lucide-react'
 import { useCart } from '../context/CartContext'
-import { products } from '../data/products'
+import { products, formatPrice } from '../data/products'
+import { brand, FREE_SHIPPING_FROM } from '../data/brand'
 
 const nav = [
   { to: '/', label: 'Home' },
@@ -33,7 +34,13 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 bg-white">
       <p className="bg-black py-2 text-center text-[11px] font-medium uppercase tracking-[0.22em] text-white">
-        Free shipping on all orders above ₹1499
+        Free shipping on orders above {formatPrice(FREE_SHIPPING_FROM)}
+        <span className="font-ar mx-3 hidden text-neutral-500 sm:inline" aria-hidden="true">
+          |
+        </span>
+        <span className="font-ar hidden text-[12px] normal-case tracking-normal sm:inline" lang="ar">
+          الدفع عند الاستلام متاح
+        </span>
       </p>
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <button
@@ -45,8 +52,11 @@ export default function Header() {
           <Menu size={22} aria-hidden="true" />
         </button>
 
-        <Link to="/" className="font-display text-3xl tracking-[0.12em] text-black">
-          NOBI2
+        <Link to="/" className="flex items-baseline gap-2 text-black" aria-label={`${brand.name} home`}>
+          <span className="font-display text-3xl tracking-[0.16em]">{brand.name}</span>
+          <span className="font-ar hidden text-sm text-neutral-500 sm:inline" lang="ar">
+            {brand.arabic}
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
@@ -97,7 +107,7 @@ export default function Header() {
       {menuOpen && (
         <div className="fixed inset-0 z-50 bg-white lg:hidden">
           <div className="flex items-center justify-between px-4 py-4">
-            <span className="font-display text-2xl tracking-[0.12em]">NOBI2</span>
+            <span className="font-display text-2xl tracking-[0.16em]">{brand.name}</span>
             <button
               type="button"
               className="flex h-11 w-11 items-center justify-center"
@@ -135,7 +145,7 @@ export default function Header() {
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search hoodies, tees, cargos…"
+              placeholder="Search hoodies, tees, cargos… / ابحث"
               className="h-11 w-full bg-transparent text-base outline-none"
             />
             <button type="button" className="h-11 px-2 text-sm" onClick={() => setSearchOpen(false)}>

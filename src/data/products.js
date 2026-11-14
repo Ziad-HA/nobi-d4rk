@@ -1,33 +1,38 @@
-export const formatPrice = (n) => `₹${n.toLocaleString('en-IN')}`
+export const formatPrice = (n) => `${n.toLocaleString('en-US')} EGP`
 
 export const categories = [
   {
     slug: 'hoodies',
     name: 'Hoodies',
+    nameAr: 'هوديز',
     image:
       'https://images.unsplash.com/photo-1556821840-3a69f8430e75?auto=format&fit=crop&w=900&q=80',
   },
   {
     slug: 't-shirts',
     name: 'T-Shirts',
+    nameAr: 'تيشرتات',
     image:
       'https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=900&q=80',
   },
   {
     slug: 'pants',
     name: 'Pants',
+    nameAr: 'بناطيل',
     image:
       'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=900&q=80',
   },
   {
     slug: 'jackets',
     name: 'Jackets',
+    nameAr: 'جاكيتات',
     image:
       'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=80',
   },
   {
     slug: 'accessories',
     name: 'Accessories',
+    nameAr: 'إكسسوارات',
     image:
       'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=900&q=80',
   },
@@ -37,24 +42,24 @@ export const collections = [
   {
     slug: 'new-drops',
     name: 'New Drops',
-    tagline: 'Every Week',
+    tagline: 'Every month',
     cta: 'Explore',
     image:
       'https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1200&q=80',
   },
   {
-    slug: 'premium-thrift',
-    name: 'Premium Thrift',
-    tagline: 'Handpicked Pieces',
+    slug: 'essentials',
+    name: 'Essentials',
+    tagline: 'Everyday staples',
     cta: 'Explore',
     image:
       'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1200&q=80',
   },
   {
     slug: 'sale',
-    name: 'Up to 50% Off',
-    tagline: 'Limited Time Only',
-    cta: 'Shop Sale',
+    name: 'Up to 30% Off',
+    tagline: 'Limited time only',
+    cta: 'Shop sale',
     image:
       'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80',
   },
@@ -72,9 +77,9 @@ export const instagramPosts = [
 
 export const products = [
   {
-    id: 'dark-dreams-hoodie',
-    name: 'Dark Dreams Hoodie',
-    price: 1699,
+    id: 'midnight-hoodie',
+    name: 'Midnight Hoodie',
+    price: 1450,
     category: 'hoodies',
     collection: 'new-drops',
     trending: true,
@@ -84,12 +89,12 @@ export const products = [
       'https://images.unsplash.com/photo-1578768079052-aa76e52c4d1d?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Heavyweight thrifted hoodie, washed black with a faded graphic. Handpicked for fabric weight and print quality.',
+      'Heavyweight black hoodie with a soft brushed interior and a boxy, relaxed fit. Clean front, small back detail.',
   },
   {
-    id: 'chaos-club-tee',
-    name: 'Chaos Club Tee',
-    price: 899,
+    id: 'downtown-tee',
+    name: 'Downtown Tee',
+    price: 650,
     category: 't-shirts',
     collection: 'new-drops',
     trending: true,
@@ -99,14 +104,14 @@ export const products = [
       'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Vintage cream tee with a Chaos Club print. Soft cotton, slightly oversized, ready to wear.',
+      'Cream cotton tee with a small chest print. Soft hand-feel, slightly oversized, made to be worn on repeat.',
   },
   {
-    id: 'vintage-washed-tee',
-    name: 'Vintage Washed Tee',
-    price: 749,
+    id: 'sahara-washed-tee',
+    name: 'Sahara Washed Tee',
+    price: 690,
     category: 't-shirts',
-    collection: 'premium-thrift',
+    collection: 'essentials',
     trending: true,
     image:
       'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=900&q=80',
@@ -114,14 +119,14 @@ export const products = [
       'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Sun-faded brown tee with a lived-in drape. Each piece has unique wash variation.',
+      'Garment-washed brown tee with a sun-faded look and a lived-in drape. Each piece washes slightly differently.',
   },
   {
     id: 'utility-cargo-pants',
     name: 'Utility Cargo Pants',
-    price: 1599,
+    price: 1250,
     category: 'pants',
-    collection: 'premium-thrift',
+    collection: 'essentials',
     trending: true,
     image:
       'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=900&q=80',
@@ -129,12 +134,12 @@ export const products = [
       'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=900&q=80',
     sizes: ['28', '30', '32', '34', '36'],
     description:
-      'Relaxed cargo pants with reinforced pockets. Cleaned, checked, and ready for daily wear.',
+      'Relaxed cargo pants in sturdy cotton twill with reinforced pockets and an adjustable hem. Built for everyday wear.',
   },
   {
-    id: 'nobi-oversized-tee',
-    name: 'Nobi Oversized Tee',
-    price: 999,
+    id: 'sekka-oversized-tee',
+    name: 'Sekka Oversized Tee',
+    price: 750,
     category: 't-shirts',
     collection: 'new-drops',
     trending: true,
@@ -144,14 +149,14 @@ export const products = [
       'https://images.unsplash.com/photo-1618354690439-27c07003b58c?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Charcoal oversized tee with dropped shoulders. A staple for layering or wearing alone.',
+      'Charcoal oversized tee with dropped shoulders. A staple for layering or wearing on its own.',
   },
   {
     id: 'essential-hoodie',
     name: 'Essential Hoodie',
-    price: 1499,
+    price: 1350,
     category: 'hoodies',
-    collection: 'new-drops',
+    collection: 'essentials',
     trending: true,
     image:
       'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?auto=format&fit=crop&w=900&q=80',
@@ -159,14 +164,14 @@ export const products = [
       'https://images.unsplash.com/photo-1578587018452-892b722df76b?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Sand-tone fleece hoodie. Clean interior, no pilling, curated for everyday rotation.',
+      'Sand-tone fleece hoodie. Clean lines, no pilling, made for everyday rotation.',
   },
   {
-    id: 'nobi-thrift-tee',
-    name: 'Nobi Thrift Culture Tee',
-    price: 1199,
+    id: 'sekka-back-print-tee',
+    name: 'Sekka Back Print Tee',
+    price: 850,
     category: 't-shirts',
-    collection: 'premium-thrift',
+    collection: 'essentials',
     trending: false,
     image:
       'https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=900&q=80',
@@ -174,63 +179,63 @@ export const products = [
       'https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Black boxy tee with Nobi2 Thrift Culture print on the back. The house staple.',
+      'Black boxy tee with the Sekka print across the back. The house staple.',
   },
   {
-    id: 'shadow-bomber',
-    name: 'Shadow Bomber Jacket',
-    price: 2499,
+    id: 'night-bomber',
+    name: 'Night Bomber Jacket',
+    price: 2400,
     category: 'jackets',
-    collection: 'premium-thrift',
+    collection: 'essentials',
     trending: false,
     sale: true,
-    originalPrice: 3299,
+    originalPrice: 3000,
     image:
       'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=80',
     hoverImage:
       'https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Black leather-look bomber, fully lined. Hardware checked, lining steamed, ready to ship.',
+      'Black bomber jacket, fully lined, with ribbed cuffs and a clean zip. Light enough for Cairo winters.',
   },
   {
     id: 'night-cap',
     name: 'Night Cap',
-    price: 499,
+    price: 380,
     category: 'accessories',
     collection: 'sale',
     trending: false,
     sale: true,
-    originalPrice: 799,
+    originalPrice: 520,
     image:
       'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=900&q=80',
     hoverImage:
       'https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=900&q=80',
     sizes: ['OS'],
     description:
-      'Structured black cap with a low profile. One-size adjustable, cleaned and reshaped.',
+      'Structured black cap with a low profile and a small embroidered mark. One size, adjustable.',
   },
   {
     id: 'ink-denim',
     name: 'Ink Wash Denim',
-    price: 1799,
+    price: 1450,
     category: 'pants',
     collection: 'sale',
     trending: false,
     sale: true,
-    originalPrice: 2299,
+    originalPrice: 1850,
     image:
       'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&q=80',
     hoverImage:
       'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=80',
     sizes: ['28', '30', '32', '34', '36'],
     description:
-      'Straight-leg black denim with a faint wash. No rips, no weak seams — only pieces that pass QC.',
+      'Straight-leg black denim with a faint wash. Sturdy fabric, clean finish, no unnecessary details.',
   },
   {
     id: 'studio-coach',
     name: 'Studio Coach Jacket',
-    price: 2199,
+    price: 1900,
     category: 'jackets',
     collection: 'new-drops',
     trending: false,
@@ -240,17 +245,17 @@ export const products = [
       'https://images.unsplash.com/photo-1548126032-079ad6481a60?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Lightweight coach jacket in matte black. Snap buttons, drawcord hem, thrifted and restored.',
+      'Lightweight coach jacket in matte black. Snap buttons and a drawcord hem.',
   },
   {
     id: 'crest-beanie',
     name: 'Crest Beanie',
-    price: 399,
+    price: 320,
     category: 'accessories',
     collection: 'sale',
     trending: false,
     sale: true,
-    originalPrice: 599,
+    originalPrice: 450,
     image:
       'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?auto=format&fit=crop&w=900&q=80',
     hoverImage:

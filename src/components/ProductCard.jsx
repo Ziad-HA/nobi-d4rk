@@ -7,7 +7,7 @@ export default function ProductCard({ product }) {
 
   return (
     <article className="group flex flex-col">
-      <Link to={`/product/${product.id}`} className="relative block overflow-hidden bg-neutral-100">
+      <Link to={`/product/${product.id}`} className="relative block overflow-hidden bg-sand">
         <img
           src={product.image}
           alt={product.name}

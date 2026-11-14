@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Headphones, PackageCheck, RefreshCw, Truck, ChevronRight } from 'lucide-react'
-import { categories, collections, instagramPosts, products } from '../data/products'
+import { Banknote, PackageCheck, RefreshCw, Truck, ChevronRight } from 'lucide-react'
+import { categories, collections, formatPrice, instagramPosts, products } from '../data/products'
+import { brand, FREE_SHIPPING_FROM, RETURN_DAYS } from '../data/brand'
 import ProductCard from '../components/ProductCard'
 
 const perks = [
-  { icon: Truck, title: 'Free shipping', text: 'On all orders above ₹1499' },
-  { icon: PackageCheck, title: 'Premium quality', text: 'Handpicked & quality checked' },
-  { icon: RefreshCw, title: 'Easy returns', text: 'Hassle free returns' },
-  { icon: Headphones, title: '24/7 support', text: "We're here to help" },
+  { icon: Truck, title: 'Free shipping', text: `On orders above ${formatPrice(FREE_SHIPPING_FROM)}`, ar: 'شحن لكل المحافظات' },
+  { icon: PackageCheck, title: 'Quality checked', text: 'Heavy cotton, checked by hand', ar: 'جودة مضمونة' },
+  { icon: RefreshCw, title: 'Easy exchange', text: `${RETURN_DAYS} days, no stress`, ar: 'استبدال سهل' },
+  { icon: Banknote, title: 'Cash on delivery', text: 'Pay when it arrives', ar: 'الدفع عند الاستلام' },
 ]
 
 export default function Home() {
@@ -22,15 +23,18 @@ export default function Home() {
         <div className="mx-auto grid min-h-[72vh] max-w-7xl items-center gap-8 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-0">
           <div className="relative z-10 max-w-xl">
             <p className="text-xs font-medium uppercase tracking-[0.28em] text-neutral-300">
-              New arrivals
+              New collection · {brand.est}
             </p>
             <h1 className="mt-5 font-display text-6xl leading-[0.9] tracking-wide sm:text-7xl lg:text-8xl">
-              THRIFTED.
+              MADE QUIET.
               <br />
-              CURATED.
+              MADE IN EGYPT.
             </h1>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-neutral-300">
-              Premium thrifted pieces. Handpicked for quality. Priced for you.
+              Clean cuts, heavy cotton, no noise. Designed and made in Cairo.
+            </p>
+            <p className="font-ar mt-2 max-w-sm text-sm text-neutral-400" lang="ar">
+              {brand.taglineAr}
             </p>
             <Link
               to="/shop"
@@ -42,29 +46,34 @@ export default function Home() {
           <div className="relative hidden min-h-[72vh] lg:block">
             <img
               src="https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=1400&q=80"
-              alt="Model wearing a Nobi2 thrift culture oversized tee"
+              alt={`Model wearing a ${brand.name} black oversized tee`}
               className="absolute inset-0 h-full w-full object-cover object-[center_20%]"
             />
             <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent" />
             <div className="absolute bottom-24 right-16 text-right">
-              <p className="font-display text-5xl tracking-[0.2em]">NOBI2</p>
-              <p className="mt-1 text-[11px] uppercase tracking-[0.32em] text-neutral-200">
-                Thrift culture
+              <p className="font-display text-5xl tracking-[0.24em]">{brand.name}</p>
+              <p className="font-ar mt-1 text-lg text-neutral-200" lang="ar">
+                {brand.arabic}
               </p>
-              <p className="mt-1 text-[10px] uppercase tracking-[0.28em] text-neutral-400">Est. 2024</p>
+              <p className="mt-1 text-[10px] uppercase tracking-[0.28em] text-neutral-400">
+                Cairo · Est. {brand.est}
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-neutral-200">
+      <section className="border-b border-neutral-200 bg-sand/60">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
-          {perks.map(({ icon: Icon, title, text }) => (
+          {perks.map(({ icon: Icon, title, text, ar }) => (
             <div key={title} className="flex items-start gap-3">
               <Icon size={22} className="mt-0.5 shrink-0" aria-hidden="true" />
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em]">{title}</p>
-                <p className="mt-1 text-sm text-neutral-500">{text}</p>
+                <p className="mt-1 text-sm text-neutral-600">{text}</p>
+                <p className="font-ar mt-0.5 text-xs text-neutral-500" lang="ar">
+                  {ar}
+                </p>
               </div>
             </div>
           ))}
@@ -77,15 +86,19 @@ export default function Home() {
         </h2>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-4">
           {categories.map((c) => (
-            <Link key={c.slug} to={`/shop?category=${c.slug}`} className="group relative block overflow-hidden">
+            <Link key={c.slug} to={`/shop?category=${c.slug}`} className="group relative block overflow-hidden bg-sand">
               <img
                 src={c.image}
                 alt=""
+                loading="lazy"
                 className="aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4 text-white">
                 <p className="text-sm font-semibold uppercase tracking-[0.14em]">{c.name}</p>
+                <p className="font-ar text-xs text-neutral-200" lang="ar">
+                  {c.nameAr}
+                </p>
                 <span className="mt-2 inline-block border border-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.16em]">
                   Shop now
                 </span>
@@ -126,6 +139,7 @@ export default function Home() {
             <img
               src={c.image}
               alt=""
+              loading="lazy"
               className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105 group-hover:opacity-90"
             />
             <div className="relative flex h-full min-h-[240px] flex-col justify-end p-6 text-white">
@@ -143,16 +157,25 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl items-end justify-between px-4 pb-4 pt-10 sm:px-6 lg:px-8">
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em]">Follow us on Instagram</h2>
-            <p className="mt-1 text-xs text-neutral-400">@nobi2.brand</p>
+            <p className="mt-1 text-xs text-neutral-400">@{brand.instagram}</p>
           </div>
-          <Link to="/shop" className="hidden h-10 w-10 items-center justify-center border border-white/40 sm:flex" aria-label="See more">
+          <a
+            href={`https://instagram.com/${brand.instagram}`}
+            className="hidden h-10 w-10 items-center justify-center border border-white/40 sm:flex"
+            aria-label="Open Instagram"
+          >
             <ChevronRight size={18} />
-          </Link>
+          </a>
         </div>
         <div className="grid grid-cols-3 md:grid-cols-7">
           {instagramPosts.map((src, i) => (
-            <a key={src} href="https://instagram.com" className="block aspect-square overflow-hidden" aria-label={`Instagram look ${i + 1}`}>
-              <img src={src} alt="" className="h-full w-full object-cover transition hover:opacity-80" />
+            <a
+              key={src}
+              href={`https://instagram.com/${brand.instagram}`}
+              className="block aspect-square overflow-hidden"
+              aria-label={`Instagram look ${i + 1}`}
+            >
+              <img src={src} alt="" loading="lazy" className="h-full w-full object-cover transition hover:opacity-80" />
             </a>
           ))}
         </div>

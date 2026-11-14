@@ -33,7 +33,7 @@ export default function Shop() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Shop</p>
       <h1 className="mt-2 font-display text-5xl tracking-wide">{title}</h1>
-      <p className="mt-3 text-sm text-neutral-500">{list.length} pieces</p>
+      <p className="mt-3 text-sm text-neutral-500">{list.length} {list.length === 1 ? 'product' : 'products'}</p>
 
       <div className="mt-8 flex flex-wrap gap-2">
         <button
@@ -58,7 +58,7 @@ export default function Shop() {
       </div>
 
       {list.length === 0 ? (
-        <p className="py-20 text-center text-neutral-500">No pieces match that filter.</p>
+        <p className="py-20 text-center text-neutral-500">No products match that filter.</p>
       ) : (
         <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
           {list.map((p) => (
