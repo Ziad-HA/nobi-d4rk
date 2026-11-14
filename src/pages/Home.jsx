@@ -28,10 +28,10 @@ export default function Home() {
             src={siteImages.hero}
             alt=""
             loading="eager"
-            className="absolute inset-0 -z-20 h-full w-full object-cover opacity-80"
+            className="absolute inset-0 -z-20 h-full w-full object-cover opacity-100"
           />
           <div
-            className="absolute inset-0 -z-10 bg-gradient-to-b from-pure-black/55 via-transparent to-pure-black/70"
+            className="absolute inset-0 -z-10 bg-gradient-to-b from-pure-black/40 via-transparent to-pure-black/50"
             aria-hidden="true"
           />
           <h1 className="text-center font-display text-[15vw] font-extrabold uppercase leading-none tracking-tight text-pure-white sm:text-[13vw] lg:text-[12vw]">

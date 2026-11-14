@@ -5,7 +5,7 @@
 const u = (id, w = 1800) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`
 
 export const siteImages = {
-  hero: u('photo-1551028719-00167b16eac5'),
+  hero: '/images/hero.png',
   manifesto: u('photo-1496360166961-10a51d5f367a'),
   lookbook: [
     u('photo-1520975916090-3105956dac38', 900),

@@ -138,7 +138,7 @@ export const products = [
   },
   {
     id: "common-oversized-tee",
-    name: "Common Oversized Tee",
+    name: "D4RK Oversized Tee",
     price: 750,
     category: "t-shirts",
     collection: "new-drops",
@@ -168,7 +168,7 @@ export const products = [
   },
   {
     id: "common-back-print-tee",
-    name: "Common Back Print Tee",
+    name: "D4RK Back Print Tee",
     price: 850,
     category: "t-shirts",
     collection: "essentials",
@@ -179,7 +179,7 @@ export const products = [
       "https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=900&q=80",
     sizes: ["S", "M", "L", "XL"],
     description:
-      "Black boxy tee with the Common print across the back. The house staple.",
+      "Black boxy tee with the D4RK print across the back. The house staple.",
   },
   {
     id: "night-bomber",
