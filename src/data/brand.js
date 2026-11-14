@@ -5,9 +5,9 @@ export const brand = {
   tagline: 'Calm streetwear. Made in Cairo.',
   taglineAr: 'ستريت وير هادي. من القاهرة.',
   instagram: 'sekka.eg',
-  email: 'hello@sekka.eg',
-  // International format, digits only (placeholder number — replace with the real WhatsApp number)
-  whatsapp: '201000000000',
+  email: 'zh.nobii@gmail.com',
+  // International format, digits only (01276390301 -> 201276390301)
+  whatsapp: '201276390301',
   city: 'Cairo, Egypt',
   est: 2026,
 }
