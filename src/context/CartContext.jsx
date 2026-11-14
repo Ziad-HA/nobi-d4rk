@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { FREE_SHIPPING_FROM, SHIPPING_FEE } from '../data/brand'
 
 const CartContext = createContext(null)
-const STORAGE_KEY = 'sekka-cart'
+const STORAGE_KEY = 'dusk-cart'
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {

@@ -1,4 +1,4 @@
-# SEKKA (سكة)
+# DUSK (غروب)
 
 Calm streetwear storefront made in Cairo. Built with React, Vite, Tailwind CSS and React Router.
 

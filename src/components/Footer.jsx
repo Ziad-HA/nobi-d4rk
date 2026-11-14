@@ -102,7 +102,7 @@ export default function Footer() {
             Get exclusive updates on new drops and special offers.
           </p>
           {done ? (
-            <p className="mt-4 text-sm">You’re on the list. <span className="font-ar" lang="ar">أهلاً بيك في سكة.</span></p>
+            <p className="mt-4 text-sm">You’re on the list. <span className="font-ar" lang="ar">أهلاً بيك في غروب.</span></p>
           ) : (
             <form
               className="mt-4 flex border border-neutral-300"

@@ -1,10 +1,10 @@
 // Single source of truth for brand details. Replace the placeholders below with real ones.
 export const brand = {
-  name: 'SEKKA',
-  arabic: 'سكة',
+  name: 'DUSK',
+  arabic: 'غروب',
   tagline: 'Calm streetwear. Made in Cairo.',
   taglineAr: 'ستريت وير هادي. من القاهرة.',
-  instagram: 'sekka.eg',
+  instagram: 'dusk.eg',
   email: 'zh.nobii@gmail.com',
   // International format, digits only (01276390301 -> 201276390301)
   whatsapp: '201276390301',

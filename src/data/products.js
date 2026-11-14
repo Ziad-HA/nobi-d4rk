@@ -137,8 +137,8 @@ export const products = [
       'Relaxed cargo pants in sturdy cotton twill with reinforced pockets and an adjustable hem. Built for everyday wear.',
   },
   {
-    id: 'sekka-oversized-tee',
-    name: 'Sekka Oversized Tee',
+    id: 'dusk-oversized-tee',
+    name: 'Dusk Oversized Tee',
     price: 750,
     category: 't-shirts',
     collection: 'new-drops',
@@ -167,8 +167,8 @@ export const products = [
       'Sand-tone fleece hoodie. Clean lines, no pilling, made for everyday rotation.',
   },
   {
-    id: 'sekka-back-print-tee',
-    name: 'Sekka Back Print Tee',
+    id: 'dusk-back-print-tee',
+    name: 'Dusk Back Print Tee',
     price: 850,
     category: 't-shirts',
     collection: 'essentials',
@@ -179,7 +179,7 @@ export const products = [
       'https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=900&q=80',
     sizes: ['S', 'M', 'L', 'XL'],
     description:
-      'Black boxy tee with the Sekka print across the back. The house staple.',
+      'Black boxy tee with the Dusk print across the back. The house staple.',
   },
   {
     id: 'night-bomber',
