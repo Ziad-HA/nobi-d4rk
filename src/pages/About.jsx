@@ -16,7 +16,7 @@ export default function About() {
       </section>
       <div className="mx-auto max-w-3xl px-4 py-16 text-sm leading-relaxed text-neutral-700">
         <p>
-          {brand.name} (غروب) is the quiet hour when the city slows down. We make calm, clean streetwear in {brand.city}:
+          {brand.name} (Common) is the quiet hour when the city slows down. We make calm, clean streetwear in {brand.city}:
           heavy cotton, simple cuts, and small details instead of loud logos. Every hoodie, tee, cargo and cap is
           checked by hand before it leaves the studio.
         </p>

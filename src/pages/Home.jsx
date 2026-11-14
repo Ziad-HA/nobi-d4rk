@@ -1,21 +1,53 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Banknote, PackageCheck, RefreshCw, Truck, ChevronRight } from 'lucide-react'
-import { categories, collections, formatPrice, instagramPosts, products } from '../data/products'
-import { brand, FREE_SHIPPING_FROM, RETURN_DAYS } from '../data/brand'
-import ProductCard from '../components/ProductCard'
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Banknote,
+  PackageCheck,
+  RefreshCw,
+  Truck,
+  ChevronRight,
+} from "lucide-react";
+import {
+  categories,
+  collections,
+  formatPrice,
+  instagramPosts,
+  products,
+} from "../data/products";
+import { brand, FREE_SHIPPING_FROM, RETURN_DAYS } from "../data/brand";
+import ProductCard from "../components/ProductCard";
 
 const perks = [
-  { icon: Truck, title: 'Free shipping', text: `On orders above ${formatPrice(FREE_SHIPPING_FROM)}`, ar: 'شحن لكل المحافظات' },
-  { icon: PackageCheck, title: 'Quality checked', text: 'Heavy cotton, checked by hand', ar: 'جودة مضمونة' },
-  { icon: RefreshCw, title: 'Easy exchange', text: `${RETURN_DAYS} days, no stress`, ar: 'استبدال سهل' },
-  { icon: Banknote, title: 'Cash on delivery', text: 'Pay when it arrives', ar: 'الدفع عند الاستلام' },
-]
+  {
+    icon: Truck,
+    title: "Free shipping",
+    text: `On orders above ${formatPrice(FREE_SHIPPING_FROM)}`,
+    ar: "شحن لكل المحافظات",
+  },
+  {
+    icon: PackageCheck,
+    title: "Quality checked",
+    text: "Heavy cotton, checked by hand",
+    ar: "جودة مضمونة",
+  },
+  {
+    icon: RefreshCw,ALEXALEXALEXALEX
+    title: "Easy exchange",
+    text: `${RETURN_DAYS} days, no stress`,
+    ar: "استبدال سهل",
+  },
+  {
+    icon: Banknote,
+    title: "Cash on delivery",
+    text: "Pay when it arrives",
+    ar: "الدفع عند الاستلام",
+  },
+];
 
 export default function Home() {
-  const trending = products.filter((p) => p.trending)
-  const [page, setPage] = useState(0)
-  const pages = Math.max(1, Math.ceil(trending.length / 6))
+  const trending = products.filter((p) => p.trending);
+  const [page, setPage] = useState(0);
+  const pages = Math.max(1, Math.ceil(trending.length / 6));
 
   return (
     <div>
@@ -31,9 +63,12 @@ export default function Home() {
               MADE IN EGYPT.
             </h1>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-neutral-300">
-              Clean cuts, heavy cotton, no noise. Designed and made in Cairo.
+              Clean cuts, heavy cotton, no noise. Designed and made in ALEX.
             </p>
-            <p className="font-ar mt-2 max-w-sm text-sm text-neutral-400" lang="ar">
+            <p
+              className="font-ar mt-2 max-w-sm text-sm text-neutral-400"
+              lang="ar"
+            >
               {brand.taglineAr}
             </p>
             <Link
@@ -51,12 +86,14 @@ export default function Home() {
             />
             <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent" />
             <div className="absolute bottom-24 right-16 text-right">
-              <p className="font-display text-5xl tracking-[0.24em]">{brand.name}</p>
+              <p className="font-display text-5xl tracking-[0.24em]">
+                {brand.name}
+              </p>
               <p className="font-ar mt-1 text-lg text-neutral-200" lang="ar">
                 {brand.arabic}
               </p>
               <p className="mt-1 text-[10px] uppercase tracking-[0.28em] text-neutral-400">
-                Cairo · Est. {brand.est}
+                ALEXst. {brand.est}
               </p>
             </div>
           </div>
@@ -69,9 +106,14 @@ export default function Home() {
             <div key={title} className="flex items-start gap-3">
               <Icon size={22} className="mt-0.5 shrink-0" aria-hidden="true" />
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em]">{title}</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em]">
+                  {title}
+                </p>
                 <p className="mt-1 text-sm text-neutral-600">{text}</p>
-                <p className="font-ar mt-0.5 text-xs text-neutral-500" lang="ar">
+                <p
+                  className="font-ar mt-0.5 text-xs text-neutral-500"
+                  lang="ar"
+                >
                   {ar}
                 </p>
               </div>
@@ -86,7 +128,11 @@ export default function Home() {
         </h2>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-4">
           {categories.map((c) => (
-            <Link key={c.slug} to={`/shop?category=${c.slug}`} className="group relative block overflow-hidden bg-sand">
+            <Link
+              key={c.slug}
+              to={`/shop?category=${c.slug}`}
+              className="group relative block overflow-hidden bg-sand"
+            >
               <img
                 src={c.image}
                 alt=""
@@ -95,7 +141,9 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-                <p className="text-sm font-semibold uppercase tracking-[0.14em]">{c.name}</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.14em]">
+                  {c.name}
+                </p>
                 <p className="font-ar text-xs text-neutral-200" lang="ar">
                   {c.nameAr}
                 </p>
@@ -126,7 +174,7 @@ export default function Home() {
                 aria-label={`Show trending page ${i + 1}`}
                 aria-current={page === i}
                 onClick={() => setPage(i)}
-                className={`h-2.5 w-2.5 rounded-full ${page === i ? 'bg-black' : 'bg-neutral-300'}`}
+                className={`h-2.5 w-2.5 rounded-full ${page === i ? "bg-black" : "bg-neutral-300"}`}
               />
             ))}
           </div>
@@ -135,7 +183,11 @@ export default function Home() {
 
       <section className="mx-auto grid max-w-7xl gap-3 px-4 pb-16 sm:px-6 md:grid-cols-3 lg:px-8">
         {collections.map((c) => (
-          <Link key={c.slug} to={`/collections/${c.slug}`} className="group relative min-h-[240px] overflow-hidden bg-black">
+          <Link
+            key={c.slug}
+            to={`/collections/${c.slug}`}
+            className="group relative min-h-[240px] overflow-hidden bg-black"
+          >
             <img
               src={c.image}
               alt=""
@@ -156,7 +208,9 @@ export default function Home() {
       <section className="bg-black text-white">
         <div className="mx-auto flex max-w-7xl items-end justify-between px-4 pb-4 pt-10 sm:px-6 lg:px-8">
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-[0.2em]">Follow us on Instagram</h2>
+            <h2 className="text-sm font-semibold uppercase tracking-[0.2em]">
+              Follow us on Instagram
+            </h2>
             <p className="mt-1 text-xs text-neutral-400">@{brand.instagram}</p>
           </div>
           <a
@@ -175,11 +229,16 @@ export default function Home() {
               className="block aspect-square overflow-hidden"
               aria-label={`Instagram look ${i + 1}`}
             >
-              <img src={src} alt="" loading="lazy" className="h-full w-full object-cover transition hover:opacity-80" />
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-cover transition hover:opacity-80"
+              />
             </a>
           ))}
         </div>
       </section>
     </div>
-  )
+  );
 }

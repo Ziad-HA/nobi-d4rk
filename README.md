@@ -1,6 +1,6 @@
-# DUSK (غروب)
+# COMMON
 
-Calm streetwear storefront made in Cairo. Built with React, Vite, Tailwind CSS and React Router.
+Calm streetwear storefront made in ALEX Built with React, Vite, Tailwind CSS and React Router.
 
 ## Run locally
 
