@@ -65,7 +65,7 @@ export default function Footer() {
       <div className="wrap grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-1">
           <p className="flex items-baseline gap-2">
-            <span className="font-display text-3xl tracking-[0.16em]">
+            <span className="font-display uppercase text-xl tracking-tight">
               {brand.name}
             </span>
           </p>

@@ -28,7 +28,7 @@ export default function Contact() {
         <p className="text-xs uppercase tracking-[0.24em] text-neutral-500">
           Contact
         </p>
-        <h1 className="mt-2 font-display text-5xl tracking-wide">
+        <h1 className="mt-2 font-display uppercase text-3xl sm:text-4xl tracking-tight">
           We’re here to help
         </h1>
         <p className="mt-4 text-sm leading-relaxed text-neutral-600">

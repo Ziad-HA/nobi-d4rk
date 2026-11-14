@@ -2,9 +2,9 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bebas Neue", "Inter", sans-serif;
+  --font-display: "Unbounded", "Inter", sans-serif;
   --font-arabic: "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --color-sand: #efebe4;
+  --color-sand: #ebebeb;
   --color-ink: #0a0a0a;
 }
 
@@ -68,4 +68,34 @@ a {
   .wrap {
     padding-inline: 2rem;
   }
+}
+
+/* Scrolling ticker strip */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 45s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

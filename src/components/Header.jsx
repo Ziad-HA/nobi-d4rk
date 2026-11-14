@@ -32,39 +32,37 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 bg-white">
-      <p className="bg-black py-2 text-center text-[11px] font-medium uppercase tracking-[0.22em] text-white">
-        Free shipping on orders above {formatPrice(FREE_SHIPPING_FROM)}
-        <span className="font-ar mx-3 hidden text-neutral-500 sm:inline" aria-hidden="true">
+    <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white">
+      <p className="bg-black py-1.5 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-white">
+        Free shipping above {formatPrice(FREE_SHIPPING_FROM)}
+        <span className="mx-3 hidden text-neutral-500 sm:inline" aria-hidden="true">
           |
         </span>
-        <span className="font-ar hidden text-[12px] normal-case tracking-normal sm:inline" lang="ar">
-          الدفع عند الاستلام متاح
-        </span>
+        <span className="hidden sm:inline">Cash on delivery</span>
       </p>
-      <div className="relative wrap flex items-center justify-between gap-4 py-4">
+      <div className="flex h-16 items-stretch">
         <button
           type="button"
-          className="flex h-11 w-11 items-center justify-center lg:hidden"
+          className="flex w-14 items-center justify-center border-r border-neutral-200 lg:hidden"
           aria-label="Open menu"
           onClick={() => setMenuOpen(true)}
         >
-          <Menu size={22} aria-hidden="true" />
+          <Menu size={20} aria-hidden="true" />
         </button>
 
-        <Link to="/" className="flex items-baseline gap-2 text-black" aria-label={`${brand.name} home`}>
-          <span className="font-display text-3xl tracking-[0.16em]">{brand.name}</span>
+        <Link to="/" className="flex items-center px-4 text-black sm:px-6 lg:px-10" aria-label={`${brand.name} home`}>
+          <span className="font-display uppercase text-lg tracking-tight sm:text-xl">{brand.name}</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
+        <nav className="ml-6 hidden items-stretch border-r border-neutral-200 lg:flex" aria-label="Primary">
           {nav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.to === '/'}
               className={({ isActive }) =>
-                `text-[12px] font-medium uppercase tracking-[0.18em] ${
-                  isActive ? 'text-black' : 'text-neutral-600 hover:text-black'
+                `flex items-center border-l border-neutral-200 px-6 text-[11px] uppercase tracking-[0.1em] transition hover:bg-neutral-50 ${
+                  isActive ? 'font-semibold text-black' : 'text-neutral-600 hover:text-black'
                 }`
               }
             >
@@ -73,27 +71,34 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-1">
+        <div className="flex-1" />
+
+        <div className="flex items-stretch">
           <button
             type="button"
-            className="flex h-11 w-11 items-center justify-center"
+            className="flex items-center gap-2 border-l border-neutral-200 px-4 text-[11px] text-neutral-500 transition hover:bg-neutral-50 lg:px-6"
             aria-label="Search"
             onClick={() => setSearchOpen(true)}
           >
-            <Search size={20} aria-hidden="true" />
+            <Search size={18} aria-hidden="true" className="text-black" />
+            <span className="hidden xl:inline">Search products</span>
           </button>
-          <Link to="/account" className="flex h-11 w-11 items-center justify-center" aria-label="Account">
-            <User size={20} aria-hidden="true" />
+          <Link
+            to="/account"
+            className="flex w-14 items-center justify-center border-l border-neutral-200 transition hover:bg-neutral-50"
+            aria-label="Account"
+          >
+            <User size={18} aria-hidden="true" />
           </Link>
           <button
             type="button"
-            className="relative flex h-11 w-11 items-center justify-center"
+            className="relative flex w-16 items-center justify-center bg-black text-white transition hover:bg-neutral-800"
             aria-label={`Cart, ${count} items`}
             onClick={() => setIsOpen(true)}
           >
-            <ShoppingBag size={20} aria-hidden="true" />
+            <ShoppingBag size={18} aria-hidden="true" />
             {count > 0 && (
-              <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-black px-1 text-[10px] font-semibold text-white">
+              <span className="absolute right-3 top-3 flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-black">
                 {count}
               </span>
             )}
@@ -104,7 +109,7 @@ export default function Header() {
       {menuOpen && (
         <div className="fixed inset-0 z-50 bg-white lg:hidden">
           <div className="flex items-center justify-between px-4 py-4">
-            <span className="font-display text-2xl tracking-[0.16em]">{brand.name}</span>
+            <span className="font-display uppercase text-lg tracking-tight">{brand.name}</span>
             <button
               type="button"
               className="flex h-11 w-11 items-center justify-center"
@@ -142,7 +147,7 @@ export default function Header() {
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search hoodies, tees, cargos… / ابحث"
+              placeholder="Search hoodies, tees, cargos…"
               className="h-11 w-full bg-transparent text-base outline-none"
             />
             <button type="button" className="h-11 px-2 text-sm" onClick={() => setSearchOpen(false)}>

@@ -20,7 +20,7 @@ export default function Account() {
   if (done) {
     return (
       <div className="mx-auto max-w-md px-4 py-24 text-center">
-        <h1 className="font-display text-5xl tracking-wide">Welcome in</h1>
+        <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Welcome in</h1>
         <p className="mt-4 text-sm text-neutral-600">
           Demo account session for {email}. Nothing is stored on a server.
         </p>
@@ -30,7 +30,7 @@ export default function Account() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16">
-      <h1 className="font-display text-5xl tracking-wide">{mode === 'signin' ? 'Sign in' : 'Create account'}</h1>
+      <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">{mode === 'signin' ? 'Sign in' : 'Create account'}</h1>
       <form onSubmit={onSubmit} className="mt-8 space-y-4" noValidate>
         {error && (
           <p role="alert" className="border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800">

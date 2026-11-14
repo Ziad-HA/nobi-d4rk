@@ -32,7 +32,7 @@ export default function Shop() {
   return (
     <div className="wrap py-12">
       <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Shop</p>
-      <h1 className="mt-2 font-display text-5xl tracking-wide">{title}</h1>
+      <h1 className="mt-2 font-display uppercase text-3xl sm:text-4xl tracking-tight">{title}</h1>
       <p className="mt-3 text-sm text-neutral-500">{list.length} {list.length === 1 ? 'product' : 'products'}</p>
 
       <div className="mt-8 flex flex-wrap gap-2">

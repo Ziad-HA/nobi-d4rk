@@ -18,7 +18,7 @@ export default function Product() {
   if (!product) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <h1 className="font-display text-5xl">Product not found</h1>
+        <h1 className="font-display uppercase text-3xl sm:text-4xl">Product not found</h1>
         <Link to="/shop" className="mt-6 inline-block underline">
           Back to shop
         </Link>
@@ -36,7 +36,7 @@ export default function Product() {
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
         <img src={product.image} alt={product.name} className="w-full bg-sand object-cover" />
         <div>
-          <h1 className="font-display text-5xl tracking-wide">{product.name}</h1>
+          <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">{product.name}</h1>
           <p className="mt-3 text-lg tabular-nums">
             {product.originalPrice && (
               <span className="mr-2 text-neutral-400 line-through">{formatPrice(product.originalPrice)}</span>

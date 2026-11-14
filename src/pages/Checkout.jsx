@@ -31,7 +31,7 @@ export default function Checkout() {
   if (placed) {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center">
-        <h1 className="font-display text-5xl tracking-wide">Order received</h1>
+        <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Order received</h1>
         <p className="font-ar mt-2 text-lg" lang="ar">
           تم استلام طلبك
         </p>
@@ -52,7 +52,7 @@ export default function Checkout() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center">
-        <h1 className="font-display text-5xl">Nothing to check out</h1>
+        <h1 className="font-display uppercase text-3xl sm:text-4xl">Nothing to check out</h1>
         <Link to="/shop" className="mt-6 inline-block underline">
           Shop now
         </Link>
@@ -77,7 +77,7 @@ export default function Checkout() {
   return (
     <div className="mx-auto grid max-w-6xl gap-12 px-4 py-12 lg:grid-cols-2">
       <form onSubmit={onSubmit} className="space-y-4" noValidate>
-        <h1 className="font-display text-5xl tracking-wide">Checkout</h1>
+        <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Checkout</h1>
         {error && (
           <p role="alert" className="border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800">
             {error}

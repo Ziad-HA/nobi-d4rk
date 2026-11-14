@@ -9,7 +9,7 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <h1 className="font-display text-5xl tracking-wide">Your bag is empty</h1>
+        <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Your bag is empty</h1>
         <Link to="/shop" className="mt-8 inline-block bg-black px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
           Shop now
         </Link>
@@ -20,7 +20,7 @@ export default function Cart() {
   return (
     <div className="wrap grid gap-12 py-12 lg:grid-cols-[1fr_360px]">
       <div>
-        <h1 className="font-display text-5xl tracking-wide">Your bag</h1>
+        <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Your bag</h1>
         <ul className="mt-8 divide-y divide-neutral-200 border-y border-neutral-200">
           {items.map((item) => (
             <li key={`${item.id}-${item.size}`} className="flex gap-4 py-6">

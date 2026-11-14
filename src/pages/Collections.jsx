@@ -9,7 +9,7 @@ export default function Collections() {
   if (slug && !current) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <h1 className="font-display text-5xl">Collection not found</h1>
+        <h1 className="font-display uppercase text-3xl sm:text-4xl">Collection not found</h1>
         <Link to="/collections" className="mt-6 inline-block underline">
           All collections
         </Link>
@@ -29,7 +29,7 @@ export default function Collections() {
           <div className="wrap relative flex min-h-[40vh] items-end py-12">
             <div>
               <p className="text-xs uppercase tracking-[0.24em]">{current.tagline}</p>
-              <h1 className="mt-2 font-display text-6xl tracking-wide">{current.name}</h1>
+              <h1 className="mt-2 font-display uppercase text-4xl sm:text-5xl tracking-tight">{current.name}</h1>
             </div>
           </div>
         </section>
@@ -46,7 +46,7 @@ export default function Collections() {
 
   return (
     <div className="wrap py-12">
-      <h1 className="font-display text-5xl tracking-wide">Collections</h1>
+      <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Collections</h1>
       <p className="mt-3 max-w-xl text-sm text-neutral-600">
         Monthly drops, everyday essentials, and limited-time offers — all made in small runs and checked before they ship.
       </p>
@@ -59,7 +59,7 @@ export default function Collections() {
               className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"
             />
             <div className="relative flex h-full min-h-[320px] flex-col justify-end p-6 text-white">
-              <h2 className="font-display text-4xl tracking-wide">{c.name}</h2>
+              <h2 className="font-display uppercase text-2xl sm:text-3xl tracking-tight">{c.name}</h2>
               <p className="mt-1 text-sm">{c.tagline}</p>
             </div>
           </Link>
