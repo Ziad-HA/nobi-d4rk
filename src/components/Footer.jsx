@@ -70,8 +70,8 @@ export default function Footer() {
             </span>
           </p>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-600">
-            Calm streetwear, designed and made in ALEX. Heavy cotton, clean
-            cuts, built to be worn every day.
+            Streetwear accessories, designed and made in ALEX. Caps, bags,
+            chains and eyewear to finish the fit.
           </p>
           <div className="mt-5 flex gap-3">
             <a
@@ -109,26 +109,28 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/shop?category=hoodies" className="hover:text-black">
-                Hoodies
+              <Link to="/shop?category=caps" className="hover:text-black">
+                Caps
               </Link>
             </li>
             <li>
-              <Link to="/shop?category=t-shirts" className="hover:text-black">
-                T-Shirts
+              <Link to="/shop?category=beanies" className="hover:text-black">
+                Beanies
               </Link>
             </li>
             <li>
-              <Link to="/shop?category=pants" className="hover:text-black">
-                Pants
+              <Link to="/shop?category=bags" className="hover:text-black">
+                Bags
               </Link>
             </li>
             <li>
-              <Link
-                to="/shop?category=accessories"
-                className="hover:text-black"
-              >
-                Accessories
+              <Link to="/shop?category=jewelry" className="hover:text-black">
+                Jewelry
+              </Link>
+            </li>
+            <li>
+              <Link to="/shop?category=eyewear" className="hover:text-black">
+                Eyewear
               </Link>
             </li>
           </ul>
@@ -189,7 +191,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to="/about" className="hover:text-black">
-                Size Guide
+                Sizing
               </Link>
             </li>
             <li>

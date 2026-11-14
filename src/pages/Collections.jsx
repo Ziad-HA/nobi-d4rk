@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { collections, filterProducts } from '../data/products'
+import Photo from '../components/Photo'
 import ProductCard from '../components/ProductCard'
 
 export default function Collections() {
@@ -25,7 +26,7 @@ export default function Collections() {
     return (
       <div>
         <section className="relative min-h-[40vh] bg-pure-black text-pure-white">
-          <img src={current.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" />
+          <Photo src={current.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" />
           <div className="wrap relative flex min-h-[40vh] items-end py-12">
             <div>
               <p className="text-xs uppercase tracking-[0.24em]">{current.tagline}</p>

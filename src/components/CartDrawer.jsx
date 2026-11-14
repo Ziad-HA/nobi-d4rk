@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Minus, Plus, X } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { formatPrice } from '../data/products'
+import Photo from './Photo'
 import { FREE_SHIPPING_FROM } from '../data/brand'
 
 export default function CartDrawer() {
@@ -44,13 +45,13 @@ export default function CartDrawer() {
             <ul className="space-y-5">
               {items.map((item) => (
                 <li key={`${item.id}-${item.size}`} className="flex gap-4">
-                  <img src={item.image} alt="" className="h-24 w-20 object-cover" />
+                  <Photo src={item.image} alt="" className="h-24 w-20 object-cover" />
                   <div className="flex flex-1 flex-col">
                     <div className="flex justify-between gap-3">
                       <p className="text-sm">{item.name}</p>
                       <p className="text-sm tabular-nums">{formatPrice(item.price * item.qty)}</p>
                     </div>
-                    <p className="mt-1 text-xs text-neutral-500">Size {item.size}</p>
+                    {item.size !== "OS" && <p className="mt-1 text-xs text-neutral-500">{item.size}</p>}
                     <div className="mt-auto flex items-center justify-between pt-2">
                       <div className="flex items-center border border-neutral-300">
                         <button

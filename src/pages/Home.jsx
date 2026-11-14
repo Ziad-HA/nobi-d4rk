@@ -81,7 +81,7 @@ export default function Home() {
       {/* Manifesto */}
       <section className="page pt-24 sm:pt-36">
         <h2 className="relative z-10 max-w-[17em] font-display text-[7.2vw] font-extrabold uppercase leading-[1.05] tracking-tight sm:text-[5vw] lg:text-[4.4vw]">
-          {brand.name} is a quiet answer to a loud city because it is made to
+          {brand.name} finishes the fit because the small details are made to
           last
         </h2>
         <div className="relative -mt-[2vw] aspect-[16/9] overflow-hidden bg-neutral-100 sm:-mt-[1.4vw]">

@@ -1,268 +1,183 @@
 export const formatPrice = (n) => `${n.toLocaleString("en-US")} EGP`;
 
+// Photos: put your own in /public/images/products and name them after the product id (for example /images/products/d4rk-dad-cap.jpg).
+// Until a photo exists the tile just stays empty.
+const img = (name) => `/images/products/${name}.jpg`;
+
 export const categories = [
-  {
-    slug: "hoodies",
-    name: "Hoodies",
-    nameAr: "هوديز",
-    image:
-      "https://images.unsplash.com/photo-1556821840-3a69f8430e75?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    slug: "t-shirts",
-    name: "T-Shirts",
-    nameAr: "تيشرتات",
-    image:
-      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    slug: "pants",
-    name: "Pants",
-    nameAr: "بناطيل",
-    image:
-      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    slug: "jackets",
-    name: "Jackets",
-    nameAr: "جاكيتات",
-    image:
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    slug: "accessories",
-    name: "Accessories",
-    nameAr: "إكسسوارات",
-    image:
-      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=900&q=80",
-  },
+  { slug: "caps", name: "Caps", nameAr: "كابات", image: img("cat-caps") },
+  { slug: "beanies", name: "Beanies", nameAr: "بيني", image: img("cat-beanies") },
+  { slug: "bags", name: "Bags", nameAr: "شنط", image: img("cat-bags") },
+  { slug: "jewelry", name: "Jewelry", nameAr: "إكسسوارات معدن", image: img("cat-jewelry") },
+  { slug: "eyewear", name: "Eyewear", nameAr: "نظارات", image: img("cat-eyewear") },
 ];
 
 export const collections = [
-  {
-    slug: "new-drops",
-    name: "New Drops",
-    tagline: "Every month",
-    cta: "Explore",
-    image:
-      "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    slug: "essentials",
-    name: "Essentials",
-    tagline: "Everyday staples",
-    cta: "Explore",
-    image:
-      "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    slug: "sale",
-    name: "Up to 30% Off",
-    tagline: "Limited time only",
-    cta: "Shop sale",
-    image:
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80",
-  },
-];
-
-export const instagramPosts = [
-  "https://images.unsplash.com/photo-1520975661595-6453be3f7070?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1488161628813-04466f872be6?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=80",
+  { slug: "new-drops", name: "New Drops", tagline: "Every month", cta: "Explore", image: img("col-new-drops") },
+  { slug: "essentials", name: "Essentials", tagline: "Everyday carry", cta: "Explore", image: img("col-essentials") },
+  { slug: "sale", name: "Up to 30% Off", tagline: "Limited time only", cta: "Shop sale", image: img("col-sale") },
 ];
 
 export const products = [
   {
-    id: "midnight-hoodie",
-    name: "Midnight Hoodie",
-    price: 1450,
-    category: "hoodies",
+    id: "d4rk-dad-cap",
+    name: "D4RK Dad Cap",
+    price: 450,
+    category: "caps",
     collection: "new-drops",
     trending: true,
-    image:
-      "https://images.unsplash.com/photo-1556821840-3a69f8430e75?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1578768079052-aa76e52c4d1d?auto=format&fit=crop&w=900&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Heavyweight black hoodie with a soft brushed interior and a boxy, relaxed fit. Clean front, small back detail.",
-  },
-  {
-    id: "downtown-tee",
-    name: "Downtown Tee",
-    price: 650,
-    category: "t-shirts",
-    collection: "new-drops",
-    trending: true,
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=900&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Cream cotton tee with a small chest print. Soft hand-feel, slightly oversized, made to be worn on repeat.",
-  },
-  {
-    id: "sahara-washed-tee",
-    name: "Sahara Washed Tee",
-    price: 690,
-    category: "t-shirts",
-    collection: "essentials",
-    trending: true,
-    image:
-      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Garment-washed brown tee with a sun-faded look and a lived-in drape. Each piece washes slightly differently.",
-  },
-  {
-    id: "utility-cargo-pants",
-    name: "Utility Cargo Pants",
-    price: 1250,
-    category: "pants",
-    collection: "essentials",
-    trending: true,
-    image:
-      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=900&q=80",
-    sizes: ["28", "30", "32", "34", "36"],
-    description:
-      "Relaxed cargo pants in sturdy cotton twill with reinforced pockets and an adjustable hem. Built for everyday wear.",
-  },
-  {
-    id: "common-oversized-tee",
-    name: "D4RK Oversized Tee",
-    price: 750,
-    category: "t-shirts",
-    collection: "new-drops",
-    trending: true,
-    image:
-      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1618354690439-27c07003b58c?auto=format&fit=crop&w=900&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Charcoal oversized tee with dropped shoulders. A staple for layering or wearing on its own.",
-  },
-  {
-    id: "essential-hoodie",
-    name: "Essential Hoodie",
-    price: 1350,
-    category: "hoodies",
-    collection: "essentials",
-    trending: true,
-    image:
-      "https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1578587018452-892b722df76b?auto=format&fit=crop&w=900&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Sand-tone fleece hoodie. Clean lines, no pilling, made for everyday rotation.",
-  },
-  {
-    id: "common-back-print-tee",
-    name: "D4RK Back Print Tee",
-    price: 850,
-    category: "t-shirts",
-    collection: "essentials",
-    trending: false,
-    image:
-      "https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1496360166961-10a51d5f367a?auto=format&fit=crop&w=900&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Black boxy tee with the D4RK print across the back. The house staple.",
-  },
-  {
-    id: "night-bomber",
-    name: "Night Bomber Jacket",
-    price: 2400,
-    category: "jackets",
-    collection: "essentials",
-    trending: false,
-    sale: true,
-    originalPrice: 3000,
-    image:
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=900&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Black bomber jacket, fully lined, with ribbed cuffs and a clean zip. Light enough for ALEX winters.",
-  },
-  {
-    id: "night-cap",
-    name: "Night Cap",
-    price: 380,
-    category: "accessories",
-    collection: "sale",
-    trending: false,
-    sale: true,
-    originalPrice: 520,
-    image:
-      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=900&q=80",
+    image: img("d4rk-dad-cap"),
     sizes: ["OS"],
-    description:
-      "Structured black cap with a low profile and a small embroidered mark. One size, adjustable.",
+    description: "Washed black cotton cap with a tonal D4RK stitch on the front. Adjustable strap.",
   },
   {
-    id: "ink-denim",
-    name: "Ink Wash Denim",
-    price: 1450,
-    category: "pants",
+    id: "night-5-panel",
+    name: "Night 5-Panel",
+    price: 520,
+    category: "caps",
+    collection: "essentials",
+    trending: false,
+    image: img("night-5-panel"),
+    sizes: ["OS"],
+    description: "Flat-brim 5-panel in matte black nylon. Clean front, small tag on the back.",
+  },
+  {
+    id: "washed-trucker",
+    name: "Washed Trucker",
+    price: 480,
+    category: "caps",
     collection: "sale",
     trending: false,
     sale: true,
-    originalPrice: 1850,
-    image:
-      "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=80",
-    sizes: ["28", "30", "32", "34", "36"],
-    description:
-      "Straight-leg black denim with a faint wash. Sturdy fabric, clean finish, no unnecessary details.",
+    originalPrice: 600,
+    image: img("washed-trucker"),
+    sizes: ["OS"],
+    description: "Faded black trucker with a mesh back and a snap closure.",
   },
   {
-    id: "studio-coach",
-    name: "Studio Coach Jacket",
-    price: 1900,
-    category: "jackets",
+    id: "fold-beanie",
+    name: "Fold Beanie",
+    price: 350,
+    category: "beanies",
     collection: "new-drops",
-    trending: false,
-    image:
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1548126032-079ad6481a60?auto=format&fit=crop&w=900&q=80",
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Lightweight coach jacket in matte black. Snap buttons and a drawcord hem.",
+    trending: true,
+    image: img("fold-beanie"),
+    sizes: ["OS"],
+    description: "Rib-knit fold beanie in black. Soft, stretchy, sits low.",
   },
   {
     id: "crest-beanie",
     name: "Crest Beanie",
     price: 320,
-    category: "accessories",
+    category: "beanies",
     collection: "sale",
     trending: false,
     sale: true,
     originalPrice: 450,
-    image:
-      "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?auto=format&fit=crop&w=900&q=80",
-    hoverImage:
-      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=900&q=80",
+    image: img("crest-beanie"),
     sizes: ["OS"],
-    description:
-      "Rib-knit beanie in charcoal. Soft, stretchy, and a quiet everyday extra.",
+    description: "Rib-knit beanie in charcoal with a small woven D4RK tag.",
+  },
+  {
+    id: "night-balaclava",
+    name: "Night Balaclava",
+    price: 400,
+    category: "beanies",
+    collection: "new-drops",
+    trending: true,
+    image: img("night-balaclava"),
+    sizes: ["OS"],
+    description: "Thin knit balaclava in black. Wear it up as a beanie or pulled down.",
+  },
+  {
+    id: "crossbody-bag",
+    name: "Crossbody Bag",
+    price: 750,
+    category: "bags",
+    collection: "new-drops",
+    trending: true,
+    image: img("crossbody-bag"),
+    sizes: ["OS"],
+    description: "Compact crossbody in water-resistant black nylon. Two zip pockets and an adjustable strap.",
+  },
+  {
+    id: "mini-shoulder-bag",
+    name: "Mini Shoulder Bag",
+    price: 650,
+    category: "bags",
+    collection: "essentials",
+    trending: false,
+    image: img("mini-shoulder-bag"),
+    sizes: ["OS"],
+    description: "Small shoulder bag that fits your phone, wallet and keys. Matte hardware.",
+  },
+  {
+    id: "everyday-tote",
+    name: "Everyday Tote",
+    price: 380,
+    category: "bags",
+    collection: "essentials",
+    trending: false,
+    image: img("everyday-tote"),
+    sizes: ["OS"],
+    description: "Heavy canvas tote in black with an inner pocket. Fits a laptop.",
+  },
+  {
+    id: "steel-chain",
+    name: "Steel Chain",
+    price: 550,
+    category: "jewelry",
+    collection: "new-drops",
+    trending: true,
+    image: img("steel-chain"),
+    sizes: ["45 cm", "50 cm", "55 cm"],
+    description: "Stainless steel chain that will not tarnish. Pick the length that sits where you like.",
+  },
+  {
+    id: "dog-tag",
+    name: "D4RK Dog Tag",
+    price: 420,
+    category: "jewelry",
+    collection: "essentials",
+    trending: false,
+    image: img("dog-tag"),
+    sizes: ["OS"],
+    description: "Brushed steel tag on a ball chain, engraved with the D4RK mark.",
+  },
+  {
+    id: "ring-set",
+    name: "Ring Set (3)",
+    price: 280,
+    category: "jewelry",
+    collection: "essentials",
+    trending: false,
+    image: img("ring-set"),
+    sizes: ["OS"],
+    description: "Three stackable steel rings. Adjustable, so they fit most fingers.",
+  },
+  {
+    id: "shield-sunglasses",
+    name: "Shield Sunglasses",
+    price: 480,
+    category: "eyewear",
+    collection: "essentials",
+    trending: true,
+    image: img("shield-sunglasses"),
+    sizes: ["OS"],
+    description: "Wraparound shield frame with dark UV400 lenses.",
+  },
+  {
+    id: "slim-frame",
+    name: "Slim Frame Sunglasses",
+    price: 420,
+    category: "eyewear",
+    collection: "sale",
+    trending: false,
+    sale: true,
+    originalPrice: 560,
+    image: img("slim-frame"),
+    sizes: ["OS"],
+    description: "Narrow black frame with tinted UV400 lenses. Light on the face.",
   },
 ];
 

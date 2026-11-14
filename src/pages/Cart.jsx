@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Minus, Plus } from 'lucide-react'
 import { useCart } from '../context/CartContext'
+import Photo from '../components/Photo'
 import { formatPrice } from '../data/products'
 
 export default function Cart() {
@@ -24,12 +25,12 @@ export default function Cart() {
         <ul className="mt-8 divide-y divide-neutral-200 border-y border-neutral-200">
           {items.map((item) => (
             <li key={`${item.id}-${item.size}`} className="flex gap-4 py-6">
-              <img src={item.image} alt="" className="h-28 w-24 object-cover" />
+              <Photo src={item.image} alt="" className="h-28 w-24 object-cover" />
               <div className="flex flex-1 flex-col">
                 <div className="flex justify-between gap-4">
                   <div>
                     <p>{item.name}</p>
-                    <p className="mt-1 text-sm text-neutral-500">Size {item.size}</p>
+                    {item.size !== "OS" && <p className="mt-1 text-sm text-neutral-500">{item.size}</p>}
                   </div>
                   <p className="tabular-nums">{formatPrice(item.price * item.qty)}</p>
                 </div>

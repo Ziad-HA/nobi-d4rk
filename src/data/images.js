@@ -1,7 +1,6 @@
-// Homepage photos live here. Replace these with your own shoot:
-//   1. put the files in /public/images (for example /public/images/hero.jpg)
-//   2. point the entries below at them: "/images/hero.jpg"
-// Mood that fits this layout: dark, grainy, a bit documentary. Landscape for hero + manifesto, portrait for lookbook.
+// Homepage photos. Put your own in /public/images and keep these names (or change the paths).
+// Hero is a video (hero.mp4) with hero-poster.jpg shown while it loads.
+// manifesto: landscape. lookbook: four portrait photos of your accessories.
 
 export const siteImages = {
   hero: '/images/hero-poster.jpg',

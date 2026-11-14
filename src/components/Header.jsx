@@ -147,7 +147,7 @@ export default function Header() {
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search hoodies, tees, cargos…"
+              placeholder="Search caps, bags, chains…"
               className="h-11 w-full bg-transparent text-base outline-none"
             />
             <button type="button" className="h-11 px-2 text-sm" onClick={() => setSearchOpen(false)}>

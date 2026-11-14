@@ -1,7 +1,7 @@
 // Single source of truth for brand details. Replace the placeholders below with real ones.
 export const brand = {
   name: "D4RK",
-  tagline: "Calm streetwear. Made in ALEX.",
+  tagline: "Streetwear accessories. Made in ALEX.",
   instagram: "d4rk.eg",
   email: "zh.nobii@gmail.com",
   // International format, digits only (01276390301 -> 201276390301)

@@ -13,8 +13,8 @@ export default function About() {
       </section>
       <div className="mx-auto max-w-3xl px-4 py-16 text-sm leading-relaxed text-neutral-700">
         <p>
-          {brand.name} is streetwear for everyday life. We make calm, clean pieces in {brand.city}:
-          heavy cotton, simple cuts, and small details instead of loud logos. Every hoodie, tee, cargo and cap is
+          {brand.name} is a streetwear accessories brand. We make the finishing pieces in {brand.city}:
+          caps, beanies, bags, chains and eyewear with clean shapes and small details instead of loud logos. Every piece is
           checked by hand before it leaves the studio.
         </p>
 
@@ -33,14 +33,13 @@ export default function About() {
 
         <h2 className="mt-10 font-display uppercase text-xl tracking-tight text-black">Exchange & returns</h2>
         <p className="mt-3">
-          Not the right size? Exchange within {RETURN_DAYS} days of delivery as long as the piece is unworn with its tags.
-          Sale items can be exchanged for size only, unless damaged.
+          Changed your mind? Exchange within {RETURN_DAYS} days of delivery as long as the piece is unused and in its packaging.
+          Sale items can only be exchanged if damaged.
         </p>
 
-        <h2 className="mt-10 font-display uppercase text-xl tracking-tight text-black">Size guide</h2>
+        <h2 className="mt-10 font-display uppercase text-xl tracking-tight text-black">Sizing</h2>
         <p className="mt-3">
-          Our tees and hoodies are cut relaxed and slightly oversized. Between two sizes? Go down for a closer fit, or stay
-          true-to-size for the drape you see in our photos.
+          Caps and beanies are one size and adjustable or stretchy. Chains come in 45, 50 and 55 cm: 45 cm sits at the collarbone, 55 cm falls on the chest.
         </p>
 
         <h2 className="mt-10 font-display uppercase text-xl tracking-tight text-black">Privacy</h2>

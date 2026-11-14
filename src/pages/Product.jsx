@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getProduct, formatPrice, products } from '../data/products'
 import { useCart } from '../context/CartContext'
 import { FREE_SHIPPING_FROM, RETURN_DAYS } from '../data/brand'
+import Photo from '../components/Photo'
 import ProductCard from '../components/ProductCard'
 
 export default function Product() {
@@ -34,7 +35,7 @@ export default function Product() {
         <Link to="/shop">Shop</Link> / {product.name}
       </nav>
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
-        <img src={product.image} alt={product.name} className="w-full bg-sand object-cover" />
+        <Photo src={product.image} alt={product.name} className="aspect-[4/5] w-full bg-sand object-cover" />
         <div>
           <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">{product.name}</h1>
           <p className="mt-3 text-lg tabular-nums">
@@ -45,8 +46,9 @@ export default function Product() {
           </p>
           <p className="mt-6 max-w-md text-sm leading-relaxed text-neutral-600">{product.description}</p>
 
+          {product.sizes.length > 1 && (
           <fieldset className="mt-8">
-            <legend className="text-xs font-semibold uppercase tracking-[0.16em]">Size</legend>
+            <legend className="text-xs font-semibold uppercase tracking-[0.16em]">Length</legend>
             <div className="mt-3 flex flex-wrap gap-2">
               {product.sizes.map((s) => (
                 <button
@@ -60,6 +62,7 @@ export default function Product() {
               ))}
             </div>
           </fieldset>
+          )}
 
           <button
             type="button"

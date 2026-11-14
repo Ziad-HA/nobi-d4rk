@@ -173,7 +173,7 @@ export default function Checkout() {
           {items.map((item) => (
             <li key={`${item.id}-${item.size}`} className="flex justify-between gap-3">
               <span>
-                {item.name} ({item.size}) × {item.qty}
+                {item.name}{item.size !== "OS" ? ` (${item.size})` : ""} × {item.qty}
               </span>
               <span className="tabular-nums">{formatPrice(item.price * item.qty)}</span>
             </li>
