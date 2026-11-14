@@ -129,10 +129,25 @@ a {
   box-sizing: border-box;
 }
 
-/* Hero wordmark: extra-wide heavy Archivo. To try another look, change the font in index.html and --font-wordmark above. */
+/* Hero wordmark: ultra-wide Unbounded Black with stacked outline echoes and a faint glitch split. */
 .wordmark {
-  font-family: var(--font-wordmark);
+  position: relative;
+  display: block;
+  font-family: "Unbounded", "Inter", sans-serif;
   font-weight: 900;
-  font-stretch: 125%;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
+  text-shadow: 0.025em 0 0 rgba(255, 60, 60, 0.55), -0.025em 0 0 rgba(60, 200, 255, 0.55);
 }
+.wordmark::before,
+.wordmark::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.45);
+  text-shadow: none;
+  pointer-events: none;
+}
+.wordmark::before { transform: translateY(-0.2em); opacity: 0.55; }
+.wordmark::after { transform: translateY(-0.4em); opacity: 0.25; }
