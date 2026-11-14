@@ -24,11 +24,16 @@ export default function Home() {
       {/* Hero */}
       <section className="page pt-3 sm:pt-5">
         <div className="relative isolate flex min-h-[78vh] flex-col justify-between overflow-hidden bg-pure-black p-4 sm:p-8">
-          <Photo
-            src={siteImages.hero}
-            alt=""
-            loading="eager"
-            className="absolute inset-0 -z-20 h-full w-full object-cover opacity-100"
+          <video
+            className="absolute inset-0 -z-20 h-full w-full object-cover"
+            src={siteImages.heroVideo}
+            poster={siteImages.hero}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
           />
           <div
             className="absolute inset-0 -z-10 bg-gradient-to-b from-pure-black/40 via-transparent to-pure-black/50"
