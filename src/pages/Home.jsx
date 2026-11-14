@@ -39,7 +39,7 @@ export default function Home() {
             className="absolute inset-0 -z-10 bg-gradient-to-b from-pure-black/40 via-transparent to-pure-black/50"
             aria-hidden="true"
           />
-          <h1 className="text-center font-display text-[15vw] font-extrabold uppercase leading-none tracking-tight text-pure-white sm:text-[13vw] lg:text-[12vw]">
+          <h1 className="wordmark text-center text-[15vw] uppercase leading-none text-pure-white sm:text-[13vw] lg:text-[12vw]">
             {brand.name}
           </h1>
           <div className="grid grid-cols-3 items-end gap-3">
