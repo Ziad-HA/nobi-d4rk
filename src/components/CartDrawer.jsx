@@ -13,7 +13,7 @@ export default function CartDrawer() {
     <div className="fixed inset-0 z-50">
       <button
         type="button"
-        className="absolute inset-0 bg-black/50"
+        className="absolute inset-0 bg-pure-black/60"
         aria-label="Close cart"
         onClick={() => setIsOpen(false)}
       />

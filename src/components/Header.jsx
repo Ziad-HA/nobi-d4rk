@@ -33,7 +33,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white">
-      <p className="bg-black py-1.5 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-white">
+      <p className="border-b border-pure-white/10 bg-pure-black py-1.5 text-center text-[10px] font-medium uppercase tracking-[0.22em] text-pure-white">
         Free shipping above {formatPrice(FREE_SHIPPING_FROM)}
         <span className="mx-3 hidden text-neutral-500 sm:inline" aria-hidden="true">
           |
@@ -51,7 +51,7 @@ export default function Header() {
         </button>
 
         <Link to="/" className="flex items-center px-4 text-black sm:px-6 lg:px-10" aria-label={`${brand.name} home`}>
-          <span className="font-display uppercase text-lg tracking-tight sm:text-xl">{brand.name}</span>
+          <span className="font-display text-lg font-extrabold uppercase tracking-tight sm:text-xl">{brand.name}</span>
         </Link>
 
         <nav className="ml-6 hidden items-stretch border-r border-neutral-200 lg:flex" aria-label="Primary">

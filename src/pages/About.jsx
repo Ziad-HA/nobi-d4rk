@@ -4,7 +4,7 @@ import { formatPrice } from '../data/products'
 export default function About() {
   return (
     <div>
-      <section className="bg-black py-20 text-white">
+      <section className="bg-pure-black py-20 text-pure-white">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <p className="text-xs uppercase tracking-[0.28em] text-neutral-400">About us</p>
           <h1 className="mt-4 font-display uppercase text-4xl sm:text-5xl tracking-tight">{brand.name}</h1>

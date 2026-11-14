@@ -3,7 +3,8 @@ import { formatPrice } from '../data/products'
 import { useCart } from '../context/CartContext'
 import Photo from './Photo'
 
-export default function ProductCard({ product }) {
+// bare = tile + name/price only (home page); otherwise also shows a quick "Add to cart" button
+export default function ProductCard({ product, bare = false }) {
   const { addItem } = useCart()
 
   return (
@@ -14,32 +15,32 @@ export default function ProductCard({ product }) {
           alt={product.name}
           width={600}
           height={750}
-          className="aspect-[4/5] w-full object-cover mix-blend-multiply transition duration-500 group-hover:scale-[1.03]"
+          className="aspect-square w-full object-cover mix-blend-multiply transition duration-500 group-hover:scale-[1.04]"
         />
         {product.sale && (
-          <span className="absolute left-3 top-3 rounded-full bg-black px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
+          <span className="absolute left-2 top-2 bg-pure-black px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-pure-white">
             Sale
           </span>
         )}
       </Link>
-      <div className="mt-3 flex items-baseline justify-between gap-3 text-xs uppercase tracking-[0.06em]">
-        <Link to={`/product/${product.id}`} className="font-semibold text-neutral-900">
-          {product.name}
-        </Link>
-        <p className="shrink-0 tabular-nums text-neutral-600">
+      <div className="mt-2 flex items-start justify-between gap-3 font-display text-[9px] font-bold uppercase leading-tight sm:text-[10px]">
+        <Link to={`/product/${product.id}`}>{product.name}</Link>
+        <p className="shrink-0 tabular-nums">
           {product.originalPrice && (
             <span className="mr-2 text-neutral-400 line-through">{formatPrice(product.originalPrice)}</span>
           )}
           {formatPrice(product.price)}
         </p>
       </div>
-      <button
-        type="button"
-        onClick={() => addItem(product)}
-        className="mt-3 w-full rounded-full border border-black/70 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition hover:bg-black hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-      >
-        Add to cart
-      </button>
+      {!bare && (
+        <button
+          type="button"
+          onClick={() => addItem(product)}
+          className="mt-3 w-full rounded-md border border-pure-white/25 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition hover:bg-pure-white hover:text-pure-black focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          Add to cart
+        </button>
+      )}
     </article>
   )
 }

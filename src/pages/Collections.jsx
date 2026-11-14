@@ -24,7 +24,7 @@ export default function Collections() {
 
     return (
       <div>
-        <section className="relative min-h-[40vh] bg-black text-white">
+        <section className="relative min-h-[40vh] bg-pure-black text-pure-white">
           <img src={current.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" />
           <div className="wrap relative flex min-h-[40vh] items-end py-12">
             <div>
@@ -52,13 +52,13 @@ export default function Collections() {
       </p>
       <div className="mt-10 grid gap-4 md:grid-cols-3">
         {collections.map((c) => (
-          <Link key={c.slug} to={`/collections/${c.slug}`} className="group relative min-h-[320px] overflow-hidden bg-black">
+          <Link key={c.slug} to={`/collections/${c.slug}`} className="group relative min-h-[320px] overflow-hidden bg-pure-black">
             <img
               src={c.image}
               alt=""
               className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"
             />
-            <div className="relative flex h-full min-h-[320px] flex-col justify-end p-6 text-white">
+            <div className="relative flex h-full min-h-[320px] flex-col justify-end p-6 text-pure-white">
               <h2 className="font-display uppercase text-2xl sm:text-3xl tracking-tight">{c.name}</h2>
               <p className="mt-1 text-sm">{c.tagline}</p>
             </div>
