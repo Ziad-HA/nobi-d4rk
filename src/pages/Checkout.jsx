@@ -32,23 +32,103 @@ export default function Checkout() {
   })
 
   if (placed) {
+    const waMsg = encodeURIComponent(
+      `Hello D4RK! I just placed order ${placed.id} for ${formatPrice(placed.total)} (${placed.payment === 'cod' ? 'Cash on Delivery' : placed.payment === 'instapay' ? 'InstaPay' : 'Vodafone Cash'}).`
+    )
+    const waUrl = `https://wa.me/${brand.whatsapp}?text=${waMsg}`
+
     return (
-      <div className="mx-auto max-w-xl px-4 py-24 text-center">
+      <div className="mx-auto max-w-xl px-4 py-20 text-center">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-pure-white">
+          <svg className="h-7 w-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
         <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Order received</h1>
-        <p className="font-ar mt-2 text-lg" lang="ar">
-          تم استلام طلبك
+        <p className="font-ar mt-2 text-lg text-neutral-400" lang="ar">
+          تم استلام طلبك بنجاح
         </p>
-        <p className="mt-4 text-sm text-neutral-600">
-          Thanks {placed.name}. We’ll message you on WhatsApp at {placed.phone} to confirm your order
-          {placed.payment === 'cod'
-            ? ' before delivery. You pay in cash when it arrives.'
-            : ' and send the payment details.'}
-        </p>
-        <p className="mt-4 text-sm">Order number: <span className="font-semibold tabular-nums">{placed.id}</span></p>
-        {placed.demo && <p className="mt-2 text-xs text-neutral-500">Test mode: this order was only saved in your browser.</p>}
-        <Link to="/shop" className="mt-8 inline-block bg-black px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
-          Keep shopping
-        </Link>
+
+        <div className="mt-6 border border-neutral-800 bg-neutral-950/60 p-5 rounded text-left">
+          <div className="flex justify-between items-center border-b border-neutral-800 pb-3 text-sm">
+            <span className="text-neutral-500">Order Number</span>
+            <span className="font-bold text-pure-white tracking-wider">{placed.id}</span>
+          </div>
+          <div className="flex justify-between items-center pt-3 text-sm">
+            <span className="text-neutral-500">Total Amount</span>
+            <span className="font-semibold text-pure-white">{formatPrice(placed.total)}</span>
+          </div>
+        </div>
+
+        {/* Payment info for InstaPay & Wallet */}
+        {placed.payment === 'instapay' && (
+          <div className="mt-6 border border-neutral-800 bg-neutral-900/60 p-5 text-left rounded space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-pure-white">InstaPay Payment Details</p>
+            <p className="text-sm text-neutral-300">
+              Please transfer <span className="font-semibold text-pure-white">{formatPrice(placed.total)}</span> to the InstaPay address:
+            </p>
+            <div className="flex items-center justify-between bg-black px-3 py-2 border border-neutral-800 rounded font-mono text-sm text-pure-white">
+              <span>{brand.instapayUsername || 'd4rk@instapay'}</span>
+              <button
+                type="button"
+                onClick={() => navigator.clipboard.writeText(brand.instapayUsername || 'd4rk@instapay')}
+                className="text-xs uppercase text-neutral-400 hover:text-white underline"
+              >
+                Copy
+              </button>
+            </div>
+            <p className="text-xs text-neutral-400">After payment, send the transfer receipt via WhatsApp to confirm your order.</p>
+          </div>
+        )}
+
+        {placed.payment === 'wallet' && (
+          <div className="mt-6 border border-neutral-800 bg-neutral-900/60 p-5 text-left rounded space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-pure-white">Vodafone Cash / Wallet Details</p>
+            <p className="text-sm text-neutral-300">
+              Please transfer <span className="font-semibold text-pure-white">{formatPrice(placed.total)}</span> to Vodafone Cash:
+            </p>
+            <div className="flex items-center justify-between bg-black px-3 py-2 border border-neutral-800 rounded font-mono text-sm text-pure-white">
+              <span>{brand.vodafoneCash || brand.whatsapp}</span>
+              <button
+                type="button"
+                onClick={() => navigator.clipboard.writeText(brand.vodafoneCash || brand.whatsapp)}
+                className="text-xs uppercase text-neutral-400 hover:text-white underline"
+              >
+                Copy
+              </button>
+            </div>
+            <p className="text-xs text-neutral-400">After transfer, take a screenshot and send it to our WhatsApp.</p>
+          </div>
+        )}
+
+        {placed.payment === 'cod' && (
+          <p className="mt-6 text-sm text-neutral-400">
+            Thanks {placed.name}. We will contact you at <span className="text-pure-white font-medium">{placed.phone}</span> to confirm your order before dispatch. You pay cash upon delivery.
+          </p>
+        )}
+
+        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition rounded"
+          >
+            Confirm / Send Receipt on WhatsApp
+          </a>
+          <Link
+            to="/track-order"
+            className="inline-flex items-center justify-center border border-neutral-700 hover:border-neutral-500 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-neutral-300 transition rounded"
+          >
+            Track Order
+          </Link>
+        </div>
+
+        <div className="mt-4">
+          <Link to="/shop" className="text-xs text-neutral-500 hover:text-neutral-300 underline">
+            Keep shopping
+          </Link>
+        </div>
       </div>
     )
   }
@@ -92,7 +172,7 @@ export default function Checkout() {
         currency: 'EGP',
         createdAt: new Date().toISOString(),
       })
-      setPlaced({ name: form.name.trim().split(' ')[0], phone, payment: form.payment, id: result.id, demo: result.demo })
+      setPlaced({ name: form.name.trim().split(' ')[0], phone, payment: form.payment, id: result.id, total, demo: result.demo })
       clear()
     } catch (err) {
       setError(err.message)

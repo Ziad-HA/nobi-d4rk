@@ -180,7 +180,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:text-black">
+              <Link to="/track-order" className="hover:text-black">
                 Track Your Order
               </Link>
             </li>

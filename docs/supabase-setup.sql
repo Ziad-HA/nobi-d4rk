@@ -140,3 +140,59 @@ $$;
 
 revoke all on function public.place_order(jsonb, jsonb, text, jsonb) from public;
 grant execute on function public.place_order(jsonb, jsonb, text, jsonb) to anon, authenticated;
+
+-- 5) track_order: safe public lookup by order number + mobile number ---
+create or replace function public.track_order(
+  p_number text,
+  p_phone  text
+) returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_num   text := upper(btrim(coalesce(p_number, '')));
+  v_phone text := regexp_replace(coalesce(p_phone, ''), '[^0-9]', '', 'g');
+  v_rec   record;
+  v_items jsonb;
+begin
+  if length(v_num) = 0 or length(v_phone) < 9 then
+    raise exception 'Please enter a valid order number and mobile number.';
+  end if;
+
+  select id, number, name, governorate, city, payment, status, total, created_at
+  into v_rec
+  from public.orders
+  where upper(number) = v_num
+    and (phone = v_phone or phone like '%' || right(v_phone, 9));
+
+  if v_rec.id is null then
+    raise exception 'Order not found. Please verify your order number and phone number.';
+  end if;
+
+  select coalesce(jsonb_agg(jsonb_build_object(
+    'name', name,
+    'size', size,
+    'qty', qty,
+    'price', price
+  )), '[]'::jsonb)
+  into v_items
+  from public.order_items
+  where order_id = v_rec.id;
+
+  return jsonb_build_object(
+    'number', v_rec.number,
+    'name', v_rec.name,
+    'governorate', v_rec.governorate,
+    'city', v_rec.city,
+    'payment', v_rec.payment,
+    'status', v_rec.status,
+    'total', v_rec.total,
+    'createdAt', v_rec.created_at,
+    'items', v_items
+  );
+end;
+$$;
+
+revoke all on function public.track_order(text, text) from public;
+grant execute on function public.track_order(text, text) to anon, authenticated;

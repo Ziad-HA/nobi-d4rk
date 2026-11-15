@@ -19,6 +19,12 @@ export default function Contact() {
       return;
     }
     setError("");
+
+    // Open WhatsApp directly with the filled message
+    const msg = `*New Contact Message - D4RK*\n\n*Name:* ${form.name.trim()}\n*Email:* ${form.email.trim()}\n*Message:* ${form.message.trim()}`;
+    const waUrl = `https://wa.me/${brand.whatsapp}?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, "_blank");
+
     setSent(true);
   };
 
@@ -79,12 +85,24 @@ export default function Contact() {
       </div>
 
       {sent ? (
-        <p className="self-center text-sm">
-          Thanks — we’ll get back within a day.{" "}
-          <span className="font-ar" lang="ar">
-            شكراً ليك!
-          </span>
-        </p>
+        <div className="self-center space-y-4 rounded border border-neutral-800 bg-neutral-900/60 p-6 text-center">
+          <p className="text-base font-medium text-pure-white">
+            Opening WhatsApp to send your message...
+          </p>
+          <p className="text-sm text-neutral-400">
+            Thanks! We’ll review and reply to you as soon as possible.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setSent(false);
+              setForm({ name: "", email: "", message: "" });
+            }}
+            className="mt-4 border border-neutral-700 px-5 py-2 text-xs uppercase tracking-wider text-neutral-300 hover:text-white"
+          >
+            Send another message
+          </button>
+        </div>
       ) : (
         <form onSubmit={onSubmit} className="space-y-5" noValidate>
           {error && (

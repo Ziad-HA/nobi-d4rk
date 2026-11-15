@@ -70,3 +70,45 @@ export async function createOrder(order) {
     demo: false,
   };
 }
+
+export async function trackOrder({ number, phone }) {
+  if (!isBackendConnected) {
+    throw new Error("Supabase is not configured.");
+  }
+
+  let res;
+  try {
+    res = await fetch(
+      `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/rpc/track_order`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SUPABASE_ANON_KEY,
+          ...(SUPABASE_ANON_KEY.startsWith("eyJ")
+            ? { Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
+            : {}),
+        },
+        body: JSON.stringify({
+          p_number: number.trim().toUpperCase(),
+          p_phone: phone.replace(/[^0-9]/g, ""),
+        }),
+      }
+    );
+  } catch {
+    throw new Error("Could not reach the server. Please check your connection.");
+  }
+
+  if (!res.ok) {
+    let msg = "Order not found or details do not match.";
+    try {
+      const data = await res.json();
+      if (data?.message) msg = data.message;
+    } catch {
+      // keep fallback
+    }
+    throw new Error(msg);
+  }
+
+  return await res.json();
+}
