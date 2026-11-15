@@ -196,3 +196,43 @@ $$;
 
 revoke all on function public.track_order(text, text) from public;
 grant execute on function public.track_order(text, text) to anon, authenticated;
+
+
+-- 6) change_order_payment: change payment method on an existing order
+create or replace function public.change_order_payment(
+  p_number  text,
+  p_phone   text,
+  p_payment text
+) returns text
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_number text := upper(btrim(coalesce(p_number, '')));
+  v_phone  text := regexp_replace(coalesce(p_phone, ''), '[^0-9]', '', 'g');
+begin
+  if p_payment not in ('cod', 'instapay', 'wallet') then
+    raise exception 'Invalid payment method.';
+  end if;
+
+  if length(v_number) = 0 or v_phone !~ '^01[0125][0-9]{8}$' then
+    raise exception 'Invalid order details.';
+  end if;
+
+  update public.orders
+  set payment = p_payment
+  where upper(number) = v_number
+    and phone = v_phone
+    and status = 'new';
+
+  if not found then
+    raise exception 'Order not found or payment can no longer be changed.';
+  end if;
+
+  return p_payment;
+end;
+$$;
+
+revoke all on function public.change_order_payment(text, text, text) from public;
+grant execute on function public.change_order_payment(text, text, text) to anon, authenticated; 
