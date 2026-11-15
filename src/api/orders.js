@@ -47,7 +47,6 @@ export async function createOrder(order) {
             size,
             qty,
           })),
-          p_coupon: order.couponCode?.trim().toUpperCase() || null,
         }),
       }
     );
