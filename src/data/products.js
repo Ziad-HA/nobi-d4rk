@@ -214,12 +214,9 @@ export const products = [
   },
 ];
 
-// Until you add cover photos for collections and categories (/images/products/col-*.jpg, cat-*.jpg),
-// each one borrows the photo of its first product.
+// Collection covers live in /images/products/col-*.jpg. Until you add category covers (cat-*.jpg),
+// each category borrows the photo of its first product.
 const firstPhoto = (match) => products.find(match)?.image
-collections.forEach((c) => {
-  c.image = firstPhoto((p) => p.collection === c.slug) ?? c.image
-})
 categories.forEach((c) => {
   c.image = firstPhoto((p) => p.category === c.slug) ?? c.image
 })

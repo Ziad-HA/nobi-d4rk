@@ -59,6 +59,7 @@ export default function Collections() {
               alt=""
               className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-pure-black/80 via-pure-black/20 to-transparent" aria-hidden="true" />
             <div className="relative flex h-full min-h-[320px] flex-col justify-end p-6 text-pure-white">
               <h2 className="font-display uppercase text-2xl sm:text-3xl tracking-tight">{c.name}</h2>
               <p className="mt-1 text-sm">{c.tagline}</p>
