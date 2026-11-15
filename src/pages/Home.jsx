@@ -95,12 +95,11 @@ export default function Home() {
       </section>
 
       {/* Manifesto */}
-      <section className="page pt-14 sm:pt-36">
-        <h2 className="relative z-10 max-w-[17em] font-display text-[7.2vw] font-extrabold uppercase leading-[1.05] tracking-tight sm:text-[5vw] lg:text-[4.4vw]">
-          {brand.name} finishes the fit because the small details are made to
-          last
+      <section className="page py-16 sm:py-24">
+        <h2 className="mx-auto max-w-[550px] text-center font-sans text-lg sm:text-[22px] font-medium leading-relaxed tracking-normal text-neutral-400">
+          <span className="font-semibold text-pure-white">{brand.name}</span> finishes the fit because the small details are made to last
         </h2>
-        <div className="relative -mt-[2vw] aspect-[16/9] overflow-hidden bg-neutral-100 sm:-mt-[1.4vw]">
+        <div className="relative mt-8 sm:mt-12 aspect-[16/9] overflow-hidden bg-neutral-100">
           <Photo
             src="/images/grillz.jpg"
             alt="Silver Grillz"
