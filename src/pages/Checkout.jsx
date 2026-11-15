@@ -34,9 +34,13 @@ export default function Checkout() {
 
   useEffect(() => {
     if (placed) {
-      window.scrollTo(0, 0)
-      document.documentElement.scrollTop = 0
-      document.body.scrollTop = 0
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      const el = document.getElementById('order-received-top');
+      if (el) {
+        el.scrollIntoView({ block: 'start', inline: 'nearest' });
+      }
     }
   }, [placed])
 
@@ -47,7 +51,7 @@ export default function Checkout() {
     const waUrl = `https://wa.me/${brand.whatsapp}?text=${waMsg}`
 
     return (
-      <div className="mx-auto max-w-xl px-4 py-24 text-center">
+      <div id="order-received-top" className="mx-auto max-w-xl px-4 py-16 sm:py-24 text-center">
         <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Order received</h1>
         <p className="font-ar mt-2 text-lg" lang="ar">
           تم استلام طلبك
