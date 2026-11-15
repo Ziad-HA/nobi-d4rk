@@ -1,90 +1,40 @@
+
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://www.d4rk.eu.org//</loc>
+    <loc>https://www.d4rk.eu.org/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://d4rk.eu.org/shop</loc>
+    <loc>https://www.d4rk.eu.org/shop</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://d4rk.eu.org/lookbook</loc>
+    <loc>https://www.d4rk.eu.org/lookbook</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
-  <url>
-    <loc>https://d4rk.eu.org/product/flame-cap</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/patch-trucker</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/star-trucker</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/thorn-beanie</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/shadow-beanie</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/cross-beanie</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/shark-backpack</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/crystal-backpack</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/smoke-backpack</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/ribbed-ring</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/numbers-ring</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/signet-ring</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/cross-frame</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/clear-frame</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/plate-tag</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/double-tag</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://d4rk.eu.org/product/opener-tag</loc>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://www.d4rk.eu.org/product/flame-cap</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/patch-trucker</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/star-trucker</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/thorn-beanie</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/shadow-beanie</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/cross-beanie</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/shark-backpack</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/crystal-backpack</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/smoke-backpack</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/ribbed-ring</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/numbers-ring</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/signet-ring</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/cross-frame</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/clear-frame</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/plate-tag</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/double-tag</loc></url>
+  <url><loc>https://www.d4rk.eu.org/product/opener-tag</loc></url>
 
 </urlset>
