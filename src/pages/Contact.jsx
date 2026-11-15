@@ -85,12 +85,10 @@ export default function Contact() {
       </div>
 
       {sent ? (
-        <div className="self-center space-y-4 rounded border border-neutral-800 bg-neutral-900/60 p-6 text-center">
-          <p className="text-base font-medium text-pure-white">
-            Opening WhatsApp to send your message...
-          </p>
-          <p className="text-sm text-neutral-400">
-            Thanks! We’ll review and reply to you as soon as possible.
+        <div className="self-center space-y-4 border border-neutral-200 p-8 text-center text-sm">
+          <p className="font-display uppercase text-xl">Opening WhatsApp…</p>
+          <p className="text-neutral-600">
+            Thanks! We’ll reply to your message as soon as possible.
           </p>
           <button
             type="button"
@@ -98,7 +96,7 @@ export default function Contact() {
               setSent(false);
               setForm({ name: "", email: "", message: "" });
             }}
-            className="mt-4 border border-neutral-700 px-5 py-2 text-xs uppercase tracking-wider text-neutral-300 hover:text-white"
+            className="mt-2 inline-block border border-neutral-300 px-6 py-2 text-xs uppercase tracking-wider hover:border-black"
           >
             Send another message
           </button>
