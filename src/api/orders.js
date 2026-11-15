@@ -1,10 +1,7 @@
-
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const isBackendConnected = Boolean(
-  SUPABASE_URL && SUPABASE_ANON_KEY
-);
+export const isBackendConnected = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
 const getHeaders = () => ({
   "Content-Type": "application/json",
@@ -25,9 +22,7 @@ async function getErrorMessage(res, fallback) {
 
 export async function createOrder(order) {
   if (!isBackendConnected) {
-    throw new Error(
-      "Supabase is not configured. Please try again later."
-    );
+    throw new Error("Supabase is not configured. Please try again later.");
   }
 
   let res;
@@ -47,12 +42,13 @@ export async function createOrder(order) {
             size,
             qty,
           })),
+          p_coupon: order.couponCode || null,
         }),
-      }
+      },
     );
   } catch {
     throw new Error(
-      "Could not reach the server. Check your connection and try again."
+      "Could not reach the server. Check your connection and try again.",
     );
   }
 
@@ -60,8 +56,8 @@ export async function createOrder(order) {
     throw new Error(
       await getErrorMessage(
         res,
-        "Something went wrong while placing your order."
-      )
+        "Something went wrong while placing your order.",
+      ),
     );
   }
 
@@ -90,20 +86,17 @@ export async function trackOrder({ number, phone }) {
           p_number: number.trim().toUpperCase(),
           p_phone: phone.replace(/[^0-9]/g, ""),
         }),
-      }
+      },
     );
   } catch {
     throw new Error(
-      "Could not reach the server. Please check your connection."
+      "Could not reach the server. Please check your connection.",
     );
   }
 
   if (!res.ok) {
     throw new Error(
-      await getErrorMessage(
-        res,
-        "Order not found or details do not match."
-      )
+      await getErrorMessage(res, "Order not found or details do not match."),
     );
   }
 
@@ -133,20 +126,17 @@ export async function changeOrderPayment({ number, phone, payment }) {
           p_phone: phone.replace(/[^0-9]/g, ""),
           p_payment: payment,
         }),
-      }
+      },
     );
   } catch {
     throw new Error(
-      "Could not reach the server. Please check your connection."
+      "Could not reach the server. Please check your connection.",
     );
   }
 
   if (!res.ok) {
     throw new Error(
-      await getErrorMessage(
-        res,
-        "Could not change the payment method."
-      )
+      await getErrorMessage(res, "Could not change the payment method."),
     );
   }
 
