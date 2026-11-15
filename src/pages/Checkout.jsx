@@ -179,6 +179,7 @@ export default function Checkout() {
         createdAt: new Date().toISOString(),
       })
       setPlaced({ name: form.name.trim().split(' ')[0], phone, payment: form.payment, id: result.id, total, demo: result.demo })
+      window.scrollTo({ top: 0, behavior: 'instant' })
       if (form.payment === 'cod') {
         clear()
       }
