@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { formatPrice } from '../data/products'
-import { governorates, paymentMethods } from '../data/brand'
+import { brand, governorates, paymentMethods } from '../data/brand'
+import { createOrder, isBackendConnected } from '../api/orders'
 
 // Egyptian mobile numbers: 01[0125]xxxxxxxx (11 digits). Accepts +20 / 0020 prefixes and spaces.
 const normalizePhone = (raw) => {
@@ -18,6 +19,7 @@ export default function Checkout() {
   const { items, subtotal, shipping, total, clear } = useCart()
   const [placed, setPlaced] = useState(null)
   const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -25,6 +27,7 @@ export default function Checkout() {
     governorate: '',
     city: '',
     address: '',
+    notes: '',
     payment: 'cod',
   })
 
@@ -41,7 +44,8 @@ export default function Checkout() {
             ? ' before delivery. You pay in cash when it arrives.'
             : ' and send the payment details.'}
         </p>
-        <p className="mt-2 text-xs text-neutral-500">This is a demo store — no real order was placed.</p>
+        <p className="mt-4 text-sm">Order number: <span className="font-semibold tabular-nums">{placed.id}</span></p>
+        {placed.demo && <p className="mt-2 text-xs text-neutral-500">Test mode: this order was only saved in your browser.</p>}
         <Link to="/shop" className="mt-8 inline-block bg-black px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
           Keep shopping
         </Link>
@@ -60,16 +64,41 @@ export default function Checkout() {
     )
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
+    if (submitting) return
     if (!form.name.trim()) return setError('Please enter your full name.')
     if (!isEgyptianMobile(form.phone)) return setError('Please enter a valid Egyptian mobile number, like 01012345678.')
     if (form.email && !form.email.includes('@')) return setError('That email doesn’t look right.')
     if (!form.governorate) return setError('Please choose your governorate.')
     if (!form.city.trim() || form.address.trim().length < 6) return setError('Please add your city/area and full address.')
     setError('')
-    setPlaced({ name: form.name.trim().split(' ')[0], phone: normalizePhone(form.phone), payment: form.payment })
-    clear()
+    setSubmitting(true)
+    const phone = normalizePhone(form.phone)
+    try {
+      const result = await createOrder({
+        customer: { name: form.name.trim(), phone, email: form.email.trim() },
+        shipping: {
+          governorate: form.governorate,
+          city: form.city.trim(),
+          address: form.address.trim(),
+          notes: form.notes.trim(),
+        },
+        payment: form.payment,
+        items: items.map((i) => ({ productId: i.id, name: i.name, size: i.size, qty: i.qty, price: i.price })),
+        subtotal,
+        shippingFee: shipping,
+        total,
+        currency: 'EGP',
+        createdAt: new Date().toISOString(),
+      })
+      setPlaced({ name: form.name.trim().split(' ')[0], phone, payment: form.payment, id: result.id, demo: result.demo })
+      clear()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value })
@@ -134,6 +163,11 @@ export default function Checkout() {
           />
         </div>
 
+        <div>
+          <label htmlFor="notes" className={labelClass}>Notes (optional)</label>
+          <input id="notes" placeholder="Landmark, preferred delivery time…" value={form.notes} onChange={set('notes')} className={inputClass} />
+        </div>
+
         <fieldset>
           <legend className={labelClass}>Payment</legend>
           <div className="mt-2 space-y-2">
@@ -161,10 +195,18 @@ export default function Checkout() {
           </div>
         </fieldset>
 
-        <button type="submit" className="mt-4 w-full bg-black py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
-          Place order — {formatPrice(total)}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="mt-4 w-full bg-black py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white disabled:opacity-60"
+        >
+          {submitting ? 'Placing order…' : `Place order — ${formatPrice(total)}`}
         </button>
-        <p className="text-xs text-neutral-500">Demo only. No real order or payment is processed.</p>
+        <p className="text-xs text-neutral-500">
+          {isBackendConnected
+            ? `Questions about your order? WhatsApp us on +${brand.whatsapp}.`
+            : 'Test mode: orders are only saved in this browser until the backend is connected.'}
+        </p>
       </form>
 
       <aside className="h-fit border border-neutral-200 p-6">

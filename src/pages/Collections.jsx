@@ -54,7 +54,7 @@ export default function Collections() {
       <div className="mt-10 grid gap-4 md:grid-cols-3">
         {collections.map((c) => (
           <Link key={c.slug} to={`/collections/${c.slug}`} className="group relative min-h-[320px] overflow-hidden bg-pure-black">
-            <img
+            <Photo
               src={c.image}
               alt=""
               className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105"

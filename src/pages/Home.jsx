@@ -61,7 +61,7 @@ export default function Home() {
       </section>
 
       {/* New collection */}
-      <section className="page pt-10 sm:pt-14">
+      <section className="page pt-8 sm:pt-14">
         <div className="mb-4 flex items-baseline justify-between">
           <h2 className={label}>New collection</h2>
           <Link
@@ -79,7 +79,7 @@ export default function Home() {
       </section>
 
       {/* Manifesto */}
-      <section className="page pt-24 sm:pt-36">
+      <section className="page pt-14 sm:pt-36">
         <h2 className="relative z-10 max-w-[17em] font-display text-[7.2vw] font-extrabold uppercase leading-[1.05] tracking-tight sm:text-[5vw] lg:text-[4.4vw]">
           {brand.name} finishes the fit because the small details are made to
           last
@@ -94,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* Lookbook */}
-      <section className="page pt-24 sm:pt-36">
+      <section className="page pt-14 sm:pt-36">
         <div className="mx-auto max-w-5xl">
           <div className="mb-4 flex items-baseline justify-between">
             <h2 className={label}>Lookbook</h2>
@@ -125,7 +125,7 @@ export default function Home() {
       </section>
 
       {/* Catalog */}
-      <section className="page pt-24 sm:pt-36">
+      <section className="page pt-14 sm:pt-36">
         <h2 className={`${label} mb-4`}>Catalog</h2>
         <ul className="border-t border-neutral-200">
           {categories.map((c) => (
