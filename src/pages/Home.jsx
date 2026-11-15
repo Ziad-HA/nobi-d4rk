@@ -122,18 +122,19 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 items-start gap-3 sm:grid-cols-4">
             {siteImages.lookbook.map((src, i) => (
-              <div
+              <Link
                 key={src}
-                className={`aspect-[3/4] overflow-hidden bg-neutral-100 ${
+                to="/collections"
+                className={`group block aspect-[3/4] overflow-hidden bg-neutral-100 transition-opacity hover:opacity-90 ${
                   i % 2 ? "mt-8 sm:mt-16" : ""
                 }`}
               >
                 <Photo
                   src={src}
-                  alt=""
-                  className="h-full w-full object-cover"
+                  alt="D4RK Lookbook Collection"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-              </div>
+              </Link>
             ))}
           </div>
         </div>
