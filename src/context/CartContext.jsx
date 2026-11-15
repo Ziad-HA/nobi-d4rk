@@ -22,7 +22,7 @@ export function CartProvider({ children }) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
-      // Storage unavailable — cart still works in memory
+      // Storage unavailable
     }
   }, [items]);
 
@@ -37,7 +37,7 @@ export function CartProvider({ children }) {
     product,
     size = product.sizes?.[0] || "OS",
     qty = 1,
-    { openCart = true } = {},
+    { openCart } = {},
   ) => {
     setItems((prev) => {
       const index = prev.findIndex(
@@ -66,7 +66,11 @@ export function CartProvider({ children }) {
       ];
     });
 
-    if (openCart) {
+    // Default: open on desktop, stay closed on mobile
+    const shouldOpen =
+      openCart ?? window.matchMedia("(min-width: 768px)").matches;
+
+    if (shouldOpen) {
       setIsOpen(true);
     }
 
