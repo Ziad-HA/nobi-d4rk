@@ -19,6 +19,7 @@ export default function Checkout() {
   const { items, subtotal, shipping, total, clear } = useCart()
   const [placed, setPlaced] = useState(null)
   const [error, setError] = useState('')
+  const [confirmedPayment, setConfirmedPayment] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [form, setForm] = useState({
     name: '',
@@ -45,54 +46,74 @@ export default function Checkout() {
         </p>
 
         <p className="mt-4 text-sm text-neutral-600">
-          Thanks {placed.name}. We’ll message you on WhatsApp at {placed.phone} to confirm your order
+          Thanks {placed.name}. We’ll contact you via WhatsApp or phone call at {placed.phone} to confirm your order
           {placed.payment === 'cod'
             ? ' before delivery. You pay in cash when it arrives.'
-            : ' and confirm your payment.'}
+            : ' and verify your payment transfer.'}
         </p>
 
         <p className="mt-4 text-sm">
           Order number: <span className="font-semibold tabular-nums">{placed.id}</span>
         </p>
 
-        {placed.payment === 'instapay' && (
-          <div className="mt-6 border border-neutral-200 p-4 text-left text-sm">
-            <p className="font-semibold">InstaPay details:</p>
-            <p className="mt-1 text-neutral-600">
-              Send <span className="font-semibold">{formatPrice(placed.total)}</span> to{' '}
-              <button
-                type="button"
-                onClick={() => navigator.clipboard.writeText(brand.instapayUsername || 'ziad.nobii99')}
-                className="underline hover:text-black font-mono cursor-pointer"
-                title="Click to copy"
-              >
-                {brand.instapayUsername || 'ziad.nobii99'}
-              </button>{' '}
-              (click to copy).
-            </p>
-            <p className="mt-2 text-xs text-neutral-500">
-              Then send us the screenshot on WhatsApp to confirm your order.
-            </p>
-          </div>
-        )}
+        {placed.payment !== 'cod' && (
+          <div className="mt-6 border border-neutral-200 p-5 text-left text-sm space-y-3">
+            {placed.payment === 'instapay' && (
+              <>
+                <p className="font-semibold text-black">InstaPay details:</p>
+                <p className="text-neutral-600">
+                  Send <span className="font-semibold text-black">{formatPrice(placed.total)}</span> to{' '}
+                  <button
+                    type="button"
+                    onClick={() => navigator.clipboard.writeText(brand.instapayUsername || 'ziad.nobii99')}
+                    className="underline hover:text-black font-mono cursor-pointer font-semibold text-black"
+                    title="Click to copy"
+                  >
+                    {brand.instapayUsername || 'ziad.nobii99'}
+                  </button>{' '}
+                  (click to copy).
+                </p>
+              </>
+            )}
 
-        {placed.payment === 'wallet' && (
-          <div className="mt-6 border border-neutral-200 p-4 text-left text-sm">
-            <p className="font-semibold">Vodafone Cash details:</p>
-            <p className="mt-1 text-neutral-600">
-              Send <span className="font-semibold">{formatPrice(placed.total)}</span> to{' '}
-              <button
-                type="button"
-                onClick={() => navigator.clipboard.writeText(brand.vodafoneCash || '01098616961')}
-                className="underline hover:text-black font-mono cursor-pointer"
-                title="Click to copy"
-              >
-                {brand.vodafoneCash || '01098616961'}
-              </button>{' '}
-              (click to copy).
-            </p>
-            <p className="mt-2 text-xs text-neutral-500">
-              Then send us the screenshot on WhatsApp to confirm your order.
+            {placed.payment === 'wallet' && (
+              <>
+                <p className="font-semibold text-black">Vodafone Cash details:</p>
+                <p className="text-neutral-600">
+                  Send <span className="font-semibold text-black">{formatPrice(placed.total)}</span> to{' '}
+                  <button
+                    type="button"
+                    onClick={() => navigator.clipboard.writeText(brand.vodafoneCash || '01098616961')}
+                    className="underline hover:text-black font-mono cursor-pointer font-semibold text-black"
+                    title="Click to copy"
+                  >
+                    {brand.vodafoneCash || '01098616961'}
+                  </button>{' '}
+                  (click to copy).
+                </p>
+              </>
+            )}
+
+            <div className="pt-2 border-t border-neutral-200">
+              {confirmedPayment ? (
+                <p className="text-xs text-emerald-600 font-semibold">
+                  ✓ Payment transfer confirmed. Thank you!
+                </p>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConfirmedPayment(true)
+                    clear()
+                  }}
+                  className="w-full sm:w-auto bg-black text-white px-5 py-2 text-xs uppercase font-semibold tracking-wider hover:opacity-90"
+                >
+                  I have transferred the money (أنا حولت المبلغ خلاص)
+                </button>
+              )}
+            </div>
+            <p className="text-xs text-neutral-500">
+              After transfer, you can also send the screenshot on WhatsApp or Instagram DM (@{brand.instagram}).
             </p>
           </div>
         )}
@@ -102,6 +123,7 @@ export default function Checkout() {
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => clear()}
             className="inline-block bg-black px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white"
           >
             {placed.payment === 'cod' ? 'Confirm on WhatsApp' : 'Send receipt on WhatsApp'}
@@ -157,7 +179,9 @@ export default function Checkout() {
         createdAt: new Date().toISOString(),
       })
       setPlaced({ name: form.name.trim().split(' ')[0], phone, payment: form.payment, id: result.id, total, demo: result.demo })
-      clear()
+      if (form.payment === 'cod') {
+        clear()
+      }
     } catch (err) {
       setError(err.message)
     } finally {
