@@ -144,7 +144,7 @@ export async function changeOrderPayment({ number, phone, payment }) {
 }
 
 // Sends the confirmation email through the Vercel function /api/send-order-email
-// (Resend). The function re-checks the order in Supabase before sending.
+// (Brevo). The function re-checks the order in Supabase before sending.
 export async function sendOrderConfirmation({ number, phone, email }) {
   let res;
 

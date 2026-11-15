@@ -1,3 +1,5 @@
+import { sendBrevoEmail, SITE_URL } from './_brevo.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -9,24 +11,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Please enter a valid email address.' });
   }
 
-  const RESEND_API_KEY = process.env.RESEND_API_KEY;
-
-  if (!RESEND_API_KEY) {
-    return res.status(500).json({ error: 'Resend API Key is not configured on Vercel.' });
-  }
-
   try {
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: 'D4RK <onboarding@resend.dev>',
-        to: [email],
-        subject: "WELCOME TO D4RK // YOU'RE IN",
-        html: `
+    await sendBrevoEmail({
+      to: email.trim(),
+      subject: "WELCOME TO D4RK // YOU'RE IN",
+      html: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,7 +71,7 @@ export default async function handler(req, res) {
               <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 28px; width: 100%;">
                 <tr>
                   <td align="center">
-                    <a href="https://nobi-dusk.vercel.app/shop" target="_blank" style="display: block; width: 85%; background-color: #ffffff; color: #000000; text-decoration: none; font-size: 12px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; padding: 14px 20px; border-radius: 2px; text-align: center;">
+                    <a href="${SITE_URL}/shop" target="_blank" style="display: block; width: 85%; background-color: #ffffff; color: #000000; text-decoration: none; font-size: 12px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; padding: 14px 20px; border-radius: 2px; text-align: center;">
                       Shop The Collection
                     </a>
                   </td>
@@ -106,17 +95,11 @@ export default async function handler(req, res) {
 </body>
 </html>
         `,
-      }),
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(response.status).json({ error: data.message || 'Failed to send email.' });
-    }
-
-    return res.status(200).json({ success: true, id: data.id });
+    return res.status(200).json({ success: true });
   } catch (error) {
-    return res.status(500).json({ error: 'Server error while sending newsletter email.' });
+    console.error('Newsletter email failed:', error.message);
+    return res.status(500).json({ error: error.message || 'Server error while sending newsletter email.' });
   }
 }

@@ -1,14 +1,16 @@
-// Vercel serverless function: sends the order emails through Resend.
+// Vercel serverless function: sends the order emails through Brevo.
 //
 // Required env vars on Vercel:
-//   RESEND_API_KEY      - Resend API key
-//   VITE_SUPABASE_URL   - (or SUPABASE_URL) used to verify the order
+//   BREVO_API_KEY          - Brevo API key
+//   VITE_SUPABASE_URL      - (or SUPABASE_URL) used to verify the order
 //   VITE_SUPABASE_ANON_KEY - (or SUPABASE_ANON_KEY)
 // Optional:
-//   RESEND_FROM         - e.g. "D4RK <orders@yourdomain.com>" (verified domain in Resend).
-//                         Without it Resend only delivers to the Resend account owner's email.
-//   OWNER_EMAIL         - where new-order alerts go
-//   SITE_URL            - public URL of the store, e.g. https://your-store.vercel.app
+//   BREVO_SENDER_EMAIL     - default orders@d4rk.eu.org (must be a verified sender in Brevo)
+//   BREVO_SENDER_NAME      - default D4RK
+//   OWNER_EMAIL            - where new-order alerts go
+//   SITE_URL               - default https://d4rk.eu.org
+
+import { sendBrevoEmail, SITE_URL } from './_brevo.js';
 
 const esc = (v) =>
   String(v ?? '')
@@ -55,28 +57,6 @@ async function verifyOrder({ number, phone }) {
   return res.json();
 }
 
-async function sendEmail(apiKey, payload) {
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    let message = `Resend error (${res.status})`;
-    try {
-      const data = await res.json();
-      message = data?.message || data?.error || message;
-    } catch {
-      // ignore
-    }
-    throw new Error(message);
-  }
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -88,15 +68,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Order number and phone are required.' });
   }
 
-  const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  if (!RESEND_API_KEY) {
-    return res.status(500).json({ error: 'RESEND_API_KEY is not configured on Vercel.' });
-  }
-
-  const FROM = process.env.RESEND_FROM || 'D4RK <onboarding@resend.dev>';
   const OWNER_EMAIL = process.env.OWNER_EMAIL || 'zh.nobii@gmail.com';
-  const host = req.headers['x-forwarded-host'] || req.headers.host;
-  const SITE_URL = (process.env.SITE_URL || (host ? `https://${host}` : '')).replace(/\/$/, '');
 
   // Only send emails for a real order (number + phone must match in Supabase).
   let order;
@@ -162,16 +134,14 @@ export default async function handler(req, res) {
   const hasCustomerEmail = typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const [owner, customer] = await Promise.allSettled([
-    sendEmail(RESEND_API_KEY, {
-      from: FROM,
-      to: [OWNER_EMAIL],
+    sendBrevoEmail({
+      to: OWNER_EMAIL,
       subject: `NEW ORDER: ${order.number} (${money(order.total)})`,
       html: ownerHtml,
     }),
     hasCustomerEmail
-      ? sendEmail(RESEND_API_KEY, {
-          from: FROM,
-          to: [email.trim()],
+      ? sendBrevoEmail({
+          to: email.trim(),
           subject: `ORDER CONFIRMED // ${order.number}`,
           html: customerHtml,
         })
