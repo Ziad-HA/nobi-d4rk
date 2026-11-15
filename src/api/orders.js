@@ -154,7 +154,7 @@ export async function sendOrderConfirmation({ number, phone }) {
   };
 
   const res = await fetch(
-    `${SUPABASE_URL.replace(/\/$/, "")}/functions/v1/d4rk`,
+    `${SUPABASE_URL.replace(/\/$/, "")}/functions/v1/D4RK`,
     {
       method: "POST",
       headers,
