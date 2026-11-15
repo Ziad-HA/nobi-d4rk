@@ -2,7 +2,7 @@
 export const brand = {
   name: "D4RK",
   tagline: "Streetwear accessories. Made in ALEX.",
-  instagram: "d4rk.eg",
+  instagram: "zi4dddd",
   email: "zh.nobii@gmail.com",
   // International format, digits only (01276390301 -> 201276390301)
   whatsapp: "201276390301",
