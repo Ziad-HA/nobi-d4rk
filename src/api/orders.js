@@ -1,27 +1,22 @@
-// Order submission. This is the one place to connect your backend (MongoDB).
+// Order submission, connected to Supabase.
 //
-// How it works:
-//  - Set VITE_API_URL in .env (for example https://your-api.vercel.app, or "" for the same domain) and
-//    this file will POST the order as JSON to `${VITE_API_URL}/api/orders`.
-//  - Your API should answer 201 with { "id": "<order number>" } and save the order in MongoDB.
-//  - With no VITE_API_URL the orders are only kept in this browser (localStorage, "d4rk-orders"),
-//    so the whole flow can be tested before the backend exists.
+// Setup (once):
+//  1. Run docs/supabase-setup.sql in Supabase -> SQL Editor. It creates the tables, turns on Row Level
+//     Security and adds the place_order() function that saves an order safely.
+//  2. Copy .env.example to .env and fill in (Supabase -> Project Settings -> API):
+//       VITE_SUPABASE_URL=https://xxxx.supabase.co
+//       VITE_SUPABASE_ANON_KEY=<the anon / publishable key>
+//     Use only the anon key here. Never put the service_role key in the website.
+//  3. Add the same two variables in Vercel (Settings -> Environment Variables) and redeploy.
 //
-// Payload sent to the API (shape of the MongoDB document):
-// {
-//   customer: { name, phone, email },
-//   shipping: { governorate, city, address, notes },
-//   payment: "cod" | "instapay" | "wallet",
-//   items: [{ productId, name, size, qty, price }],
-//   subtotal, shippingFee, total, currency: "EGP",
-//   createdAt: ISO string
-// }
-// Important: on the server, recalculate the prices from your own products list. Never trust the totals
-// coming from the browser.
+// The browser never writes to the tables directly: it calls place_order(), which validates the data and
+// recalculates every price from the products table. Without the two variables the site runs in test mode and
+// only keeps orders in this browser (localStorage, "d4rk-orders").
 
-const API_URL = import.meta.env.VITE_API_URL
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-export const isBackendConnected = API_URL !== undefined
+export const isBackendConnected = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY)
 
 export async function createOrder(order) {
   if (!isBackendConnected) {
@@ -31,31 +26,44 @@ export async function createOrder(order) {
       saved.push({ id, ...order })
       localStorage.setItem('d4rk-orders', JSON.stringify(saved))
     } catch {
-      /* storage blocked: still show the success screen in demo mode */
+      /* storage blocked: still show the success screen in test mode */
     }
     return { id, demo: true }
   }
 
   let res
   try {
-    res = await fetch(`${API_URL}/api/orders`, {
+    res = await fetch(`${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/rpc/place_order`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(order),
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({
+        p_customer: order.customer,
+        p_shipping: order.shipping,
+        p_payment: order.payment,
+        // only ids, sizes and quantities are sent for pricing; the server uses its own prices
+        p_items: order.items.map(({ productId, size, qty }) => ({ productId, size, qty })),
+      }),
     })
   } catch {
     throw new Error('Could not reach the server. Check your connection and try again.')
   }
+
   if (!res.ok) {
     let message = 'Something went wrong while placing your order. Please try again.'
     try {
       const data = await res.json()
-      if (data?.message) message = data.message
+      // messages raised by place_order() are written for customers; anything else stays generic
+      if (data?.code === 'P0001' && data?.message) message = data.message
     } catch {
       /* keep the default message */
     }
     throw new Error(message)
   }
-  const data = await res.json()
-  return { id: data.id, demo: false }
+
+  const number = await res.json()
+  return { id: number, demo: false }
 }

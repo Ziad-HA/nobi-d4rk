@@ -26,9 +26,11 @@ Name, Instagram handle, email, WhatsApp number, shipping fee and free-shipping t
 
 Demo catalog uses Unsplash photography; swap in your own product photos in `src/data/products.js`.
 
-## Orders and MongoDB
+## Orders (Supabase)
 
-The checkout posts the order through `src/api/orders.js`. Put `VITE_API_URL` in `.env` (see `.env.example`) and the order is sent to `POST ${VITE_API_URL}/api/orders` as JSON, expecting `201 { "id": "..." }` back. The payload shape is documented at the top of that file. Recalculate prices on the server from your own product list. With no `VITE_API_URL` the site runs in test mode and keeps orders in the browser only.
+Run `docs/supabase-setup.sql` once in Supabase (SQL Editor). It creates the `products`, `orders` and `order_items` tables, turns on Row Level Security and adds `place_order()`, the only way the website can create an order. Then put `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env` (see `.env.example`) and in Vercel. Never use the service_role key in the website.
+
+`place_order()` checks the data and recalculates all prices from the `products` table, so the browser cannot change a price. When you change a price in `src/data/products.js`, update the `products` table too (re-running the file does it). Without the variables the site runs in test mode and keeps orders in the browser only.
 
 ## Deploy (Vercel)
 
