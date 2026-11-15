@@ -8,7 +8,7 @@ export const categories = [
   { slug: "caps", name: "Caps", nameAr: "كابات", image: img("cat-caps") },
   { slug: "beanies", name: "Beanies", nameAr: "بيني", image: img("cat-beanies") },
   { slug: "bags", name: "Backpacks", nameAr: "شنط", image: img("cat-bags") },
-  { slug: "jewelry", name: "Rings", nameAr: "خواتم", image: img("cat-jewelry") },
+  { slug: "jewelry", name: "Jewelry", nameAr: "إكسسوارات معدن", image: img("cat-jewelry") },
   { slug: "eyewear", name: "Eyewear", nameAr: "نظارات", image: img("cat-eyewear") },
 ];
 
@@ -178,6 +178,39 @@ export const products = [
     image: img("clear-frame"),
     sizes: ["OS"],
     description: "Crystal-clear frame with a silver fleur hardware detail on the temple. Clear lenses.",
+  },
+  {
+    id: "plate-tag",
+    name: "Plate Tag Chain",
+    price: 550,
+    category: "jewelry",
+    collection: "new-drops",
+    trending: true,
+    image: img("plate-tag"),
+    sizes: ["45 cm", "50 cm", "55 cm"],
+    description: "Stainless steel ball chain with an engraved-look plate tag. Polished finish that does not tarnish.",
+  },
+  {
+    id: "double-tag",
+    name: "Double Tag Chain",
+    price: 600,
+    category: "jewelry",
+    collection: "new-drops",
+    trending: true,
+    image: img("double-tag"),
+    sizes: ["45 cm", "50 cm", "55 cm"],
+    description: "Two polished steel dog tags on a ball chain, one stamped and one blank. Classic military shape.",
+  },
+  {
+    id: "opener-tag",
+    name: "Opener Tag Chain",
+    price: 480,
+    category: "jewelry",
+    collection: "essentials",
+    trending: false,
+    image: img("opener-tag"),
+    sizes: ["45 cm", "50 cm", "55 cm"],
+    description: "Antique silver tag on a ball chain with a working bottle-opener cut-out.",
   },
 ];
 

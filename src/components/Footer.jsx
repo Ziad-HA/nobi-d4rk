@@ -71,7 +71,7 @@ export default function Footer() {
           </p>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-600">
             Streetwear accessories, designed and made in ALEX. Caps, backpacks,
-            rings and eyewear to finish the fit.
+            jewelry and eyewear to finish the fit.
           </p>
           <div className="mt-5 flex gap-3">
             <a
@@ -125,7 +125,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to="/shop?category=jewelry" className="hover:text-black">
-                Rings
+                Jewelry
               </Link>
             </li>
             <li>
