@@ -33,99 +33,83 @@ export default function Checkout() {
 
   if (placed) {
     const waMsg = encodeURIComponent(
-      `Hello D4RK! I just placed order ${placed.id} for ${formatPrice(placed.total)} (${placed.payment === 'cod' ? 'Cash on Delivery' : placed.payment === 'instapay' ? 'InstaPay' : 'Vodafone Cash'}).`
+      `Hello D4RK! Order ${placed.id} - ${formatPrice(placed.total)} (${placed.payment === 'cod' ? 'Cash on Delivery' : placed.payment === 'instapay' ? 'InstaPay' : 'Vodafone Cash'}).`
     )
     const waUrl = `https://wa.me/${brand.whatsapp}?text=${waMsg}`
 
     return (
-      <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-pure-white">
-          <svg className="h-7 w-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
+      <div className="mx-auto max-w-xl px-4 py-24 text-center">
         <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">Order received</h1>
-        <p className="font-ar mt-2 text-lg text-neutral-400" lang="ar">
-          تم استلام طلبك بنجاح
+        <p className="font-ar mt-2 text-lg" lang="ar">
+          تم استلام طلبك
         </p>
 
-        <div className="mt-6 border border-neutral-700 bg-neutral-900 p-5 rounded text-left">
-          <div className="flex justify-between items-center border-b border-neutral-700 pb-3 text-sm">
-            <span className="text-neutral-300">Order Number</span>
-            <span className="font-bold text-pure-white tracking-wider font-mono">{placed.id}</span>
-          </div>
-          <div className="flex justify-between items-center pt-3 text-sm">
-            <span className="text-neutral-300">Total Amount</span>
-            <span className="font-bold text-pure-white">{formatPrice(placed.total)}</span>
-          </div>
-        </div>
+        <p className="mt-4 text-sm text-neutral-600">
+          Thanks {placed.name}. We’ll message you on WhatsApp at {placed.phone} to confirm your order
+          {placed.payment === 'cod'
+            ? ' before delivery. You pay in cash when it arrives.'
+            : ' and confirm your payment.'}
+        </p>
 
-        {/* Payment info for InstaPay & Wallet */}
+        <p className="mt-4 text-sm">
+          Order number: <span className="font-semibold tabular-nums">{placed.id}</span>
+        </p>
+
         {placed.payment === 'instapay' && (
-          <div className="mt-6 border border-neutral-700 bg-neutral-900 p-5 text-left rounded space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-pure-white">InstaPay Payment Details</p>
-            <p className="text-sm text-neutral-200">
-              Please transfer <span className="font-bold text-pure-white">{formatPrice(placed.total)}</span> to the InstaPay address:
-            </p>
-            <div className="flex items-center justify-between bg-pure-black px-4 py-2.5 border border-neutral-700 rounded font-mono text-sm text-pure-white">
-              <span className="text-pure-white font-medium">{brand.instapayUsername || 'ziad.nobii99'}</span>
+          <div className="mt-6 border border-neutral-200 p-4 text-left text-sm">
+            <p className="font-semibold">InstaPay details:</p>
+            <p className="mt-1 text-neutral-600">
+              Send <span className="font-semibold">{formatPrice(placed.total)}</span> to{' '}
               <button
                 type="button"
                 onClick={() => navigator.clipboard.writeText(brand.instapayUsername || 'ziad.nobii99')}
-                className="text-xs uppercase font-semibold text-neutral-300 hover:text-pure-white underline cursor-pointer"
+                className="underline hover:text-black font-mono cursor-pointer"
+                title="Click to copy"
               >
-                Copy
-              </button>
-            </div>
-            <p className="text-xs text-neutral-300">After payment, send the transfer receipt via WhatsApp to confirm your order.</p>
+                {brand.instapayUsername || 'ziad.nobii99'}
+              </button>{' '}
+              (click to copy).
+            </p>
+            <p className="mt-2 text-xs text-neutral-500">
+              Then send us the screenshot on WhatsApp to confirm your order.
+            </p>
           </div>
         )}
 
         {placed.payment === 'wallet' && (
-          <div className="mt-6 border border-neutral-700 bg-neutral-900 p-5 text-left rounded space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-pure-white">Vodafone Cash / Wallet Details</p>
-            <p className="text-sm text-neutral-200">
-              Please transfer <span className="font-bold text-pure-white">{formatPrice(placed.total)}</span> to Vodafone Cash:
-            </p>
-            <div className="flex items-center justify-between bg-pure-black px-4 py-2.5 border border-neutral-700 rounded font-mono text-sm text-pure-white">
-              <span className="text-pure-white font-medium">{brand.vodafoneCash || brand.whatsapp}</span>
+          <div className="mt-6 border border-neutral-200 p-4 text-left text-sm">
+            <p className="font-semibold">Vodafone Cash details:</p>
+            <p className="mt-1 text-neutral-600">
+              Send <span className="font-semibold">{formatPrice(placed.total)}</span> to{' '}
               <button
                 type="button"
-                onClick={() => navigator.clipboard.writeText(brand.vodafoneCash || brand.whatsapp)}
-                className="text-xs uppercase font-semibold text-neutral-300 hover:text-pure-white underline cursor-pointer"
+                onClick={() => navigator.clipboard.writeText(brand.vodafoneCash || '01098616961')}
+                className="underline hover:text-black font-mono cursor-pointer"
+                title="Click to copy"
               >
-                Copy
-              </button>
-            </div>
-            <p className="text-xs text-neutral-300">After transfer, take a screenshot and send it to our WhatsApp.</p>
+                {brand.vodafoneCash || '01098616961'}
+              </button>{' '}
+              (click to copy).
+            </p>
+            <p className="mt-2 text-xs text-neutral-500">
+              Then send us the screenshot on WhatsApp to confirm your order.
+            </p>
           </div>
         )}
 
-        {placed.payment === 'cod' && (
-          <p className="mt-6 text-sm text-neutral-400">
-            Thanks {placed.name}. We will contact you at <span className="text-pure-white font-medium">{placed.phone}</span> to confirm your order before dispatch. You pay cash upon delivery.
-          </p>
-        )}
-
-        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition rounded"
+            className="inline-block bg-black px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white"
           >
-            Confirm / Send Receipt on WhatsApp
+            {placed.payment === 'cod' ? 'Confirm on WhatsApp' : 'Send receipt on WhatsApp'}
           </a>
           <Link
-            to="/track-order"
-            className="inline-flex items-center justify-center border border-neutral-700 hover:border-neutral-500 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-neutral-300 transition rounded"
+            to="/shop"
+            className="inline-block border border-neutral-200 px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] hover:border-black"
           >
-            Track Order
-          </Link>
-        </div>
-
-        <div className="mt-4">
-          <Link to="/shop" className="text-xs text-neutral-500 hover:text-neutral-300 underline">
             Keep shopping
           </Link>
         </div>
