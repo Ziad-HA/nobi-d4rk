@@ -1,145 +1,193 @@
-
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useCart } from '../context/CartContext'
-import { formatPrice } from '../data/products'
-import { brand, governorates, paymentMethods } from '../data/brand'
-import { createOrder, isBackendConnected } from '../api/orders'
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import { formatPrice } from "../data/products";
+import { brand, governorates, paymentMethods } from "../data/brand";
+import {
+  createOrder,
+  changeOrderPayment,
+  isBackendConnected,
+} from "../api/orders";
 
 // Egyptian mobile numbers: 01[0125]xxxxxxxx (11 digits).
 // Accepts +20 / 0020 prefixes and spaces.
 const normalizePhone = (raw) => {
-  const digits = raw.replace(/[\s\-()]/g, '').replace(/^(\+20|0020)/, '0')
-  return digits
-}
+  const digits = raw.replace(/[\s\-()]/g, "").replace(/^(\+20|0020)/, "0");
+  return digits;
+};
 
-const isEgyptianMobile = (raw) => /^01[0125]\d{8}$/.test(normalizePhone(raw))
+const isEgyptianMobile = (raw) => /^01[0125]\d{8}$/.test(normalizePhone(raw));
 
-const inputClass = 'mt-2 h-11 w-full border border-neutral-300 px-3'
-const labelClass = 'text-xs font-semibold uppercase tracking-wide'
-const PLACED_STORAGE_KEY = 'd4rk-placed-order'
-const FORM_STORAGE_KEY = 'd4rk-checkout-form'
-const VALID_COUPON = 'D4RK10'
+const inputClass = "mt-2 h-11 w-full border border-neutral-300 px-3";
+const labelClass = "text-xs font-semibold uppercase tracking-wide";
+const PLACED_STORAGE_KEY = "d4rk-placed-order";
+const FORM_STORAGE_KEY = "d4rk-checkout-form";
+const VALID_COUPON = "D4RK10";
 
 export default function Checkout() {
-  const { items, subtotal, shipping, clear } = useCart()
+  const { items, subtotal, shipping, clear } = useCart();
 
   const [placed, setPlaced] = useState(() => {
     try {
-      const saved = sessionStorage.getItem(PLACED_STORAGE_KEY)
-      return saved ? JSON.parse(saved) : null
+      const saved = sessionStorage.getItem(PLACED_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : null;
     } catch {
-      return null
+      return null;
     }
-  })
+  });
 
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
   const [confirmedPayment, setConfirmedPayment] = useState(() => {
     try {
-      return sessionStorage.getItem('d4rk-payment-confirmed') === 'true'
+      return sessionStorage.getItem("d4rk-payment-confirmed") === "true";
     } catch {
-      return false
+      return false;
     }
-  })
+  });
 
-  const [submitting, setSubmitting] = useState(false)
+  const [submitting, setSubmitting] = useState(false);
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const [changingPayment, setChangingPayment] = useState(false);
 
-  const [couponCode, setCouponCode] = useState('')
-  const [appliedCoupon, setAppliedCoupon] = useState('')
-  const [couponMessage, setCouponMessage] = useState('')
-  const [couponError, setCouponError] = useState(false)
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState("");
+  const [couponMessage, setCouponMessage] = useState("");
+  const [couponError, setCouponError] = useState(false);
 
   const [form, setForm] = useState(() => {
     const defaults = {
-      name: '',
-      phone: '',
-      email: '',
-      governorate: '',
-      city: '',
-      address: '',
-      notes: '',
-      payment: 'cod',
-    }
+      name: "",
+      phone: "",
+      email: "",
+      governorate: "",
+      city: "",
+      address: "",
+      notes: "",
+      payment: "cod",
+    };
 
     try {
-      const saved = localStorage.getItem(FORM_STORAGE_KEY)
-      return saved ? { ...defaults, ...JSON.parse(saved) } : defaults
+      const saved = localStorage.getItem(FORM_STORAGE_KEY);
+      return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
     } catch {
-      return defaults
+      return defaults;
     }
-  })
+  });
 
-  const discount = appliedCoupon
-    ? Math.round(subtotal * 0.10)
-    : 0
+  const discount = appliedCoupon ? Math.round(subtotal * 0.1) : 0;
 
-  const finalTotal = subtotal - discount + shipping
+  const finalTotal = subtotal - discount + shipping;
 
   // Save form data so refresh does not lose customer inputs.
   useEffect(() => {
     try {
-      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(form))
+      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(form));
     } catch {
       // Ignore storage errors.
     }
-  }, [form])
+  }, [form]);
 
   // Save placed order state so refresh does not wipe the confirmation screen.
   useEffect(() => {
     if (placed) {
       try {
-        sessionStorage.setItem(PLACED_STORAGE_KEY, JSON.stringify(placed))
+        sessionStorage.setItem(PLACED_STORAGE_KEY, JSON.stringify(placed));
       } catch {
         // Ignore storage errors.
       }
 
-      window.scrollTo(0, 0)
-      document.documentElement.scrollTop = 0
-      document.body.scrollTop = 0
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
 
-      const el = document.getElementById('order-received-top')
+      const el = document.getElementById("order-received-top");
       if (el) {
-        el.scrollIntoView({ block: 'start', inline: 'nearest' })
+        el.scrollIntoView({ block: "start", inline: "nearest" });
       }
     }
-  }, [placed])
+  }, [placed]);
 
   const applyCoupon = () => {
-    const normalized = couponCode.trim().toUpperCase()
+    const normalized = couponCode.trim().toUpperCase();
 
     if (!normalized) {
-      setAppliedCoupon('')
-      setCouponError(true)
-      setCouponMessage('Please enter a coupon code.')
-      return
+      setAppliedCoupon("");
+      setCouponError(true);
+      setCouponMessage("Please enter a coupon code.");
+      return;
     }
 
     if (normalized !== VALID_COUPON) {
-      setAppliedCoupon('')
-      setCouponError(true)
-      setCouponMessage('Invalid coupon code.')
-      return
+      setAppliedCoupon("");
+      setCouponError(true);
+      setCouponMessage("Invalid coupon code.");
+      return;
     }
 
-    setAppliedCoupon(VALID_COUPON)
-    setCouponCode(VALID_COUPON)
-    setCouponError(false)
-    setCouponMessage('Coupon applied! You saved 10%.')
-  }
+    setAppliedCoupon(VALID_COUPON);
+    setCouponCode(VALID_COUPON);
+    setCouponError(false);
+    setCouponMessage("Coupon applied! You saved 10%.");
+  };
 
   const removeCoupon = () => {
-    setAppliedCoupon('')
-    setCouponCode('')
-    setCouponMessage('')
-    setCouponError(false)
-  }
+    setAppliedCoupon("");
+    setCouponCode("");
+    setCouponMessage("");
+    setCouponError(false);
+  };
+  const handleChangePayment = async (payment) => {
+    if (changingPayment || !placed || confirmedPayment) return;
+
+    if (payment === placed.payment) {
+      setShowPaymentOptions(false);
+      return;
+    }
+
+    setChangingPayment(true);
+    setError("");
+
+    try {
+      await changeOrderPayment({
+        number: placed.id,
+        phone: placed.phone,
+        payment,
+      });
+
+      setPlaced((prev) => ({
+        ...prev,
+        payment,
+      }));
+
+      setForm((prev) => ({
+        ...prev,
+        payment,
+      }));
+
+      setConfirmedPayment(false);
+
+      try {
+        sessionStorage.removeItem("d4rk-payment-confirmed");
+      } catch {}
+
+      if (payment === "cod") {
+        clear();
+      }
+
+      setShowPaymentOptions(false);
+    } catch (err) {
+      setError(err.message || "Could not change your payment method.");
+    } finally {
+      setChangingPayment(false);
+    }
+  };
 
   if (placed) {
     const waMsg = encodeURIComponent(
-      `Hello D4RK! Order ${placed.id} - ${formatPrice(placed.total)} (${placed.payment === 'cod' ? 'Cash on Delivery' : placed.payment === 'instapay' ? 'InstaPay' : 'Vodafone Cash'}).`
-    )
+      `Hello D4RK! Order ${placed.id} - ${formatPrice(placed.total)} (${placed.payment === "cod" ? "Cash on Delivery" : placed.payment === "instapay" ? "InstaPay" : "Vodafone Cash"}).`,
+    );
 
-    const waUrl = `https://wa.me/${brand.whatsapp}?text=${waMsg}`
+    const waUrl = `https://wa.me/${brand.whatsapp}?text=${waMsg}`;
 
     return (
       <div
@@ -155,14 +203,15 @@ export default function Checkout() {
         </p>
 
         <p className="mt-4 text-sm text-neutral-600">
-          Thanks {placed.name}. We’ll contact you via WhatsApp or phone call at {placed.phone} to confirm your order
-          {placed.payment === 'cod'
-            ? ' before delivery. You pay in cash when it arrives.'
-            : ' and verify your payment transfer.'}
+          Thanks {placed.name}. We’ll contact you via WhatsApp or phone call at{" "}
+          {placed.phone} to confirm your order
+          {placed.payment === "cod"
+            ? " before delivery. You pay in cash when it arrives."
+            : " and verify your payment transfer."}
         </p>
 
         <p className="mt-4 text-sm">
-          Order number:{' '}
+          Order number:{" "}
           <span className="font-semibold tabular-nums">{placed.id}</span>
         </p>
 
@@ -178,9 +227,7 @@ export default function Checkout() {
 
           {placed.discount > 0 && (
             <div className="mt-2 flex justify-between text-sm text-emerald-700">
-              <span>
-                Discount ({placed.couponCode})
-              </span>
+              <span>Discount ({placed.couponCode})</span>
               <span>-{formatPrice(placed.discount)}</span>
             </div>
           )}
@@ -188,67 +235,137 @@ export default function Checkout() {
           <div className="mt-2 flex justify-between text-sm">
             <span>Shipping</span>
             <span>
-              {placed.shipping === 0 ? 'Free' : formatPrice(placed.shipping ?? 0)}
+              {placed.shipping === 0
+                ? "Free"
+                : formatPrice(placed.shipping ?? 0)}
             </span>
           </div>
 
           <div className="mt-4 flex justify-between border-t border-neutral-200 pt-4 font-semibold">
-            <span>Total paid</span>
+            <span>Total</span>
             <span>{formatPrice(placed.total)}</span>
           </div>
         </div>
+        <div className="mt-6 border border-neutral-200 p-5 text-left">
+          <p className="text-xs font-semibold uppercase tracking-wider">
+            Payment method
+          </p>
 
-        {placed.payment !== 'cod' && (
+          <p className="mt-2 text-sm font-medium">
+            {placed.payment === "cod"
+              ? "Cash on Delivery"
+              : placed.payment === "instapay"
+                ? "InstaPay"
+                : "Vodafone Cash"}
+          </p>
+
+          {!confirmedPayment && (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPaymentOptions((prev) => !prev);
+                  setError("");
+                }}
+                disabled={changingPayment}
+                className="mt-4 border border-black px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-black hover:text-white disabled:opacity-50"
+              >
+                {showPaymentOptions ? "Cancel" : "Change payment method"}
+              </button>
+
+              {showPaymentOptions && (
+                <div className="mt-4 space-y-2">
+                  {paymentMethods.map((method) => (
+                    <button
+                      key={method.id}
+                      type="button"
+                      disabled={changingPayment}
+                      onClick={() => handleChangePayment(method.id)}
+                      className={`flex w-full items-center justify-between border px-3 py-3 text-sm disabled:opacity-50 ${
+                        placed.payment === method.id
+                          ? "border-black bg-neutral-50"
+                          : "border-neutral-200 hover:border-black"
+                      }`}
+                    >
+                      <span>{method.label}</span>
+                      <span>
+                        {changingPayment
+                          ? "Updating..."
+                          : placed.payment === method.id
+                            ? "Current"
+                            : "Select"}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {error && (
+                <p role="alert" className="mt-3 text-xs text-red-600">
+                  {error}
+                </p>
+              )}
+            </>
+          )}
+
+          {confirmedPayment && (
+            <p className="mt-3 text-xs text-neutral-500">
+              Payment has already been marked as transferred.
+            </p>
+          )}
+        </div>
+
+        {placed.payment !== "cod" && (
           <div className="mt-6 space-y-3 border border-neutral-200 p-5 text-left text-sm">
-            {placed.payment === 'instapay' && (
+            {placed.payment === "instapay" && (
               <>
                 <p className="font-semibold text-black">InstaPay details:</p>
                 <p className="text-neutral-600">
-                  Send{' '}
+                  Send{" "}
                   <span className="font-semibold text-black">
                     {formatPrice(placed.total)}
-                  </span>{' '}
-                  to{' '}
+                  </span>{" "}
+                  to{" "}
                   <button
                     type="button"
                     onClick={() =>
                       navigator.clipboard.writeText(
-                        brand.instapayUsername || 'ziad.nobii99'
+                        brand.instapayUsername || "ziad.nobii99",
                       )
                     }
                     className="cursor-pointer font-mono font-semibold text-black underline hover:text-black"
                     title="Click to copy"
                   >
-                    {brand.instapayUsername || 'ziad.nobii99'}
-                  </button>{' '}
+                    {brand.instapayUsername || "ziad.nobii99"}
+                  </button>{" "}
                   (click to copy).
                 </p>
               </>
             )}
 
-            {placed.payment === 'wallet' && (
+            {placed.payment === "wallet" && (
               <>
                 <p className="font-semibold text-black">
                   Vodafone Cash details:
                 </p>
                 <p className="text-neutral-600">
-                  Send{' '}
+                  Send{" "}
                   <span className="font-semibold text-black">
                     {formatPrice(placed.total)}
-                  </span>{' '}
-                  to{' '}
+                  </span>{" "}
+                  to{" "}
                   <button
                     type="button"
                     onClick={() =>
                       navigator.clipboard.writeText(
-                        brand.vodafoneCash || '01098616961'
+                        brand.vodafoneCash || "01098616961",
                       )
                     }
                     className="cursor-pointer font-mono font-semibold text-black underline hover:text-black"
                     title="Click to copy"
                   >
-                    {brand.vodafoneCash || '01098616961'}
-                  </button>{' '}
+                    {brand.vodafoneCash || "01098616961"}
+                  </button>{" "}
                   (click to copy).
                 </p>
               </>
@@ -263,11 +380,11 @@ export default function Checkout() {
                 <button
                   type="button"
                   onClick={() => {
-                    setConfirmedPayment(true)
+                    setConfirmedPayment(true);
                     try {
-                      sessionStorage.setItem('d4rk-payment-confirmed', 'true')
+                      sessionStorage.setItem("d4rk-payment-confirmed", "true");
                     } catch {}
-                    clear()
+                    clear();
                   }}
                   className="w-full bg-black px-5 py-2 text-xs font-semibold uppercase tracking-wider text-white hover:opacity-90 sm:w-auto"
                 >
@@ -277,7 +394,8 @@ export default function Checkout() {
             </div>
 
             <p className="text-xs text-neutral-500">
-              After transfer, you can also send the screenshot on WhatsApp or Instagram DM (@{brand.instagram}).
+              After transfer, you can also send the screenshot on WhatsApp or
+              Instagram DM (@{brand.instagram}).
             </p>
           </div>
         )}
@@ -290,17 +408,17 @@ export default function Checkout() {
             onClick={() => clear()}
             className="inline-block bg-black px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white"
           >
-            {placed.payment === 'cod'
-              ? 'Confirm on WhatsApp'
-              : 'Send receipt on WhatsApp'}
+            {placed.payment === "cod"
+              ? "Confirm on WhatsApp"
+              : "Send receipt on WhatsApp"}
           </a>
 
           <Link
             to="/shop"
             onClick={() => {
               try {
-                sessionStorage.removeItem(PLACED_STORAGE_KEY)
-                sessionStorage.removeItem('d4rk-payment-confirmed')
+                sessionStorage.removeItem(PLACED_STORAGE_KEY);
+                sessionStorage.removeItem("d4rk-payment-confirmed");
               } catch {}
             }}
             className="inline-block border border-neutral-200 px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] hover:border-black"
@@ -309,7 +427,7 @@ export default function Checkout() {
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   if (items.length === 0) {
@@ -323,38 +441,40 @@ export default function Checkout() {
           Shop now
         </Link>
       </div>
-    )
+    );
   }
 
   const onSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (submitting) return
+    if (submitting) return;
 
     if (!form.name.trim()) {
-      return setError('Please enter your full name.')
+      return setError("Please enter your full name.");
     }
 
     if (!isEgyptianMobile(form.phone)) {
-      return setError('Please enter a valid Egyptian mobile number, like 01012345678.')
+      return setError(
+        "Please enter a valid Egyptian mobile number, like 01012345678.",
+      );
     }
 
-    if (form.email && !form.email.includes('@')) {
-      return setError('That email doesn’t look right.')
+    if (form.email && !form.email.includes("@")) {
+      return setError("That email doesn’t look right.");
     }
 
     if (!form.governorate) {
-      return setError('Please choose your governorate.')
+      return setError("Please choose your governorate.");
     }
 
     if (!form.city.trim() || form.address.trim().length < 6) {
-      return setError('Please add your city/area and full address.')
+      return setError("Please add your city/area and full address.");
     }
 
-    setError('')
-    setSubmitting(true)
+    setError("");
+    setSubmitting(true);
 
-    const phone = normalizePhone(form.phone)
+    const phone = normalizePhone(form.phone);
 
     try {
       const result = await createOrder({
@@ -386,12 +506,12 @@ export default function Checkout() {
         discount,
         couponCode: appliedCoupon || null,
         total: finalTotal,
-        currency: 'EGP',
+        currency: "EGP",
         createdAt: new Date().toISOString(),
-      })
+      });
 
       setPlaced({
-        name: form.name.trim().split(' ')[0],
+        name: form.name.trim().split(" ")[0],
         phone,
         payment: form.payment,
         id: result.id,
@@ -401,18 +521,18 @@ export default function Checkout() {
         shipping,
         total: finalTotal,
         demo: result.demo,
-      })
+      });
 
-      window.scrollTo({ top: 0, behavior: 'instant' })
+      window.scrollTo({ top: 0, behavior: "instant" });
 
-      if (form.payment === 'cod') {
-        clear()
+      if (form.payment === "cod") {
+        clear();
       }
 
       // Notify owner and customer via email.
-      fetch('/api/send-order-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      fetch("/api/send-order-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           order: {
             id: result.id,
@@ -440,16 +560,15 @@ export default function Checkout() {
             total: finalTotal,
           },
         }),
-      }).catch(() => {})
+      }).catch(() => {});
     } catch (err) {
-      setError(err.message || 'Something went wrong. Please try again.')
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
-  const set = (key) => (e) =>
-    setForm({ ...form, [key]: e.target.value })
+  const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 
   return (
     <div className="mx-auto grid max-w-6xl gap-12 px-4 py-12 lg:grid-cols-2">
@@ -476,7 +595,7 @@ export default function Checkout() {
             required
             autoComplete="name"
             value={form.name}
-            onChange={set('name')}
+            onChange={set("name")}
             className={inputClass}
           />
         </div>
@@ -493,7 +612,7 @@ export default function Checkout() {
             autoComplete="tel"
             placeholder="01X XXXX XXXX"
             value={form.phone}
-            onChange={set('phone')}
+            onChange={set("phone")}
             className={inputClass}
           />
         </div>
@@ -507,7 +626,7 @@ export default function Checkout() {
             type="email"
             autoComplete="email"
             value={form.email}
-            onChange={set('email')}
+            onChange={set("email")}
             className={inputClass}
           />
         </div>
@@ -521,7 +640,7 @@ export default function Checkout() {
               id="governorate"
               required
               value={form.governorate}
-              onChange={set('governorate')}
+              onChange={set("governorate")}
               className={`${inputClass} bg-white`}
             >
               <option value="">Select…</option>
@@ -542,7 +661,7 @@ export default function Checkout() {
               required
               autoComplete="address-level2"
               value={form.city}
-              onChange={set('city')}
+              onChange={set("city")}
               className={inputClass}
             />
           </div>
@@ -558,7 +677,7 @@ export default function Checkout() {
             autoComplete="street-address"
             placeholder="Street, building, floor, apartment"
             value={form.address}
-            onChange={set('address')}
+            onChange={set("address")}
             className={inputClass}
           />
         </div>
@@ -571,7 +690,7 @@ export default function Checkout() {
             id="notes"
             placeholder="Landmark, preferred delivery time…"
             value={form.notes}
-            onChange={set('notes')}
+            onChange={set("notes")}
             className={inputClass}
           />
         </div>
@@ -584,9 +703,7 @@ export default function Checkout() {
               <label
                 key={m.id}
                 className={`flex cursor-pointer items-center justify-between gap-3 border px-3 py-3 text-sm ${
-                  form.payment === m.id
-                    ? 'border-black'
-                    : 'border-neutral-300'
+                  form.payment === m.id ? "border-black" : "border-neutral-300"
                 }`}
               >
                 <span className="flex items-center gap-3">
@@ -595,7 +712,7 @@ export default function Checkout() {
                     name="payment"
                     value={m.id}
                     checked={form.payment === m.id}
-                    onChange={set('payment')}
+                    onChange={set("payment")}
                     className="accent-black"
                   />
                   {m.label}
@@ -615,14 +732,14 @@ export default function Checkout() {
           className="mt-4 w-full bg-black py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white disabled:opacity-60"
         >
           {submitting
-            ? 'Placing order…'
+            ? "Placing order…"
             : `Place order — ${formatPrice(finalTotal)}`}
         </button>
 
         <p className="text-xs text-neutral-500">
           {isBackendConnected
             ? `Questions about your order? WhatsApp us on +${brand.whatsapp}.`
-            : 'Backend is not connected. Orders cannot be submitted right now.'}
+            : "Backend is not connected. Orders cannot be submitted right now."}
         </p>
       </form>
 
@@ -639,7 +756,7 @@ export default function Checkout() {
             >
               <span>
                 {item.name}
-                {item.size !== 'OS' ? ` (${item.size})` : ''} × {item.qty}
+                {item.size !== "OS" ? ` (${item.size})` : ""} × {item.qty}
               </span>
 
               <span className="tabular-nums">
@@ -651,10 +768,7 @@ export default function Checkout() {
 
         {/* Coupon */}
         <div className="mt-6 border-t border-neutral-200 pt-5">
-          <label
-            htmlFor="coupon"
-            className={labelClass}
-          >
+          <label htmlFor="coupon" className={labelClass}>
             Promo code
           </label>
 
@@ -666,9 +780,9 @@ export default function Checkout() {
               value={couponCode}
               disabled={Boolean(appliedCoupon)}
               onChange={(e) => {
-                setCouponCode(e.target.value)
-                setCouponMessage('')
-                setCouponError(false)
+                setCouponCode(e.target.value);
+                setCouponMessage("");
+                setCouponError(false);
               }}
               className="h-11 min-w-0 flex-1 border border-neutral-300 px-3 text-sm uppercase disabled:bg-neutral-100"
             />
@@ -696,7 +810,7 @@ export default function Checkout() {
             <p
               role="status"
               className={`mt-2 text-xs ${
-                couponError ? 'text-red-600' : 'text-emerald-700'
+                couponError ? "text-red-600" : "text-emerald-700"
               }`}
             >
               {couponMessage}
@@ -713,17 +827,13 @@ export default function Checkout() {
         {appliedCoupon && (
           <div className="mt-2 flex justify-between text-sm text-emerald-700">
             <span>Discount (D4RK10 · 10%)</span>
-            <span className="tabular-nums">
-              -{formatPrice(discount)}
-            </span>
+            <span className="tabular-nums">-{formatPrice(discount)}</span>
           </div>
         )}
 
         <div className="mt-2 flex justify-between text-sm">
           <span>Shipping</span>
-          <span>
-            {shipping === 0 ? 'Free' : formatPrice(shipping)}
-          </span>
+          <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
         </div>
 
         <div className="mt-4 flex justify-between border-t border-neutral-200 pt-4 font-semibold">
@@ -738,5 +848,5 @@ export default function Checkout() {
         )}
       </aside>
     </div>
-  )
+  );
 }

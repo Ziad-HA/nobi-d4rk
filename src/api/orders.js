@@ -6,6 +6,23 @@ export const isBackendConnected = Boolean(
   SUPABASE_URL && SUPABASE_ANON_KEY
 );
 
+const getHeaders = () => ({
+  "Content-Type": "application/json",
+  apikey: SUPABASE_ANON_KEY,
+  ...(SUPABASE_ANON_KEY.startsWith("eyJ")
+    ? { Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
+    : {}),
+});
+
+async function getErrorMessage(res, fallback) {
+  try {
+    const data = await res.json();
+    return data?.message || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export async function createOrder(order) {
   if (!isBackendConnected) {
     throw new Error(
@@ -20,24 +37,16 @@ export async function createOrder(order) {
       `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/rpc/place_order`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: SUPABASE_ANON_KEY,
-          ...(SUPABASE_ANON_KEY.startsWith("eyJ")
-            ? { Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
-            : {}),
-        },
+        headers: getHeaders(),
         body: JSON.stringify({
           p_customer: order.customer,
           p_shipping: order.shipping,
           p_payment: order.payment,
-          p_items: order.items.map(
-            ({ productId, size, qty }) => ({
-              productId,
-              size,
-              qty,
-            })
-          ),
+          p_items: order.items.map(({ productId, size, qty }) => ({
+            productId,
+            size,
+            qty,
+          })),
           p_coupon: order.couponCode?.trim().toUpperCase() || null,
         }),
       }
@@ -49,19 +58,12 @@ export async function createOrder(order) {
   }
 
   if (!res.ok) {
-    let message = "Something went wrong while placing your order.";
-
-    try {
-      const data = await res.json();
-
-      if (data?.message) {
-        message = data.message;
-      }
-    } catch {
-      // Keep the default error message.
-    }
-
-    throw new Error(message);
+    throw new Error(
+      await getErrorMessage(
+        res,
+        "Something went wrong while placing your order."
+      )
+    );
   }
 
   const number = await res.json();
@@ -84,13 +86,7 @@ export async function trackOrder({ number, phone }) {
       `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/rpc/track_order`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: SUPABASE_ANON_KEY,
-          ...(SUPABASE_ANON_KEY.startsWith("eyJ")
-            ? { Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
-            : {}),
-        },
+        headers: getHeaders(),
         body: JSON.stringify({
           p_number: number.trim().toUpperCase(),
           p_phone: phone.replace(/[^0-9]/g, ""),
@@ -104,16 +100,55 @@ export async function trackOrder({ number, phone }) {
   }
 
   if (!res.ok) {
-    let msg = "Order not found or details do not match.";
+    throw new Error(
+      await getErrorMessage(
+        res,
+        "Order not found or details do not match."
+      )
+    );
+  }
 
-    try {
-      const data = await res.json();
-      if (data?.message) msg = data.message;
-    } catch {
-      // Keep fallback.
-    }
+  return await res.json();
+}
 
-    throw new Error(msg);
+// Change payment method for an existing order.
+export async function changeOrderPayment({ number, phone, payment }) {
+  if (!isBackendConnected) {
+    throw new Error("Supabase is not configured.");
+  }
+
+  if (!["cod", "instapay", "wallet"].includes(payment)) {
+    throw new Error("Invalid payment method.");
+  }
+
+  let res;
+
+  try {
+    res = await fetch(
+      `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/rpc/change_order_payment`,
+      {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({
+          p_number: number.trim().toUpperCase(),
+          p_phone: phone.replace(/[^0-9]/g, ""),
+          p_payment: payment,
+        }),
+      }
+    );
+  } catch {
+    throw new Error(
+      "Could not reach the server. Please check your connection."
+    );
+  }
+
+  if (!res.ok) {
+    throw new Error(
+      await getErrorMessage(
+        res,
+        "Could not change the payment method."
+      )
+    );
   }
 
   return await res.json();
