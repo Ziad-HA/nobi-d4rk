@@ -243,6 +243,25 @@ export default function Checkout() {
       if (form.payment === 'cod') {
         clear()
       }
+
+      // Send email confirmation if email was provided
+      if (form.email && form.email.includes('@')) {
+        fetch('/api/send-order-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            order: {
+              id: result.id,
+              customer: { name: form.name.trim(), email: form.email.trim(), phone },
+              shipping: { governorate: form.governorate, city: form.city.trim() },
+              payment: form.payment,
+              items: items.map((i) => ({ name: i.name, size: i.size, qty: i.qty, price: i.price })),
+              shippingFee: shipping,
+              total,
+            },
+          }),
+        }).catch(() => {})
+      }
     } catch (err) {
       setError(err.message)
     } finally {
