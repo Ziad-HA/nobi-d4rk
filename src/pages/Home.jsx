@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { categories, formatPrice, products } from "../data/products";
@@ -17,21 +18,36 @@ const perks = [
 ];
 
 export default function Home() {
+  const videoRef = useRef(null);
+
+  // Phones sometimes ignore autoplay until the page is ready or touched, so ask for playback explicitly.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return undefined;
+    v.muted = true;
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    window.addEventListener("touchstart", tryPlay, { once: true, passive: true });
+    return () => window.removeEventListener("touchstart", tryPlay);
+  }, []);
+
   const newDrops = products.filter((p) => p.collection === "new-drops").slice(0, 4);
 
   return (
     <div>
       {/* Hero */}
       <section className="page pt-3 sm:pt-5">
-        <div className="relative isolate flex min-h-[78vh] flex-col justify-between overflow-hidden bg-pure-black p-4 sm:p-8">
+        <div className="relative isolate flex min-h-[60svh] flex-col sm:min-h-[78vh] justify-between overflow-hidden bg-pure-black p-4 sm:p-8">
           <video
-            className="absolute inset-0 -z-20 h-full w-full object-cover"
+            ref={videoRef}
+            className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_35%]"
             src={siteImages.heroVideo}
             poster={siteImages.hero}
             autoPlay
             muted
             loop
             playsInline
+            disablePictureInPicture
             preload="auto"
             aria-hidden="true"
           />
