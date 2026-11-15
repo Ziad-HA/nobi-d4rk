@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
@@ -6,11 +7,11 @@ import { brand, governorates, paymentMethods } from "../data/brand";
 import {
   createOrder,
   changeOrderPayment,
+  sendOrderConfirmation,
   isBackendConnected,
 } from "../api/orders";
 
 // Egyptian mobile numbers: 01[0125]xxxxxxxx (11 digits).
-// Accepts +20 / 0020 prefixes and spaces.
 const normalizePhone = (raw) => {
   const digits = raw.replace(/[\s\-()]/g, "").replace(/^(\+20|0020)/, "0");
   return digits;
@@ -37,6 +38,8 @@ export default function Checkout() {
   });
 
   const [error, setError] = useState("");
+  const [emailNotice, setEmailNotice] = useState("");
+
   const [confirmedPayment, setConfirmedPayment] = useState(() => {
     try {
       return sessionStorage.getItem("d4rk-payment-confirmed") === "true";
@@ -75,10 +78,8 @@ export default function Checkout() {
   });
 
   const discount = appliedCoupon ? Math.round(subtotal * 0.1) : 0;
-
   const finalTotal = subtotal - discount + shipping;
 
-  // Save form data so refresh does not lose customer inputs.
   useEffect(() => {
     try {
       localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(form));
@@ -87,7 +88,6 @@ export default function Checkout() {
     }
   }, [form]);
 
-  // Save placed order state so refresh does not wipe the confirmation screen.
   useEffect(() => {
     if (placed) {
       try {
@@ -136,6 +136,7 @@ export default function Checkout() {
     setCouponMessage("");
     setCouponError(false);
   };
+
   const handleChangePayment = async (payment) => {
     if (changingPayment || !placed || confirmedPayment) return;
 
@@ -210,6 +211,19 @@ export default function Checkout() {
             : " and verify your payment transfer."}
         </p>
 
+        {emailNotice && (
+          <p
+            role="status"
+            className={`mt-4 border px-3 py-3 text-sm ${
+              emailNotice.includes("could not")
+                ? "border-amber-300 bg-amber-50 text-amber-800"
+                : "border-emerald-200 bg-emerald-50 text-emerald-800"
+            }`}
+          >
+            {emailNotice}
+          </p>
+        )}
+
         <p className="mt-4 text-sm">
           Order number:{" "}
           <span className="font-semibold tabular-nums">{placed.id}</span>
@@ -246,6 +260,7 @@ export default function Checkout() {
             <span>{formatPrice(placed.total)}</span>
           </div>
         </div>
+
         <div className="mt-6 border border-neutral-200 p-5 text-left">
           <p className="text-xs font-semibold uppercase tracking-wider">
             Payment method
@@ -459,8 +474,14 @@ export default function Checkout() {
       );
     }
 
-    if (form.email && !form.email.includes("@")) {
-      return setError("That email doesn’t look right.");
+    const customerEmail = form.email.trim();
+
+    if (!customerEmail) {
+      return setError("Please enter your email address.");
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+      return setError("Please enter a valid email address.");
     }
 
     if (!form.governorate) {
@@ -472,6 +493,7 @@ export default function Checkout() {
     }
 
     setError("");
+    setEmailNotice("");
     setSubmitting(true);
 
     const phone = normalizePhone(form.phone);
@@ -481,7 +503,7 @@ export default function Checkout() {
         customer: {
           name: form.name.trim(),
           phone,
-          email: form.email.trim(),
+          email: customerEmail,
         },
 
         shipping: {
@@ -513,6 +535,7 @@ export default function Checkout() {
       setPlaced({
         name: form.name.trim().split(" ")[0],
         phone,
+        email: customerEmail,
         payment: form.payment,
         id: result.id,
         subtotal,
@@ -529,38 +552,23 @@ export default function Checkout() {
         clear();
       }
 
-      // Notify owner and customer via email.
-      fetch("/api/send-order-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          order: {
-            id: result.id,
-            customer: {
-              name: form.name.trim(),
-              email: form.email.trim(),
-              phone,
-            },
-            shipping: {
-              governorate: form.governorate,
-              city: form.city.trim(),
-              address: form.address.trim(),
-            },
-            payment: form.payment,
-            items: items.map((i) => ({
-              name: i.name,
-              size: i.size,
-              qty: i.qty,
-              price: i.price,
-            })),
-            subtotal,
-            discount,
-            couponCode: appliedCoupon || null,
-            shippingFee: shipping,
-            total: finalTotal,
-          },
-        }),
-      }).catch(() => {});
+      // Send confirmation email after the order is successfully created.
+      try {
+        await sendOrderConfirmation({
+          number: result.id,
+          phone,
+        });
+
+        setEmailNotice(
+          `A confirmation email has been sent to ${customerEmail}. Please check your inbox and spam folder.`,
+        );
+      } catch (emailError) {
+        console.error("Order email error:", emailError);
+
+        setEmailNotice(
+          "Your order was received successfully, but we could not send the confirmation email. Please contact us if needed.",
+        );
+      }
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -568,7 +576,8 @@ export default function Checkout() {
     }
   };
 
-  const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
+  const set = (key) => (e) =>
+    setForm({ ...form, [key]: e.target.value });
 
   return (
     <div className="mx-auto grid max-w-6xl gap-12 px-4 py-12 lg:grid-cols-2">
@@ -619,12 +628,14 @@ export default function Checkout() {
 
         <div>
           <label htmlFor="email" className={labelClass}>
-            Email (optional)
+            Email <span className="text-red-600">*</span>
           </label>
           <input
             id="email"
+            required
             type="email"
             autoComplete="email"
+            placeholder="your@email.com"
             value={form.email}
             onChange={set("email")}
             className={inputClass}
@@ -766,7 +777,6 @@ export default function Checkout() {
           ))}
         </ul>
 
-        {/* Coupon */}
         <div className="mt-6 border-t border-neutral-200 pt-5">
           <label htmlFor="coupon" className={labelClass}>
             Promo code
@@ -818,7 +828,6 @@ export default function Checkout() {
           )}
         </div>
 
-        {/* Price summary */}
         <div className="mt-5 flex justify-between border-t border-neutral-200 pt-4 text-sm">
           <span>Subtotal</span>
           <span className="tabular-nums">{formatPrice(subtotal)}</span>

@@ -142,3 +142,37 @@ export async function changeOrderPayment({ number, phone, payment }) {
 
   return await res.json();
 }
+
+export async function sendOrderConfirmation({ number, phone }) {
+  if (!isBackendConnected) {
+    throw new Error("Supabase is not configured.");
+  }
+
+  const headers = {
+    ...getHeaders(),
+    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+  };
+
+  const res = await fetch(
+    `${SUPABASE_URL.replace(/\/$/, "")}/functions/v1/d4rk`,
+    {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        order_number: number,
+        phone: phone.replace(/[^0-9]/g, ""),
+      }),
+    },
+  );
+
+  if (!res.ok) {
+    const message = await getErrorMessage(
+      res,
+      "Could not send order confirmation email.",
+    );
+
+    throw new Error(message);
+  }
+
+  return await res.json();
+}
