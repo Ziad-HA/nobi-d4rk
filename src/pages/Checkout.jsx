@@ -49,55 +49,55 @@ export default function Checkout() {
           تم استلام طلبك بنجاح
         </p>
 
-        <div className="mt-6 border border-neutral-800 bg-neutral-950/60 p-5 rounded text-left">
-          <div className="flex justify-between items-center border-b border-neutral-800 pb-3 text-sm">
-            <span className="text-neutral-500">Order Number</span>
-            <span className="font-bold text-pure-white tracking-wider">{placed.id}</span>
+        <div className="mt-6 border border-neutral-700 bg-neutral-900 p-5 rounded text-left">
+          <div className="flex justify-between items-center border-b border-neutral-700 pb-3 text-sm">
+            <span className="text-neutral-300">Order Number</span>
+            <span className="font-bold text-pure-white tracking-wider font-mono">{placed.id}</span>
           </div>
           <div className="flex justify-between items-center pt-3 text-sm">
-            <span className="text-neutral-500">Total Amount</span>
-            <span className="font-semibold text-pure-white">{formatPrice(placed.total)}</span>
+            <span className="text-neutral-300">Total Amount</span>
+            <span className="font-bold text-pure-white">{formatPrice(placed.total)}</span>
           </div>
         </div>
 
         {/* Payment info for InstaPay & Wallet */}
         {placed.payment === 'instapay' && (
-          <div className="mt-6 border border-neutral-800 bg-neutral-900/60 p-5 text-left rounded space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-pure-white">InstaPay Payment Details</p>
-            <p className="text-sm text-neutral-300">
-              Please transfer <span className="font-semibold text-pure-white">{formatPrice(placed.total)}</span> to the InstaPay address:
+          <div className="mt-6 border border-neutral-700 bg-neutral-900 p-5 text-left rounded space-y-3">
+            <p className="text-xs font-bold uppercase tracking-wider text-pure-white">InstaPay Payment Details</p>
+            <p className="text-sm text-neutral-200">
+              Please transfer <span className="font-bold text-pure-white">{formatPrice(placed.total)}</span> to the InstaPay address:
             </p>
-            <div className="flex items-center justify-between bg-black px-3 py-2 border border-neutral-800 rounded font-mono text-sm text-pure-white">
-              <span>{brand.instapayUsername || 'd4rk@instapay'}</span>
+            <div className="flex items-center justify-between bg-pure-black px-4 py-2.5 border border-neutral-700 rounded font-mono text-sm text-pure-white">
+              <span className="text-pure-white font-medium">{brand.instapayUsername || 'd4rk@instapay'}</span>
               <button
                 type="button"
                 onClick={() => navigator.clipboard.writeText(brand.instapayUsername || 'd4rk@instapay')}
-                className="text-xs uppercase text-neutral-400 hover:text-white underline"
+                className="text-xs uppercase font-semibold text-neutral-300 hover:text-pure-white underline cursor-pointer"
               >
                 Copy
               </button>
             </div>
-            <p className="text-xs text-neutral-400">After payment, send the transfer receipt via WhatsApp to confirm your order.</p>
+            <p className="text-xs text-neutral-300">After payment, send the transfer receipt via WhatsApp to confirm your order.</p>
           </div>
         )}
 
         {placed.payment === 'wallet' && (
-          <div className="mt-6 border border-neutral-800 bg-neutral-900/60 p-5 text-left rounded space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-pure-white">Vodafone Cash / Wallet Details</p>
-            <p className="text-sm text-neutral-300">
-              Please transfer <span className="font-semibold text-pure-white">{formatPrice(placed.total)}</span> to Vodafone Cash:
+          <div className="mt-6 border border-neutral-700 bg-neutral-900 p-5 text-left rounded space-y-3">
+            <p className="text-xs font-bold uppercase tracking-wider text-pure-white">Vodafone Cash / Wallet Details</p>
+            <p className="text-sm text-neutral-200">
+              Please transfer <span className="font-bold text-pure-white">{formatPrice(placed.total)}</span> to Vodafone Cash:
             </p>
-            <div className="flex items-center justify-between bg-black px-3 py-2 border border-neutral-800 rounded font-mono text-sm text-pure-white">
-              <span>{brand.vodafoneCash || brand.whatsapp}</span>
+            <div className="flex items-center justify-between bg-pure-black px-4 py-2.5 border border-neutral-700 rounded font-mono text-sm text-pure-white">
+              <span className="text-pure-white font-medium">{brand.vodafoneCash || brand.whatsapp}</span>
               <button
                 type="button"
                 onClick={() => navigator.clipboard.writeText(brand.vodafoneCash || brand.whatsapp)}
-                className="text-xs uppercase text-neutral-400 hover:text-white underline"
+                className="text-xs uppercase font-semibold text-neutral-300 hover:text-pure-white underline cursor-pointer"
               >
                 Copy
               </button>
             </div>
-            <p className="text-xs text-neutral-400">After transfer, take a screenshot and send it to our WhatsApp.</p>
+            <p className="text-xs text-neutral-300">After transfer, take a screenshot and send it to our WhatsApp.</p>
           </div>
         )}
 
