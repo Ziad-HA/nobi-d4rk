@@ -86,9 +86,9 @@ export default function Home() {
         </h2>
         <div className="relative -mt-[2vw] aspect-[16/9] overflow-hidden bg-neutral-100 sm:-mt-[1.4vw]">
           <Photo
-            src={siteImages.manifesto}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover object-[50%_15%]"
+            src="/images/grillz.jpg"
+            alt="Silver Grillz"
+            className="absolute inset-0 h-full w-full object-cover object-center"
           />
         </div>
       </section>
@@ -113,7 +113,11 @@ export default function Home() {
                   i % 2 ? "mt-8 sm:mt-16" : ""
                 }`}
               >
-                <Photo src={src} alt="" className="h-full w-full object-cover" />
+                <Photo
+                  src={src}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
               </div>
             ))}
           </div>

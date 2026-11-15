@@ -35,6 +35,7 @@ export default function Product() {
         <Link to="/shop">Shop</Link> / {product.name}
       </nav>
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
+        
         <Photo src={product.image} alt={product.name} className="aspect-square w-full bg-slate object-cover" />
         <div>
           <h1 className="font-display uppercase text-3xl sm:text-4xl tracking-tight">{product.name}</h1>
