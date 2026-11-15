@@ -9,13 +9,13 @@ export default function ProductCard({ product, bare = false }) {
 
   return (
     <article className="group flex h-full flex-col">
-      <Link to={`/product/${product.id}`} className="relative block overflow-hidden bg-sand">
+      <Link to={`/product/${product.id}`} className="relative block overflow-hidden bg-slate">
         <Photo
           src={product.image}
           alt={product.name}
           width={600}
           height={750}
-          className="aspect-square w-full object-cover mix-blend-multiply transition duration-500 group-hover:scale-[1.04]"
+          className="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.04]"
         />
         {product.sale && (
           <span className="absolute left-2 top-2 bg-pure-black px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-pure-white">
