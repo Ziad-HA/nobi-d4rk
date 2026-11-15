@@ -37,7 +37,7 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="page pt-3 sm:pt-5">
-        <div className="relative isolate flex min-h-[60svh] flex-col sm:min-h-[78vh] justify-between overflow-hidden bg-pure-black p-4 sm:p-8">
+        <div className="relative isolate flex aspect-square flex-col justify-between sm:aspect-auto sm:min-h-[78vh] overflow-hidden bg-pure-black p-4 sm:p-8">
           <video
             ref={videoRef}
             className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_35%]"
@@ -65,11 +65,11 @@ export default function Home() {
             <span />
             <Link
               to="/shop"
-              className="justify-self-center whitespace-nowrap rounded-lg border border-pure-white/50 px-6 py-3 text-[11px] uppercase tracking-[0.1em] text-pure-white/90 backdrop-blur-sm transition hover:bg-pure-white hover:text-pure-black sm:px-12 sm:py-4 sm:text-xs"
+              className="justify-self-center whitespace-nowrap rounded-lg border border-pure-white/50 px-4 py-3 text-[11px] uppercase tracking-[0.1em] text-pure-white/90 backdrop-blur-sm transition hover:bg-pure-white hover:text-pure-black sm:px-12 sm:py-4 sm:text-xs"
             >
               Go to catalog
             </Link>
-            <p className="justify-self-end font-display text-xs font-extrabold text-pure-white sm:text-sm">
+            <p className="justify-self-end font-display text-[10px] font-extrabold text-pure-white sm:text-sm">
               EST.{brand.est}
             </p>
           </div>
