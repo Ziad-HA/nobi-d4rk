@@ -9,14 +9,14 @@
      bg-white / text-black / neutral-* turns dark without rewriting each class.
      For things that must stay truly black or white (photo overlays), use
      pure-black / pure-white. Light product tiles use "sand". */
-  --color-white: #191919;
+  --color-white: #000000;
   --color-black: #f4f4f4;
   --color-pure-black: #000000;
   --color-pure-white: #ffffff;
-  --color-neutral-50: #1f1f1f;
-  --color-neutral-100: #242424;
-  --color-neutral-200: #343434;
-  --color-neutral-300: #484848;
+  --color-neutral-50: #0c0c0c;
+  --color-neutral-100: #121212;
+  --color-neutral-200: #2a2a2a;
+  --color-neutral-300: #3d3d3d;
   --color-neutral-400: #8c8c8c;
   --color-neutral-500: #a0a0a0;
   --color-neutral-600: #b8b8b8;
@@ -36,7 +36,7 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background: #191919;
+  background: #000000;
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
 }
