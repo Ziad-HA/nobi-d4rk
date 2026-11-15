@@ -36,10 +36,14 @@ export default function Product() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4)
 
-  const handleBuyNow = () => {
-    addItem(product, size, 1, { openCart: false })
-    navigate('/checkout')
-  }
+
+      const handleBuyNow = () => {
+        sessionStorage.removeItem("d4rk-placed-order");
+        sessionStorage.removeItem("d4rk-payment-confirmed");
+
+        addItem(product, size, 1, { openCart: false });
+        navigate("/checkout");
+      };
 
   return (
     <div className="wrap py-12">
