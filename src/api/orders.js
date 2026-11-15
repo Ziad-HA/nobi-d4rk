@@ -5,7 +5,7 @@
 //     Security and adds the place_order() function that saves an order safely.
 //  2. Copy .env.example to .env and fill in (Supabase -> Project Settings -> API):
 //       VITE_SUPABASE_URL=https://xxxx.supabase.co
-//       VITE_SUPABASE_ANON_KEY=<the anon / publishable key>
+//       VITE_SUPABASE_ANON_KEY=<the publishable key (sb_publishable_...) or the legacy anon key>
 //     Use only the anon key here. Never put the service_role key in the website.
 //  3. Add the same two variables in Vercel (Settings -> Environment Variables) and redeploy.
 //
@@ -38,7 +38,9 @@ export async function createOrder(order) {
       headers: {
         'Content-Type': 'application/json',
         apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        // Legacy anon keys are JWTs and go in Authorization too. New "sb_publishable_..." keys are not JWTs, so
+        // they are sent in the apikey header only.
+        ...(SUPABASE_ANON_KEY.startsWith('eyJ') ? { Authorization: `Bearer ${SUPABASE_ANON_KEY}` } : {}),
       },
       body: JSON.stringify({
         p_customer: order.customer,
