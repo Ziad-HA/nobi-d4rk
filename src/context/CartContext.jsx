@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { FREE_SHIPPING_FROM, SHIPPING_FEE } from "../data/brand";
 
@@ -12,6 +13,7 @@ export function CartProvider({ children }) {
       return [];
     }
   });
+
   const [isOpen, setIsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [toast, setToast] = useState("");
@@ -20,24 +22,37 @@ export function CartProvider({ children }) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
-      // storage unavailable (private mode) — cart still works in memory
+      // Storage unavailable — cart still works in memory
     }
   }, [items]);
 
   useEffect(() => {
     if (!toast) return;
-    const t = setTimeout(() => setToast(""), 2800);
-    return () => clearTimeout(t);
+
+    const timer = setTimeout(() => setToast(""), 2800);
+    return () => clearTimeout(timer);
   }, [toast]);
 
-  const addItem = (product, size = product.sizes?.[0] || "OS", qty = 1) => {
+  const addItem = (
+    product,
+    size = product.sizes?.[0] || "OS",
+    qty = 1,
+    { openCart = true } = {},
+  ) => {
     setItems((prev) => {
-      const i = prev.findIndex((x) => x.id === product.id && x.size === size);
-      if (i >= 0) {
+      const index = prev.findIndex(
+        (item) => item.id === product.id && item.size === size,
+      );
+
+      if (index >= 0) {
         const next = [...prev];
-        next[i] = { ...next[i], qty: next[i].qty + qty };
+        next[index] = {
+          ...next[index],
+          qty: next[index].qty + qty,
+        };
         return next;
       }
+
       return [
         ...prev,
         {
@@ -50,28 +65,44 @@ export function CartProvider({ children }) {
         },
       ];
     });
-    setIsOpen(true);
+
+    if (openCart) {
+      setIsOpen(true);
+    }
+
     setToast(`${product.name} added to cart`);
   };
 
   const updateQty = (id, size, qty) => {
     setItems((prev) =>
       prev
-        .map((x) => (x.id === id && x.size === size ? { ...x, qty } : x))
-        .filter((x) => x.qty > 0),
+        .map((item) =>
+          item.id === id && item.size === size
+            ? { ...item, qty }
+            : item,
+        )
+        .filter((item) => item.qty > 0),
     );
   };
 
   const removeItem = (id, size) => {
-    setItems((prev) => prev.filter((x) => !(x.id === id && x.size === size)));
+    setItems((prev) =>
+      prev.filter((item) => !(item.id === id && item.size === size)),
+    );
   };
 
   const clear = () => setItems([]);
 
-  const count = items.reduce((n, x) => n + x.qty, 0);
-  const subtotal = items.reduce((n, x) => n + x.price * x.qty, 0);
+  const count = items.reduce((total, item) => total + item.qty, 0);
+
+  const subtotal = items.reduce(
+    (total, item) => total + item.price * item.qty,
+    0,
+  );
+
   const shipping =
     subtotal >= FREE_SHIPPING_FROM || subtotal === 0 ? 0 : SHIPPING_FEE;
+
   const total = subtotal + shipping;
 
   const value = useMemo(
@@ -94,11 +125,19 @@ export function CartProvider({ children }) {
     [items, isOpen, searchOpen, toast, count, subtotal, shipping, total],
   );
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+    </CartContext.Provider>
+  );
 }
 
 export function useCart() {
-  const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used within CartProvider");
-  return ctx;
+  const context = useContext(CartContext);
+
+  if (!context) {
+    throw new Error("useCart must be used within CartProvider");
+  }
+
+  return context;
 }

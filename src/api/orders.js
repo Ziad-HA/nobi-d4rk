@@ -38,6 +38,7 @@ export async function createOrder(order) {
               qty,
             })
           ),
+          p_coupon: order.couponCode?.trim().toUpperCase() || null,
         }),
       }
     );
@@ -77,6 +78,7 @@ export async function trackOrder({ number, phone }) {
   }
 
   let res;
+
   try {
     res = await fetch(
       `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/rpc/track_order`,
@@ -96,17 +98,21 @@ export async function trackOrder({ number, phone }) {
       }
     );
   } catch {
-    throw new Error("Could not reach the server. Please check your connection.");
+    throw new Error(
+      "Could not reach the server. Please check your connection."
+    );
   }
 
   if (!res.ok) {
     let msg = "Order not found or details do not match.";
+
     try {
       const data = await res.json();
       if (data?.message) msg = data.message;
     } catch {
-      // keep fallback
+      // Keep fallback.
     }
+
     throw new Error(msg);
   }
 

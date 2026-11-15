@@ -1,5 +1,13 @@
+
 import { useEffect } from 'react'
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom'
+import { MessageCircle } from 'lucide-react'
 import { CartProvider } from './context/CartContext'
 import Layout from './components/Layout'
 import Home from './pages/Home'
@@ -13,12 +21,34 @@ import Checkout from './pages/Checkout'
 import Account from './pages/Account'
 import TrackOrder from './pages/TrackOrder'
 
+const WHATSAPP_NUMBER = '+201276390301'
+
 function ScrollToTop() {
   const { pathname } = useLocation()
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+
   return null
+}
+
+function WhatsAppButton() {
+  const message = encodeURIComponent(
+    'Hello D4RK! I need help with my order.'
+  )
+
+  return (
+    <a
+      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat with us on WhatsApp"
+      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition hover:scale-110 hover:bg-[#20bd5a]"
+    >
+      <MessageCircle size={27} strokeWidth={2.2} />
+    </a>
+  )
 }
 
 export default function App() {
@@ -26,6 +56,7 @@ export default function App() {
     <CartProvider>
       <BrowserRouter>
         <ScrollToTop />
+
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
@@ -42,6 +73,8 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
+
+        <WhatsAppButton />
       </BrowserRouter>
     </CartProvider>
   )
