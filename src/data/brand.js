@@ -6,7 +6,7 @@ export const brand = {
   email: "zh.nobii@gmail.com",
   // International format, digits only (01276390301 -> 201276390301)
   whatsapp: "201276390301",
-  instapayUsername: "d4rk@instapay",
+  instapayUsername: "ziad.nobi99@instapay",
   vodafoneCash: "01276390301",
   city: "Alexandria, Egypt",
   est: 2026,
