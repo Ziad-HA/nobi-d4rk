@@ -567,7 +567,7 @@ export default function Checkout() {
         console.error("Order email error:", emailError);
 
         setEmailNotice(
-          "Your order was received successfully, but we could not send the confirmation email. Please contact us if needed.",
+          `Your order was received successfully, but we could not send the confirmation email. Please contact us if needed. (Reason: ${emailError.message})`,
         );
       }
     } catch (err) {
