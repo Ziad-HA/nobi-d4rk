@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { formatPrice } from '../data/products'
@@ -31,6 +31,14 @@ export default function Checkout() {
     notes: '',
     payment: 'cod',
   })
+
+  useEffect(() => {
+    if (placed) {
+      window.scrollTo(0, 0)
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    }
+  }, [placed])
 
   if (placed) {
     const waMsg = encodeURIComponent(
