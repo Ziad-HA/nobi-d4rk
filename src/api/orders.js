@@ -143,33 +143,34 @@ export async function changeOrderPayment({ number, phone, payment }) {
   return await res.json();
 }
 
-export async function sendOrderConfirmation({ number, phone }) {
-  if (!isBackendConnected) {
-    throw new Error("Supabase is not configured.");
+// Sends the confirmation email through the Vercel function /api/send-order-email
+// (Resend). The function re-checks the order in Supabase before sending.
+export async function sendOrderConfirmation({ number, phone, email }) {
+  let res;
+
+  try {
+    res = await fetch("/api/send-order-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        number,
+        phone: phone.replace(/[^0-9]/g, ""),
+        email,
+      }),
+    });
+  } catch {
+    throw new Error("Could not reach the email service.");
   }
 
-  const headers = {
-    ...getHeaders(),
-    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-  };
-
-  const res = await fetch(
-    `${SUPABASE_URL.replace(/\/$/, "")}/functions/v1/D4RK`,
-    {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        order_number: number,
-        phone: phone.replace(/[^0-9]/g, ""),
-      }),
-    },
-  );
-
   if (!res.ok) {
-    const message = await getErrorMessage(
-      res,
-      "Could not send order confirmation email.",
-    );
+    let message = "Could not send order confirmation email.";
+
+    try {
+      const data = await res.json();
+      message = data?.error || message;
+    } catch {
+      // ignore
+    }
 
     throw new Error(message);
   }

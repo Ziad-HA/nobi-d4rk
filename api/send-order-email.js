@@ -1,114 +1,192 @@
+// Vercel serverless function: sends the order emails through Resend.
+//
+// Required env vars on Vercel:
+//   RESEND_API_KEY      - Resend API key
+//   VITE_SUPABASE_URL   - (or SUPABASE_URL) used to verify the order
+//   VITE_SUPABASE_ANON_KEY - (or SUPABASE_ANON_KEY)
+// Optional:
+//   RESEND_FROM         - e.g. "D4RK <orders@yourdomain.com>" (verified domain in Resend).
+//                         Without it Resend only delivers to the Resend account owner's email.
+//   OWNER_EMAIL         - where new-order alerts go
+//   SITE_URL            - public URL of the store, e.g. https://your-store.vercel.app
+
+const esc = (v) =>
+  String(v ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+const money = (n) => `${Number(n || 0).toLocaleString('en-US')} EGP`;
+
+async function verifyOrder({ number, phone }) {
+  const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const key = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    throw new Error('Supabase is not configured on Vercel (missing URL or anon key).');
+  }
+
+  const res = await fetch(`${url.replace(/\/$/, '')}/rest/v1/rpc/track_order`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: key,
+      ...(key.startsWith('eyJ') ? { Authorization: `Bearer ${key}` } : {}),
+    },
+    body: JSON.stringify({
+      p_number: String(number).trim().toUpperCase(),
+      p_phone: String(phone).replace(/[^0-9]/g, ''),
+    }),
+  });
+
+  if (!res.ok) {
+    let message = 'Order could not be verified.';
+    try {
+      message = (await res.json())?.message || message;
+    } catch {
+      // ignore
+    }
+    const err = new Error(message);
+    err.status = res.status === 400 || res.status === 404 ? 404 : 502;
+    throw err;
+  }
+
+  return res.json();
+}
+
+async function sendEmail(apiKey, payload) {
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    let message = `Resend error (${res.status})`;
+    try {
+      const data = await res.json();
+      message = data?.message || data?.error || message;
+    } catch {
+      // ignore
+    }
+    throw new Error(message);
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { order } = req.body || {};
+  const { number, phone, email } = req.body || {};
 
-  if (!order) {
-    return res.status(400).json({ error: 'No order provided' });
+  if (!number || !phone) {
+    return res.status(400).json({ error: 'Order number and phone are required.' });
   }
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   if (!RESEND_API_KEY) {
-    return res.status(500).json({ error: 'Resend API key not configured' });
+    return res.status(500).json({ error: 'RESEND_API_KEY is not configured on Vercel.' });
   }
 
-  const OWNER_EMAIL = 'zh.nobii@gmail.com';
+  const FROM = process.env.RESEND_FROM || 'D4RK <onboarding@resend.dev>';
+  const OWNER_EMAIL = process.env.OWNER_EMAIL || 'zh.nobii@gmail.com';
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  const SITE_URL = (process.env.SITE_URL || (host ? `https://${host}` : '')).replace(/\/$/, '');
+
+  // Only send emails for a real order (number + phone must match in Supabase).
+  let order;
+  try {
+    order = await verifyOrder({ number, phone });
+  } catch (err) {
+    return res.status(err.status || 500).json({ error: err.message });
+  }
 
   const itemsHtml = (order.items || [])
     .map(
       (it) => `
       <tr>
-        <td style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #dddddd; font-size: 13px;">
-          ${it.name} ${it.size && it.size !== 'OS' ? `(${it.size})` : ''} <span style="color: #777;">× ${it.qty}</span>
+        <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#dddddd;font-size:13px;">
+          ${esc(it.name)} ${it.size && it.size !== 'OS' ? `(${esc(it.size)})` : ''} <span style="color:#777;">× ${esc(it.qty)}</span>
         </td>
-        <td align="right" style="padding: 10px 0; border-bottom: 1px solid #1a1a1a; color: #ffffff; font-size: 13px; font-weight: 600; font-family: monospace;">
-          ${(it.price * it.qty).toLocaleString()} EGP
+        <td align="right" style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#ffffff;font-size:13px;font-weight:600;font-family:monospace;">
+          ${money(it.price * it.qty)}
         </td>
-      </tr>`
+      </tr>`,
     )
     .join('');
 
-  try {
-    // 1) Send Owner Notification Email (Always to you, regardless of customer email)
-    const ownerEmailHtml = `
-<!DOCTYPE html>
+  const ownerHtml = `<!DOCTYPE html>
 <html>
-<body style="background-color: #000; color: #fff; font-family: sans-serif; padding: 25px;">
-  <div style="max-width: 500px; border: 1px solid #333; padding: 20px; background: #0a0a0a;">
-    <h2 style="color: #fff; text-transform: uppercase; margin-top: 0;">🔥 New Order Alert: ${order.id}</h2>
-    <p style="color: #bbb; font-size: 14px;">A new order has just been placed on D4RK!</p>
-    
-    <div style="background: #141414; padding: 12px; margin: 15px 0; border-radius: 4px;">
-      <p style="margin: 4px 0;"><strong>Customer:</strong> ${order.customer?.name || 'N/A'}</p>
-      <p style="margin: 4px 0;"><strong>Phone:</strong> <a href="tel:${order.customer?.phone}" style="color: #fff;">${order.customer?.phone || 'N/A'}</a></p>
-      <p style="margin: 4px 0;"><strong>WhatsApp:</strong> <a href="https://wa.me/2${order.customer?.phone}" style="color: #10b981;">Chat with Customer</a></p>
-      <p style="margin: 4px 0;"><strong>Email:</strong> ${order.customer?.email || 'None'}</p>
-      <p style="margin: 4px 0;"><strong>Address:</strong> ${order.shipping?.address || ''}, ${order.shipping?.city || ''}, ${order.shipping?.governorate || ''}</p>
-      <p style="margin: 4px 0;"><strong>Payment Method:</strong> ${order.payment?.toUpperCase()}</p>
-      <p style="margin: 4px 0;"><strong>Total:</strong> ${order.total?.toLocaleString()} EGP</p>
+<body style="background:#000;color:#fff;font-family:sans-serif;padding:25px;">
+  <div style="max-width:500px;border:1px solid #333;padding:20px;background:#0a0a0a;">
+    <h2 style="margin-top:0;text-transform:uppercase;">New Order: ${esc(order.number)}</h2>
+    <div style="background:#141414;padding:12px;margin:15px 0;border-radius:4px;">
+      <p style="margin:4px 0;"><strong>Customer:</strong> ${esc(order.name)}</p>
+      <p style="margin:4px 0;"><strong>Phone:</strong> ${esc(phone)}</p>
+      <p style="margin:4px 0;"><strong>Email:</strong> ${esc(email || 'None')}</p>
+      <p style="margin:4px 0;"><strong>Location:</strong> ${esc(order.city)}, ${esc(order.governorate)}</p>
+      <p style="margin:4px 0;"><strong>Payment:</strong> ${esc(String(order.payment || '').toUpperCase())}</p>
+      <p style="margin:4px 0;"><strong>Total:</strong> ${money(order.total)}</p>
     </div>
-
-    <table width="100%" style="margin-top: 15px; border-collapse: collapse;">
-      ${itemsHtml}
-    </table>
+    <table width="100%" style="border-collapse:collapse;">${itemsHtml}</table>
   </div>
 </body>
-</html>
-    `;
+</html>`;
 
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: 'D4RK Store <orders@resend.dev>',
-        to: [OWNER_EMAIL],
-        subject: `🔥 NEW ORDER: ${order.id} (${(order.total || 0).toLocaleString()} EGP)`,
-        html: ownerEmailHtml,
-      }),
-    });
-
-    // 2) If customer provided an email and it matches your test email or custom domain
-    if (order.customer?.email && order.customer.email.includes('@')) {
-      // Attempt customer confirmation
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${RESEND_API_KEY}`,
-        },
-        body: JSON.stringify({
-          from: 'D4RK <orders@resend.dev>',
-          to: [order.customer.email],
-          subject: `ORDER CONFIRMED // ${order.id}`,
-          html: `
-<!DOCTYPE html>
+  const customerHtml = `<!DOCTYPE html>
 <html>
-<body style="background-color: #000; color: #f4f4f4; font-family: sans-serif; padding: 30px;">
-  <div style="max-width: 520px; margin: 0 auto; background-color: #090909; border: 1px solid #222; padding: 30px;">
-    <h1 style="color: #fff; text-transform: uppercase; margin: 0;">D4RK</h1>
-    <p style="color: #777; font-size: 11px; text-transform: uppercase;">Streetwear Accessories · Made in ALEX</p>
-    <p style="margin-top: 25px; color: #fff; font-size: 16px;">Thanks ${order.customer.name}, your order is received.</p>
-    <p style="color: #aaa; font-size: 13px;">Order Number: <strong style="color: #fff;">${order.id}</strong></p>
-    <table width="100%" style="margin: 20px 0;">${itemsHtml}</table>
-    <p style="color: #fff; font-weight: bold; text-align: right; font-size: 16px;">Total: ${(order.total || 0).toLocaleString()} EGP</p>
-    <div style="text-align: center; margin-top: 30px;">
-      <a href="https://nobi-dusk.vercel.app/track-order" style="background: #fff; color: #000; padding: 12px 25px; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase;">Track Your Order</a>
-    </div>
-  </div>
-</body>
-</html>
-          `,
-        }),
-      }).catch(() => {});
+<body style="background:#000;color:#f4f4f4;font-family:sans-serif;padding:30px;">
+  <div style="max-width:520px;margin:0 auto;background:#090909;border:1px solid #222;padding:30px;">
+    <h1 style="color:#fff;text-transform:uppercase;margin:0;">D4RK</h1>
+    <p style="color:#777;font-size:11px;text-transform:uppercase;">Streetwear Accessories · Made in ALEX</p>
+    <p style="margin-top:25px;color:#fff;font-size:16px;">Thanks ${esc(order.name)}, your order is received.</p>
+    <p style="color:#aaa;font-size:13px;">Order Number: <strong style="color:#fff;">${esc(order.number)}</strong></p>
+    <table width="100%" style="margin:20px 0;">${itemsHtml}</table>
+    <p style="color:#fff;font-weight:bold;text-align:right;font-size:16px;">Total: ${money(order.total)}</p>
+    ${
+      SITE_URL
+        ? `<div style="text-align:center;margin-top:30px;">
+      <a href="${esc(SITE_URL)}/track-order" style="background:#fff;color:#000;padding:12px 25px;text-decoration:none;font-size:12px;font-weight:bold;text-transform:uppercase;">Track Your Order</a>
+    </div>`
+        : ''
     }
+  </div>
+</body>
+</html>`;
 
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+  const hasCustomerEmail = typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+  const [owner, customer] = await Promise.allSettled([
+    sendEmail(RESEND_API_KEY, {
+      from: FROM,
+      to: [OWNER_EMAIL],
+      subject: `NEW ORDER: ${order.number} (${money(order.total)})`,
+      html: ownerHtml,
+    }),
+    hasCustomerEmail
+      ? sendEmail(RESEND_API_KEY, {
+          from: FROM,
+          to: [email.trim()],
+          subject: `ORDER CONFIRMED // ${order.number}`,
+          html: customerHtml,
+        })
+      : Promise.reject(new Error('No valid customer email.')),
+  ]);
+
+  const result = {
+    owner: owner.status === 'fulfilled' ? 'sent' : owner.reason.message,
+    customer: customer.status === 'fulfilled' ? 'sent' : customer.reason.message,
+  };
+
+  if (customer.status === 'rejected') {
+    console.error('Customer email failed:', customer.reason.message);
+    return res.status(502).json({ error: customer.reason.message, ...result });
   }
+
+  return res.status(200).json({ success: true, ...result });
 }

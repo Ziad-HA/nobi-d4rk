@@ -557,6 +557,7 @@ export default function Checkout() {
         await sendOrderConfirmation({
           number: result.id,
           phone,
+          email: customerEmail,
         });
 
         setEmailNotice(
