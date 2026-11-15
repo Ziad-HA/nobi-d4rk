@@ -2,20 +2,53 @@ export const formatPrice = (n) => `${n.toLocaleString("en-US")} EGP`;
 
 // Photos: put your own in /public/images/products and name them after the product id (for example /images/products/d4rk-dad-cap.jpg).
 // Until a photo exists the tile just stays empty.
-const img = (name) => `/images/products/${name}.jpg`;
+const img = (name) => `/images/products/${name}.webp`;
 
 export const categories = [
   { slug: "caps", name: "Caps", nameAr: "كابات", image: img("cat-caps") },
-  { slug: "beanies", name: "Beanies", nameAr: "بيني", image: img("cat-beanies") },
+  {
+    slug: "beanies",
+    name: "Beanies",
+    nameAr: "بيني",
+    image: img("cat-beanies"),
+  },
   { slug: "bags", name: "Backpacks", nameAr: "شنط", image: img("cat-bags") },
-  { slug: "jewelry", name: "Jewelry", nameAr: "إكسسوارات معدن", image: img("cat-jewelry") },
-  { slug: "eyewear", name: "Eyewear", nameAr: "نظارات", image: img("cat-eyewear") },
+  {
+    slug: "jewelry",
+    name: "Jewelry",
+    nameAr: "إكسسوارات معدن",
+    image: img("cat-jewelry"),
+  },
+  {
+    slug: "eyewear",
+    name: "Eyewear",
+    nameAr: "نظارات",
+    image: img("cat-eyewear"),
+  },
 ];
 
 export const collections = [
-  { slug: "new-drops", name: "New Drops", tagline: "Every month", cta: "Explore", image: img("col-new-drops") },
-  { slug: "essentials", name: "Essentials", tagline: "Everyday carry", cta: "Explore", image: img("col-essentials") },
-  { slug: "sale", name: "Up to 30% Off", tagline: "Limited time only", cta: "Shop sale", image: img("col-sale") },
+  {
+    slug: "new-drops",
+    name: "New Drops",
+    tagline: "Every month",
+    cta: "Explore",
+    image: img("col-new-drops"),
+  },
+  {
+    slug: "essentials",
+    name: "Essentials",
+    tagline: "Everyday carry",
+    cta: "Explore",
+    image: img("col-essentials"),
+  },
+  {
+    slug: "sale",
+    name: "Up to 30% Off",
+    tagline: "Limited time only",
+    cta: "Shop sale",
+    image: img("col-sale"),
+  },
 ];
 
 export const products = [
@@ -28,7 +61,8 @@ export const products = [
     trending: true,
     image: img("flame-cap"),
     sizes: ["OS"],
-    description: "Washed black cap with silver flame embroidery across the crown and brim, and studs along the brim edge. Adjustable strap.",
+    description:
+      "Washed black cap with silver flame embroidery across the crown and brim, and studs along the brim edge. Adjustable strap.",
   },
   {
     id: "patch-trucker",
@@ -39,7 +73,8 @@ export const products = [
     trending: false,
     image: img("patch-trucker"),
     sizes: ["OS"],
-    description: "Black foam trucker with a woven patch on the front and a mesh back. Snapback closure.",
+    description:
+      "Black foam trucker with a woven patch on the front and a mesh back. Snapback closure.",
   },
   {
     id: "star-trucker",
@@ -52,7 +87,8 @@ export const products = [
     originalPrice: 600,
     image: img("star-trucker"),
     sizes: ["OS"],
-    description: "White foam trucker with black embroidered stars and a front emblem. Mesh back, snapback closure.",
+    description:
+      "White foam trucker with black embroidered stars and a front emblem. Mesh back, snapback closure.",
   },
   {
     id: "thorn-beanie",
@@ -63,7 +99,8 @@ export const products = [
     trending: true,
     image: img("thorn-beanie"),
     sizes: ["OS"],
-    description: "Jacquard-knit beanie in black with a white thorn print and a small woven mark. Soft and stretchy.",
+    description:
+      "Jacquard-knit beanie in black with a white thorn print and a small woven mark. Soft and stretchy.",
   },
   {
     id: "shadow-beanie",
@@ -76,7 +113,8 @@ export const products = [
     originalPrice: 450,
     image: img("shadow-beanie"),
     sizes: ["OS"],
-    description: "Jacquard-knit beanie in black with a faded portrait pattern. Fits close to the head.",
+    description:
+      "Jacquard-knit beanie in black with a faded portrait pattern. Fits close to the head.",
   },
   {
     id: "cross-beanie",
@@ -87,7 +125,8 @@ export const products = [
     trending: true,
     image: img("cross-beanie"),
     sizes: ["OS"],
-    description: "Jacquard-knit beanie in black with a double cross print. Soft, stretchy, one size.",
+    description:
+      "Jacquard-knit beanie in black with a double cross print. Soft, stretchy, one size.",
   },
   {
     id: "shark-backpack",
@@ -98,7 +137,8 @@ export const products = [
     trending: true,
     image: img("shark-backpack"),
     sizes: ["OS"],
-    description: "Checkerboard backpack in charcoal with a bold shark-mouth print on the front. Padded back, zip front pocket and a top handle.",
+    description:
+      "Checkerboard backpack in charcoal with a bold shark-mouth print on the front. Padded back, zip front pocket and a top handle.",
   },
   {
     id: "crystal-backpack",
@@ -109,7 +149,8 @@ export const products = [
     trending: false,
     image: img("crystal-backpack"),
     sizes: ["OS"],
-    description: "Black checkerboard backpack with a torn-open panel of sparkling crystals. Silver hardware and a top handle.",
+    description:
+      "Black checkerboard backpack with a torn-open panel of sparkling crystals. Silver hardware and a top handle.",
   },
   {
     id: "smoke-backpack",
@@ -120,7 +161,8 @@ export const products = [
     trending: false,
     image: img("smoke-backpack"),
     sizes: ["OS"],
-    description: "Charcoal checkerboard backpack with a white smoke print across the front. Fits a laptop.",
+    description:
+      "Charcoal checkerboard backpack with a white smoke print across the front. Fits a laptop.",
   },
   {
     id: "ribbed-ring",
@@ -131,7 +173,8 @@ export const products = [
     trending: true,
     image: img("ribbed-ring"),
     sizes: ["S", "M", "L"],
-    description: "Oxidized silver-tone ring with a hand-finished ribbed, bone-like band. Heavy and sculptural.",
+    description:
+      "Oxidized silver-tone ring with a hand-finished ribbed, bone-like band. Heavy and sculptural.",
   },
   {
     id: "numbers-ring",
@@ -142,7 +185,8 @@ export const products = [
     trending: false,
     image: img("numbers-ring"),
     sizes: ["S", "M", "L"],
-    description: "Slim steel band with raised numbers around the outside. Plain polished inside.",
+    description:
+      "Slim steel band with raised numbers around the outside. Plain polished inside.",
   },
   {
     id: "signet-ring",
@@ -153,7 +197,8 @@ export const products = [
     trending: false,
     image: img("signet-ring"),
     sizes: ["S", "M", "L"],
-    description: "Flat-top signet ring in brushed antique silver with a numbered plate on the front.",
+    description:
+      "Flat-top signet ring in brushed antique silver with a numbered plate on the front.",
   },
   {
     id: "cross-frame",
@@ -164,7 +209,8 @@ export const products = [
     trending: true,
     image: img("cross-frame"),
     sizes: ["OS"],
-    description: "Square black acetate frame with silver cross hardware on the front and temples. Clear lenses.",
+    description:
+      "Square black acetate frame with silver cross hardware on the front and temples. Clear lenses.",
   },
   {
     id: "clear-frame",
@@ -177,7 +223,8 @@ export const products = [
     originalPrice: 560,
     image: img("clear-frame"),
     sizes: ["OS"],
-    description: "Crystal-clear frame with a silver fleur hardware detail on the temple. Clear lenses.",
+    description:
+      "Crystal-clear frame with a silver fleur hardware detail on the temple. Clear lenses.",
   },
   {
     id: "plate-tag",
@@ -188,7 +235,8 @@ export const products = [
     trending: true,
     image: img("plate-tag"),
     sizes: ["45 cm", "50 cm", "55 cm"],
-    description: "Stainless steel ball chain with an engraved-look plate tag. Polished finish that does not tarnish.",
+    description:
+      "Stainless steel ball chain with an engraved-look plate tag. Polished finish that does not tarnish.",
   },
   {
     id: "double-tag",
@@ -199,7 +247,8 @@ export const products = [
     trending: true,
     image: img("double-tag"),
     sizes: ["45 cm", "50 cm", "55 cm"],
-    description: "Two polished steel dog tags on a ball chain, one stamped and one blank. Classic military shape.",
+    description:
+      "Two polished steel dog tags on a ball chain, one stamped and one blank. Classic military shape.",
   },
   {
     id: "opener-tag",
@@ -210,16 +259,17 @@ export const products = [
     trending: false,
     image: img("opener-tag"),
     sizes: ["45 cm", "50 cm", "55 cm"],
-    description: "Antique silver tag on a ball chain with a working bottle-opener cut-out.",
+    description:
+      "Antique silver tag on a ball chain with a working bottle-opener cut-out.",
   },
 ];
 
 // Collection covers live in /images/products/col-*.jpg. Until you add category covers (cat-*.jpg),
 // each category borrows the photo of its first product.
-const firstPhoto = (match) => products.find(match)?.image
+const firstPhoto = (match) => products.find(match)?.image;
 categories.forEach((c) => {
-  c.image = firstPhoto((p) => p.category === c.slug) ?? c.image
-})
+  c.image = firstPhoto((p) => p.category === c.slug) ?? c.image;
+});
 
 export function getProduct(id) {
   return products.find((p) => p.id === id);
