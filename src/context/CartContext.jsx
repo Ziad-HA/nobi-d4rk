@@ -66,13 +66,10 @@ export function CartProvider({ children }) {
       ];
     });
 
-    // Default: open on desktop, stay closed on mobile
-    const shouldOpen =
-      openCart ?? window.matchMedia("(min-width: 768px)").matches;
-
-    if (shouldOpen) {
-      setIsOpen(true);
-    }
+   // Keep the cart closed when adding a product
+if (openCart === true) {
+  setIsOpen(true);
+}
 
     setToast(`${product.name} added to cart`);
   };
