@@ -68,10 +68,10 @@ export default function Checkout() {
               Please transfer <span className="font-bold text-pure-white">{formatPrice(placed.total)}</span> to the InstaPay address:
             </p>
             <div className="flex items-center justify-between bg-pure-black px-4 py-2.5 border border-neutral-700 rounded font-mono text-sm text-pure-white">
-              <span className="text-pure-white font-medium">{brand.instapayUsername || 'ziad.nobi99@instapay'}</span>
+              <span className="text-pure-white font-medium">{brand.instapayUsername || 'ziad.nobii99'}</span>
               <button
                 type="button"
-                onClick={() => navigator.clipboard.writeText(brand.instapayUsername || 'ziad.nobi99@instapay')}
+                onClick={() => navigator.clipboard.writeText(brand.instapayUsername || 'ziad.nobii99')}
                 className="text-xs uppercase font-semibold text-neutral-300 hover:text-pure-white underline cursor-pointer"
               >
                 Copy
