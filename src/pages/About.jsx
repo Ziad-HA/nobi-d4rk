@@ -14,7 +14,7 @@ export default function About() {
       <div className="mx-auto max-w-3xl px-4 py-16 text-sm leading-relaxed text-neutral-700">
         <p>
           {brand.name} is a streetwear accessories brand. We make the finishing pieces in {brand.city}:
-          caps, beanies, backpacks, chains and eyewear with clean shapes and small details instead of loud logos. Every piece is
+          caps, beanies, backpacks, rings and eyewear with clean shapes and small details instead of loud logos. Every piece is
           checked by hand before it leaves the studio.
         </p>
 
@@ -39,7 +39,7 @@ export default function About() {
 
         <h2 className="mt-10 font-display uppercase text-xl tracking-tight text-black">Sizing</h2>
         <p className="mt-3">
-          Caps and beanies are one size and adjustable or stretchy. Chains come in 45, 50 and 55 cm: 45 cm sits at the collarbone, 55 cm falls on the chest.
+          Caps, beanies and backpacks are one size. Rings come in S, M and L: S fits a small ring finger, L fits a large index or thumb. Not sure? Message us on WhatsApp.
         </p>
 
         <h2 className="mt-10 font-display uppercase text-xl tracking-tight text-black">Privacy</h2>

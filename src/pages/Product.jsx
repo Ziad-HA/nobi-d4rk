@@ -48,7 +48,7 @@ export default function Product() {
 
           {product.sizes.length > 1 && (
           <fieldset className="mt-8">
-            <legend className="text-xs font-semibold uppercase tracking-[0.16em]">Length</legend>
+            <legend className="text-xs font-semibold uppercase tracking-[0.16em]">Size</legend>
             <div className="mt-3 flex flex-wrap gap-2">
               {product.sizes.map((s) => (
                 <button
