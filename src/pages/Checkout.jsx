@@ -15,25 +15,64 @@ const isEgyptianMobile = (raw) => /^01[0125]\d{8}$/.test(normalizePhone(raw))
 const inputClass = 'mt-2 h-11 w-full border border-neutral-300 px-3'
 const labelClass = 'text-xs font-semibold uppercase tracking-wide'
 
+const PLACED_STORAGE_KEY = 'd4rk-placed-order'
+const FORM_STORAGE_KEY = 'd4rk-checkout-form'
+
 export default function Checkout() {
   const { items, subtotal, shipping, total, clear } = useCart()
-  const [placed, setPlaced] = useState(null)
+  const [placed, setPlaced] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(PLACED_STORAGE_KEY)
+      return saved ? JSON.parse(saved) : null
+    } catch {
+      return null
+    }
+  })
   const [error, setError] = useState('')
-  const [confirmedPayment, setConfirmedPayment] = useState(false)
+  const [confirmedPayment, setConfirmedPayment] = useState(() => {
+    try {
+      return sessionStorage.getItem('d4rk-payment-confirmed') === 'true'
+    } catch {
+      return false
+    }
+  })
   const [submitting, setSubmitting] = useState(false)
-  const [form, setForm] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    governorate: '',
-    city: '',
-    address: '',
-    notes: '',
-    payment: 'cod',
+  const [form, setForm] = useState(() => {
+    const defaults = {
+      name: '',
+      phone: '',
+      email: '',
+      governorate: '',
+      city: '',
+      address: '',
+      notes: '',
+      payment: 'cod',
+    }
+    try {
+      const saved = localStorage.getItem(FORM_STORAGE_KEY)
+      return saved ? { ...defaults, ...JSON.parse(saved) } : defaults
+    } catch {
+      return defaults
+    }
   })
 
+  // Save form data so refresh does not lose customer inputs
+  useEffect(() => {
+    try {
+      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(form))
+    } catch {
+      // ignore
+    }
+  }, [form])
+
+  // Save placed order state so refresh does not wipe the order received screen
   useEffect(() => {
     if (placed) {
+      try {
+        sessionStorage.setItem(PLACED_STORAGE_KEY, JSON.stringify(placed))
+      } catch {
+        // ignore
+      }
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
@@ -116,6 +155,9 @@ export default function Checkout() {
                   type="button"
                   onClick={() => {
                     setConfirmedPayment(true)
+                    try {
+                      sessionStorage.setItem('d4rk-payment-confirmed', 'true')
+                    } catch {}
                     clear()
                   }}
                   className="w-full sm:w-auto bg-black text-white px-5 py-2 text-xs uppercase font-semibold tracking-wider hover:opacity-90"
@@ -142,6 +184,12 @@ export default function Checkout() {
           </a>
           <Link
             to="/shop"
+            onClick={() => {
+              try {
+                sessionStorage.removeItem(PLACED_STORAGE_KEY)
+                sessionStorage.removeItem('d4rk-payment-confirmed')
+              } catch {}
+            }}
             className="inline-block border border-neutral-200 px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] hover:border-black"
           >
             Keep shopping
