@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://d4rk.eu.org/sitemap.xml
+Sitemap: https://www.d4rk.eu.org/sitemap.xml
