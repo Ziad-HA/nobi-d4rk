@@ -14,7 +14,7 @@ export default function About() {
       <div className="mx-auto max-w-3xl px-4 py-16 text-sm leading-relaxed text-neutral-700">
         <p>
           {brand.name} is a streetwear accessories brand. We make the finishing pieces in {brand.city}:
-          caps, beanies, bags, chains and eyewear with clean shapes and small details instead of loud logos. Every piece is
+          caps, beanies, backpacks, chains and eyewear with clean shapes and small details instead of loud logos. Every piece is
           checked by hand before it leaves the studio.
         </p>
 
