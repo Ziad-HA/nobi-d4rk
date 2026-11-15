@@ -62,18 +62,18 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-neutral-200 bg-white">
-      <div className="wrap grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-5">
-        <div className="lg:col-span-1">
+      <div className="wrap grid grid-cols-2 gap-8 py-10 sm:py-14 md:grid-cols-3 lg:grid-cols-5">
+        <div className="col-span-2 md:col-span-3 lg:col-span-1">
           <p className="flex items-baseline gap-2">
             <span className="font-display uppercase text-xl tracking-tight">
               {brand.name}
             </span>
           </p>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-600">
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-neutral-600">
             Streetwear accessories, designed and made in ALEX. Caps, backpacks,
             jewelry and eyewear to finish the fit.
           </p>
-          <div className="mt-5 flex gap-3">
+          <div className="mt-4 flex gap-3">
             <a
               href="https://tiktok.com"
               className="flex h-10 w-10 items-center justify-center border border-neutral-300"
@@ -102,7 +102,7 @@ export default function Footer() {
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em]">
             Shop
           </h2>
-          <ul className="mt-4 space-y-2 text-sm text-neutral-600">
+          <ul className="mt-3 space-y-1.5 text-xs sm:text-sm text-neutral-600">
             <li>
               <Link to="/shop" className="hover:text-black">
                 All Products
@@ -140,7 +140,7 @@ export default function Footer() {
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em]">
             Company
           </h2>
-          <ul className="mt-4 space-y-2 text-sm text-neutral-600">
+          <ul className="mt-3 space-y-1.5 text-xs sm:text-sm text-neutral-600">
             <li>
               <Link to="/about" className="hover:text-black">
                 About Us
@@ -173,7 +173,7 @@ export default function Footer() {
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em]">
             Help
           </h2>
-          <ul className="mt-4 space-y-2 text-sm text-neutral-600">
+          <ul className="mt-3 space-y-1.5 text-xs sm:text-sm text-neutral-600">
             <li>
               <Link to="/contact" className="hover:text-black">
                 FAQs
@@ -202,20 +202,20 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div>
+        <div className="col-span-2 sm:col-span-1 md:col-span-3 lg:col-span-1">
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em]">
             Newsletter
           </h2>
-          <p className="mt-4 text-sm text-neutral-600">
+          <p className="mt-3 text-xs sm:text-sm text-neutral-600">
             Get exclusive updates on new drops and special offers.
           </p>
           {done ? (
-            <p className="mt-4 text-sm">
+            <p className="mt-3 text-xs sm:text-sm text-emerald-600">
               You’re on the list. Thanks for subscribing!
             </p>
           ) : (
             <form
-              className="mt-4 flex border border-neutral-300"
+              className="mt-3 flex border border-neutral-300"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (!email.includes("@")) return;
@@ -232,14 +232,14 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="h-11 min-w-0 flex-1 px-3 text-sm outline-none"
+                className="h-10 min-w-0 flex-1 px-3 text-xs outline-none"
               />
               <button
                 type="submit"
-                className="flex h-11 w-11 items-center justify-center bg-black text-white"
+                className="flex h-10 w-10 items-center justify-center bg-black text-white"
                 aria-label="Subscribe"
               >
-                <ArrowRight size={16} />
+                <ArrowRight size={14} />
               </button>
             </form>
           )}
