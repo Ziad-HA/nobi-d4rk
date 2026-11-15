@@ -95,7 +95,7 @@ export default async function handler(req, res) {
           <tr>
             <td style="padding-top: 36px; border-top: 1px solid #1a1a1a; margin-top: 32px; font-size: 11px; color: #555555; text-align: center; line-height: 1.5;">
               <p style="margin: 0 0 4px 0;">Alexandria, Egypt</p>
-              <p style="margin: 0;">Instagram: @d4rk.eg · WhatsApp: +201276390301</p>
+              <p style="margin: 0;">Instagram: @zi4dddd · WhatsApp: +201276390301</p>
             </td>
           </tr>
 
