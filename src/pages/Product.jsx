@@ -127,6 +127,7 @@ export default function Product() {
           <div className="mt-8 grid max-w-sm grid-cols-2 gap-3">
             <button
               type="button"
+                data-sound="addToCart"
               onClick={() => addItem(product, size)}
               className="w-full border border-black py-3.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition hover:bg-neutral-100"
             >

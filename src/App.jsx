@@ -20,6 +20,7 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Account from './pages/Account'
 import TrackOrder from './pages/TrackOrder'
+import { playSound } from './utils/sound'
 
 const WHATSAPP_NUMBER = '+201276390301'
 
@@ -33,6 +34,36 @@ function ScrollToTop() {
   return null
 }
 
+function GlobalSounds() {
+  useEffect(() => {
+    const handleClick = (event) => {
+      const target = event.target
+
+      if (!(target instanceof Element)) return
+
+      const interactiveElement = target.closest(
+        'button, a, [role="button"], input[type="submit"], input[type="button"]'
+      )
+
+      if (!interactiveElement) return
+      if (interactiveElement.hasAttribute('disabled')) return
+      if (interactiveElement.getAttribute('aria-disabled') === 'true') return
+
+      const soundType = interactiveElement.dataset.sound || 'click'
+
+      playSound(soundType)
+    }
+
+    document.addEventListener('click', handleClick)
+
+    return () => {
+      document.removeEventListener('click', handleClick)
+    }
+  }, [])
+
+  return null
+}
+
 function WhatsAppButton() {
   const message = encodeURIComponent(
     'Hello D4RK! I need help with my order.'
@@ -40,7 +71,7 @@ function WhatsAppButton() {
 
   return (
     <a
-      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`}
+      href={`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"
@@ -56,6 +87,7 @@ export default function App() {
     <CartProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <GlobalSounds />
 
         <Routes>
           <Route element={<Layout />}>
