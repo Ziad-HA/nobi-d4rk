@@ -95,17 +95,29 @@ export default function Home() {
             gsap.to(els, { opacity: 1, y: 0, rotationX: 0, duration: 0.9, ease: "power3.out", stagger: 0.1 }),
         });
 
-        gsap.set(".lb-tile", {
-          opacity: 0,
-          z: small ? -140 : -260,
-          rotationY: (i) => (i % 2 ? -1 : 1) * (small ? 22 : 38),
-          transformPerspective: 1000,
-        });
-        ScrollTrigger.batch(".lb-tile", {
-          start: "top 90%",
-          once: true,
-          onEnter: (els) =>
-            gsap.to(els, { opacity: 1, z: 0, rotationY: 0, duration: 1.1, ease: "power3.out", stagger: 0.12 }),
+        // Lookbook never sits still: tiles swing across a 3D fan and drift at opposite speeds as you scroll,
+        // while each photo keeps a slow push-in/pull-out going on its own.
+        gsap.utils.toArray(".lb-tile").forEach((tile, i) => {
+          const dir = i % 2 ? -1 : 1;
+          const swing = small ? 18 : 30;
+          const drift = small ? 36 : 80;
+          gsap
+            .timeline({
+              scrollTrigger: { trigger: tile, start: "top bottom", end: "bottom top", scrub: 0.6 },
+            })
+            .fromTo(
+              tile,
+              { rotationY: dir * swing, y: dir * drift, transformPerspective: 1000 },
+              { rotationY: -dir * swing, y: -dir * drift, ease: "none", duration: 1 },
+              0,
+            )
+            .fromTo(tile, { opacity: 0 }, { opacity: 1, ease: "none", duration: 0.25 }, 0);
+
+          gsap.fromTo(
+            tile.querySelector("img"),
+            { scale: 1.04 },
+            { scale: 1.16, duration: 4 + i * 0.7, ease: "sine.inOut", yoyo: true, repeat: -1 },
+          );
         });
 
         gsap.set(".cat-row", { opacity: 0, rotationX: small ? -60 : -80, transformPerspective: 900, transformOrigin: "50% 0%" });
@@ -260,7 +272,7 @@ export default function Home() {
                 <Photo
                   src={src}
                   alt="D4RK Lookbook Collection"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover"
                 />
               </Link>
             ))}
