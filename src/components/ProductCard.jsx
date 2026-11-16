@@ -15,8 +15,19 @@ export default function ProductCard({ product, bare = false }) {
           alt={product.name}
           width={600}
           height={750}
-          className="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+          className={`aspect-square w-full object-cover transition duration-500 ${
+            product.image2 ? 'group-hover:opacity-0' : 'group-hover:scale-[1.04]'
+          }`}
         />
+        {product.image2 && (
+          <Photo
+            src={product.image2}
+            alt=""
+            width={600}
+            height={750}
+            className="absolute inset-0 aspect-square w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100"
+          />
+        )}
         {product.sale && (
           <span className="absolute left-2 top-2 bg-pure-black px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-pure-white">
             Sale

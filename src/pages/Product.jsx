@@ -14,9 +14,11 @@ export default function Product() {
   const { addItem } = useCart()
 
   const [size, setSize] = useState(product?.sizes?.[0] || 'M')
+  const [activeImage, setActiveImage] = useState(0)
 
   useEffect(() => {
     if (product?.sizes?.[0]) setSize(product.sizes[0])
+    setActiveImage(0)
   }, [product])
 
   if (!product) {
@@ -31,6 +33,8 @@ export default function Product() {
       </div>
     )
   }
+
+  const gallery = [product.image, product.image2].filter(Boolean)
 
   const related = products
     .filter((p) => p.category === product.category && p.id !== product.id)
@@ -52,11 +56,30 @@ export default function Product() {
       </nav>
 
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
-        <Photo
-          src={product.image}
-          alt={product.name}
-          className="aspect-square w-full bg-slate object-cover"
-        />
+        <div>
+          <Photo
+            src={gallery[activeImage] || product.image}
+            alt={product.name}
+            className="aspect-square w-full bg-slate object-cover"
+          />
+          {gallery.length > 1 && (
+            <div className="mt-3 grid grid-cols-5 gap-2">
+              {gallery.map((src, i) => (
+                <button
+                  key={src}
+                  type="button"
+                  onClick={() => setActiveImage(i)}
+                  aria-label={`Show photo ${i + 1}`}
+                  className={`overflow-hidden border-2 transition ${
+                    i === activeImage ? 'border-pure-white' : 'border-transparent opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <Photo src={src} alt="" className="aspect-square w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div>
           <h1 className="font-display uppercase text-3xl tracking-tight sm:text-4xl">

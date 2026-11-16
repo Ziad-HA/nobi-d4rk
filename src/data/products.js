@@ -208,6 +208,7 @@ export const products = [
     collection: "essentials",
     trending: true,
     image: img("cross-frame"),
+    image2: img("eyewear-pair"),
     sizes: ["OS"],
     description:
       "Square black acetate frame with silver cross hardware on the front and temples. Clear lenses.",
@@ -222,6 +223,7 @@ export const products = [
     sale: true,
     originalPrice: 560,
     image: img("clear-frame"),
+    image2: img("eyewear-pair"),
     sizes: ["OS"],
     description:
       "Crystal-clear frame with a silver fleur hardware detail on the temple. Clear lenses.",
