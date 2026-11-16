@@ -34,7 +34,7 @@ export default function Product() {
     )
   }
 
-  const gallery = [product.image, product.image2].filter(Boolean)
+  const gallery = [product.image, product.image2, product.image3].filter(Boolean)
 
   const related = products
     .filter((p) => p.category === product.category && p.id !== product.id)
