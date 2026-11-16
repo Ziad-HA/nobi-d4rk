@@ -137,6 +137,9 @@ a {
   font-family: "Unbounded", "Inter", sans-serif;
   font-weight: 900;
   letter-spacing: -0.04em;
+  /* The outline echoes sit on real depth layers so the wordmark reads as 3D when it tilts. */
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 .wordmark::before,
 .wordmark::after {
@@ -149,5 +152,5 @@ a {
   text-shadow: none;
   pointer-events: none;
 }
-.wordmark::before { transform: translateY(-0.2em); opacity: 0.55; }
-.wordmark::after { transform: translateY(-0.4em); opacity: 0.25; }
+.wordmark::before { transform: translateZ(-60px) translateY(-0.2em); opacity: 0.55; }
+.wordmark::after { transform: translateZ(-130px) translateY(-0.4em); opacity: 0.25; }

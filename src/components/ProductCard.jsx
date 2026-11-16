@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom'
 import { formatPrice } from '../data/products'
 import { useCart } from '../context/CartContext'
 import Photo from './Photo'
+import Tilt from './Tilt'
 
 // bare = tile + name/price only (home page); otherwise also shows a quick "Add to cart" button
 export default function ProductCard({ product, bare = false }) {
   const { addItem } = useCart()
 
   return (
+    <Tilt className="h-full">
     <article className="group flex h-full flex-col">
       <Link to={`/product/${product.id}`} className="relative block overflow-hidden bg-slate">
         <Photo
@@ -53,5 +55,6 @@ export default function ProductCard({ product, bare = false }) {
         </button>
       )}
     </article>
+    </Tilt>
   )
 }

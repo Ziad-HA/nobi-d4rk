@@ -1,11 +1,16 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { categories, formatPrice, products } from "../data/products";
 import { siteImages } from "../data/images";
 import { brand, FREE_SHIPPING_FROM, RETURN_DAYS } from "../data/brand";
 import ProductCard from "../components/ProductCard";
 import Photo from "../components/Photo";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const label =
   "font-display text-xs font-extrabold uppercase tracking-tight sm:text-sm";
@@ -19,6 +24,9 @@ const perks = [
 
 export default function Home() {
   const videoRef = useRef(null);
+  const rootRef = useRef(null);
+  const heroRef = useRef(null);
+  const wordRef = useRef(null);
 
   // Phones sometimes ignore autoplay until the page is ready or touched, so ask for playback explicitly.
   useEffect(() => {
@@ -31,13 +39,122 @@ export default function Home() {
     return () => window.removeEventListener("touchstart", tryPlay);
   }, []);
 
+  // 3D motion: cursor depth on the hero, plus perspective reveals on scroll. All of it is skipped for reduced motion.
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const hero = heroRef.current;
+        const word = wordRef.current;
+        const video = videoRef.current;
+
+        // Hero card tips back and shrinks as you scroll away from it.
+        gsap.set(hero, { transformPerspective: 1200, transformOrigin: "50% 100%" });
+        // The hero clips its children, which flattens 3D, so the wordmark carries its own perspective.
+        gsap.set(word, { transformPerspective: 900 });
+        gsap.to(hero, {
+          rotationX: 9,
+          scale: 0.93,
+          ease: "none",
+          scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true },
+        });
+        gsap.to(word, {
+          yPercent: -18,
+          z: 120,
+          ease: "none",
+          scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true },
+        });
+
+        // Manifesto photo swings up from a tilted plane.
+        gsap.fromTo(
+          ".manifesto-img",
+          { rotationX: 24, scale: 0.88, transformPerspective: 1000, transformOrigin: "50% 100%" },
+          {
+            rotationX: 0,
+            scale: 1,
+            ease: "none",
+            scrollTrigger: { trigger: ".manifesto-img", start: "top 95%", end: "top 35%", scrub: true },
+          },
+        );
+
+        // Product tiles, lookbook tiles and catalog rows each enter on their own 3D axis.
+        gsap.set(".drop-card", { opacity: 0, y: 70, rotationX: -24, transformPerspective: 900, transformOrigin: "50% 100%" });
+        ScrollTrigger.batch(".drop-card", {
+          start: "top 90%",
+          once: true,
+          onEnter: (els) =>
+            gsap.to(els, { opacity: 1, y: 0, rotationX: 0, duration: 0.9, ease: "power3.out", stagger: 0.1 }),
+        });
+
+        gsap.set(".lb-tile", {
+          opacity: 0,
+          z: -260,
+          rotationY: (i) => (i % 2 ? -38 : 38),
+          transformPerspective: 1000,
+        });
+        ScrollTrigger.batch(".lb-tile", {
+          start: "top 90%",
+          once: true,
+          onEnter: (els) =>
+            gsap.to(els, { opacity: 1, z: 0, rotationY: 0, duration: 1.1, ease: "power3.out", stagger: 0.12 }),
+        });
+
+        gsap.set(".cat-row", { opacity: 0, rotationX: -80, transformPerspective: 900, transformOrigin: "50% 0%" });
+        ScrollTrigger.batch(".cat-row", {
+          start: "top 92%",
+          once: true,
+          onEnter: (els) =>
+            gsap.to(els, { opacity: 1, rotationX: 0, duration: 0.8, ease: "back.out(1.4)", stagger: 0.09 }),
+        });
+
+        // Cursor depth on devices with a mouse; a slow idle sway on touch screens.
+        const mouse = window.matchMedia("(hover: hover)").matches;
+        if (mouse) {
+          gsap.set(video, { scale: 1.1 });
+          const opts = { duration: 0.7, ease: "power3.out" };
+          const wy = gsap.quickTo(word, "rotationY", opts);
+          const wx = gsap.quickTo(word, "rotationX", opts);
+          const vx = gsap.quickTo(video, "x", opts);
+          const vy = gsap.quickTo(video, "y", opts);
+          const onMove = (e) => {
+            const r = hero.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            wy(px * 26);
+            wx(-py * 18);
+            vx(-px * 30);
+            vy(-py * 20);
+          };
+          const onLeave = () => {
+            wy(0);
+            wx(0);
+            vx(0);
+            vy(0);
+          };
+          hero.addEventListener("pointermove", onMove);
+          hero.addEventListener("pointerleave", onLeave);
+          return () => {
+            hero.removeEventListener("pointermove", onMove);
+            hero.removeEventListener("pointerleave", onLeave);
+          };
+        }
+        gsap.to(word, { rotationY: 10, rotationX: -4, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });
+        return undefined;
+      });
+
+      return () => mm.revert();
+    },
+    { scope: rootRef },
+  );
+
   const newDrops = products.filter((p) => p.collection === "new-drops").slice(0, 4);
 
   return (
-    <div>
+    <div ref={rootRef}>
       {/* Hero */}
       <section className="page pt-3 sm:pt-5">
-        <div className="relative isolate flex aspect-square flex-col justify-between sm:aspect-auto sm:min-h-[78vh] overflow-hidden bg-pure-black p-4 sm:p-8">
+        <div ref={heroRef} className="relative isolate flex aspect-square flex-col justify-between sm:aspect-auto sm:min-h-[78vh] overflow-hidden bg-pure-black p-4 sm:p-8">
           <video
             ref={videoRef}
             className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_35%]"
@@ -56,6 +173,7 @@ export default function Home() {
             aria-hidden="true"
           />
           <h1
+            ref={wordRef}
             data-text={brand.name}
             className="wordmark mt-[0.35em] text-center text-[14vw] uppercase leading-none text-pure-white sm:text-[12vw] lg:text-[11vw]"
           >
@@ -89,7 +207,9 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
           {newDrops.map((p) => (
-            <ProductCard key={p.id} product={p} bare />
+            <div key={p.id} className="drop-card">
+              <ProductCard product={p} bare />
+            </div>
           ))}
         </div>
       </section>
@@ -99,7 +219,7 @@ export default function Home() {
         <h2 className="mx-auto max-w-[550px] text-center font-sans text-lg sm:text-[22px] font-medium leading-relaxed tracking-normal text-neutral-400">
           <span className="font-semibold text-pure-white">{brand.name}</span> finishes the fit because the small details are made to last
         </h2>
-        <div className="relative mt-8 sm:mt-12 aspect-[16/9] overflow-hidden bg-neutral-100">
+        <div className="manifesto-img relative mt-8 sm:mt-12 aspect-[16/9] overflow-hidden bg-neutral-100">
           <Photo
             src="/images/grillz.jpg"
             alt="Silver Grillz"
@@ -125,7 +245,7 @@ export default function Home() {
               <Link
                 key={src}
                 to="/collections"
-                className={`group block aspect-[3/4] overflow-hidden bg-neutral-100 transition-opacity hover:opacity-90 ${
+                className={`lb-tile group block aspect-[3/4] overflow-hidden bg-neutral-100 transition-opacity hover:opacity-90 ${
                   i % 2 ? "mt-8 sm:mt-16" : ""
                 }`}
               >
@@ -145,7 +265,7 @@ export default function Home() {
         <h2 className={`${label} mb-4`}>Catalog</h2>
         <ul className="border-t border-neutral-200">
           {categories.map((c) => (
-            <li key={c.slug}>
+            <li key={c.slug} className="cat-row">
               <Link
                 to={`/shop?category=${c.slug}`}
                 className="group flex items-center justify-between border-b border-neutral-200 py-5 font-display text-2xl font-extrabold uppercase tracking-tight transition-all hover:pl-4 sm:text-5xl"
