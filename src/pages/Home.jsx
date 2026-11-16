@@ -44,7 +44,15 @@ export default function Home() {
     () => {
       const mm = gsap.matchMedia();
 
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(
+        {
+          ok: "(prefers-reduced-motion: no-preference)",
+          small: "(max-width: 639px)",
+          mouse: "(hover: hover)",
+        },
+        (ctx) => {
+        const { ok, small, mouse } = ctx.conditions;
+        if (!ok) return undefined;
         const hero = heroRef.current;
         const word = wordRef.current;
         const video = videoRef.current;
@@ -54,14 +62,14 @@ export default function Home() {
         // The hero clips its children, which flattens 3D, so the wordmark carries its own perspective.
         gsap.set(word, { transformPerspective: 900 });
         gsap.to(hero, {
-          rotationX: 9,
-          scale: 0.93,
+          rotationX: small ? 5 : 9,
+          scale: small ? 0.96 : 0.93,
           ease: "none",
           scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true },
         });
         gsap.to(word, {
-          yPercent: -18,
-          z: 120,
+          yPercent: small ? -10 : -18,
+          z: small ? 60 : 120,
           ease: "none",
           scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true },
         });
@@ -69,7 +77,7 @@ export default function Home() {
         // Manifesto photo swings up from a tilted plane.
         gsap.fromTo(
           ".manifesto-img",
-          { rotationX: 24, scale: 0.88, transformPerspective: 1000, transformOrigin: "50% 100%" },
+          { rotationX: small ? 14 : 24, scale: small ? 0.92 : 0.88, transformPerspective: 1000, transformOrigin: "50% 100%" },
           {
             rotationX: 0,
             scale: 1,
@@ -79,7 +87,7 @@ export default function Home() {
         );
 
         // Product tiles, lookbook tiles and catalog rows each enter on their own 3D axis.
-        gsap.set(".drop-card", { opacity: 0, y: 70, rotationX: -24, transformPerspective: 900, transformOrigin: "50% 100%" });
+        gsap.set(".drop-card", { opacity: 0, y: small ? 40 : 70, rotationX: small ? -14 : -24, transformPerspective: 900, transformOrigin: "50% 100%" });
         ScrollTrigger.batch(".drop-card", {
           start: "top 90%",
           once: true,
@@ -89,8 +97,8 @@ export default function Home() {
 
         gsap.set(".lb-tile", {
           opacity: 0,
-          z: -260,
-          rotationY: (i) => (i % 2 ? -38 : 38),
+          z: small ? -140 : -260,
+          rotationY: (i) => (i % 2 ? -1 : 1) * (small ? 22 : 38),
           transformPerspective: 1000,
         });
         ScrollTrigger.batch(".lb-tile", {
@@ -100,7 +108,7 @@ export default function Home() {
             gsap.to(els, { opacity: 1, z: 0, rotationY: 0, duration: 1.1, ease: "power3.out", stagger: 0.12 }),
         });
 
-        gsap.set(".cat-row", { opacity: 0, rotationX: -80, transformPerspective: 900, transformOrigin: "50% 0%" });
+        gsap.set(".cat-row", { opacity: 0, rotationX: small ? -60 : -80, transformPerspective: 900, transformOrigin: "50% 0%" });
         ScrollTrigger.batch(".cat-row", {
           start: "top 92%",
           once: true,
@@ -109,7 +117,6 @@ export default function Home() {
         });
 
         // Cursor depth on devices with a mouse; a slow idle sway on touch screens.
-        const mouse = window.matchMedia("(hover: hover)").matches;
         if (mouse) {
           gsap.set(video, { scale: 1.1 });
           const opts = { duration: 0.7, ease: "power3.out" };
@@ -139,9 +146,10 @@ export default function Home() {
             hero.removeEventListener("pointerleave", onLeave);
           };
         }
-        gsap.to(word, { rotationY: 10, rotationX: -4, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });
+        gsap.to(word, { rotationY: small ? 7 : 10, rotationX: small ? -3 : -4, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });
         return undefined;
-      });
+        },
+      );
 
       return () => mm.revert();
     },
@@ -151,7 +159,7 @@ export default function Home() {
   const newDrops = products.filter((p) => p.collection === "new-drops").slice(0, 4);
 
   return (
-    <div ref={rootRef}>
+    <div ref={rootRef} className="overflow-x-clip">
       {/* Hero */}
       <section className="page pt-3 sm:pt-5">
         <div ref={heroRef} className="relative isolate flex aspect-square flex-col justify-between sm:aspect-auto sm:min-h-[78vh] overflow-hidden bg-pure-black p-4 sm:p-8">
